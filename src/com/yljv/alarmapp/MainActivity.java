@@ -25,6 +25,7 @@ public class MainActivity extends FragmentActivity {
 				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
 		ParseAnalytics.trackAppOpened(getIntent());
 
+		//Parse test
 		ParseObject testObject = new ParseObject("TestObject");
 		testObject.put("foo", "bar");
 		testObject.saveInBackground();
