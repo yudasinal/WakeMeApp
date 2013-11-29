@@ -9,6 +9,11 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 
+/*
+ * shows MainPage
+ * slide to left -> go to own Clock
+ * slide to right -> go to better halfs Clock ;)
+ */
 public class MainActivity extends FragmentActivity {
 
 	private ViewPager mPager;
@@ -30,9 +35,9 @@ public class MainActivity extends FragmentActivity {
 		testObject.put("foo", "bar");
 		testObject.saveInBackground();
 
-		mPager = (ViewPager) findViewById(R.id.pager);
+		/*mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
-		mPager.setAdapter(mPagerAdapter);
+		mPager.setAdapter(mPagerAdapter);*/
 
 	}
 
