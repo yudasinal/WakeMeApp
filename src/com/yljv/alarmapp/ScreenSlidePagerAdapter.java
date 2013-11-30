@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+/*package com.yljv.alarmapp;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,3 +39,4 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
 
 }
+*/
