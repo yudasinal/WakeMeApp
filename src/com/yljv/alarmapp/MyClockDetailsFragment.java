@@ -19,8 +19,6 @@ public class MyClockDetailsFragment extends Fragment implements OnClickListener{
 	private AlarmManager alarmMgr;
 	
 	public void setAlarm(int hour, int minute){
-		
-		//TODO use Date, TextClock
 
 		alarmMgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(getActivity(), ClockActivity.class);
