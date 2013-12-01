@@ -1,10 +1,15 @@
 package com.yljv.alarmapp;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
+
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
@@ -23,21 +28,29 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_layout);
+
+		Fragment newFragment = new MyClockFragment();
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.add(R.id.fragment_container, newFragment).commit();
+
 
 		// initialize Parse
 		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
 				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
 		ParseAnalytics.trackAppOpened(getIntent());
 
-		//Parse test
+		// Parse test
 		ParseObject testObject = new ParseObject("TestObject");
 		testObject.put("foo", "bar");
 		testObject.saveInBackground();
 
-		/*mPager = (ViewPager) findViewById(R.id.pager);
-		mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
-		mPager.setAdapter(mPagerAdapter);*/
+		/*
+		 * mPager = (ViewPager) findViewById(R.id.pager); mPagerAdapter = new
+		 * ScreenSlidePagerAdapter(getFragmentManager());
+		 * mPager.setAdapter(mPagerAdapter);
+		 */
 
 	}
 
