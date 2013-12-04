@@ -13,12 +13,15 @@ public class Alarm extends ParseObject{
 	
 	public Alarm(){
 		id = MyAlarmManager.getNewId();
+		this.saveAlarm();
 	}
 	public Alarm(int hour, int minute, String name){
 		this.put("hour", hour);
 		this.put("minute", minute);
 		this.put("name", name);
+		this.saveAlarm();
 	}
+
 	
 	public void setTime(int hour, int minute){
 		this.put("hour", hour);
@@ -58,5 +61,9 @@ public class Alarm extends ParseObject{
 				
 			}
 		});
+	}
+	
+	public int getTime(){
+		return 2;
 	}
 }
