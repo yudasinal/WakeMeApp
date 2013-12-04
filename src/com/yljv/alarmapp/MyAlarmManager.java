@@ -9,18 +9,27 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+<<<<<<< HEAD
 public class MyAlarmManager {
 	
+=======
+import android.app.AlarmManager;
+import android.content.Context;
+
+public class MyAlarmManager {
+	
+
+>>>>>>> cleverrainbow
 	private static int alarmNumber;
 	private static Calendar calendar;
 	private static AlarmManager alarmManager;
 	private static HashMap<Integer, PendingIntent> pendingIntents = new HashMap<Integer,PendingIntent>();
-	
-	public static ArrayList<Alarm> getAlarms() {
-		//TODO
-		//ask Parse!
-		return null;
+
+	public static ArrayList<Alarm> getAlarms(){
+		ArrayList<Alarm> list = new ArrayList<Alarm>();
+		return list;
 	}
+	
 	
 	public static int getNewId(){
 		alarmNumber++;

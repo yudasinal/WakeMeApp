@@ -4,17 +4,14 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
-public class Alarm extends ParseObject{
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 
-	int hour;
-	int minute;
-	String name;
-	int id;
+public class Alarm extends ParseObject{
 	
-	public Alarm(){
-		id = MyAlarmManager.getNewId();
-		this.saveAlarm();
-	}
+	
 	public Alarm(int hour, int minute, String name){
 		this.put("hour", hour);
 		this.put("minute", minute);
@@ -52,18 +49,4 @@ public class Alarm extends ParseObject{
 		return 2;
 	}
 	
-	public void saveAlarm(){
-		this.saveEventually(new SaveCallback(){
-
-			@Override
-			public void done(ParseException e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	}
-	
-	public int getTime(){
-		return 2;
-	}
 }
