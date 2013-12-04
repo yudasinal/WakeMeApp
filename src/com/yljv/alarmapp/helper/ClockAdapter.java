@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.yljv.alarmapp.Alarm;
 import com.yljv.alarmapp.R;
 
 public class ClockAdapter extends ArrayAdapter {
 	
-	public ClockAdapter(Context context, ArrayList<Integer> timeList) {
-		super(context, R.layout.alarm_item, timeList);
+	public ClockAdapter(Context context) {
+		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
+		this.addAll(getAlarms());
 		
 	}
 	
@@ -24,7 +26,17 @@ public class ClockAdapter extends ArrayAdapter {
 		View rowView = inflater.inflate(R.layout.alarm_item, parent, false);
 		
 		TextView textView = (TextView) rowView.findViewById(R.id.my_text);
-		textView.setText(((Integer) getItem(position)).toString()); 
+		Alarm item = (Alarm) getItem(position);
+		String text = item.getName();
+		textView.setText(text); 
+		
+		TextView timeView = (TextView) rowView.findViewById(R.id.my_time);
+		Integer time = item.getTime();
+		timeView.setText(time);
+		
+		
+		
+		
 				
 		return rowView;
 	}
