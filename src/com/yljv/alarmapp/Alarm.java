@@ -14,6 +14,12 @@ public class Alarm {
 	String name;
 	String id;
 	
+	public Alarm(){
+		hour = null;
+		minute = null;
+		name = null;
+		id = null;
+	}
 	public Alarm(String id, int hour, int minute, String name){
 		this.id = id;
 		this.hour = hour;
@@ -44,5 +50,9 @@ public class Alarm {
 	
 	public String getId(){
 		return id;
+	}
+	
+	public int getTime(){
+		return 2;
 	}
 }
