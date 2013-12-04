@@ -8,23 +8,27 @@ import android.content.Context;
 import android.content.Intent;
 
 public class Alarm {
+	
 
 	int hour;
 	int minute;
 	String name;
 	String id;
+	boolean published;
 	
 	public Alarm(){
 		hour = null;
 		minute = null;
 		name = null;
 		id = null;
+		setAlarm();
 	}
-	public Alarm(String id, int hour, int minute, String name){
+	public Alarm(String id, int hour, int minute, String name, boolean published){
 		this.id = id;
 		this.hour = hour;
 		this.minute = minute;
 		this.name = name;
+		this.published = published;
 	}
 	
 	public void setTime(int hour, int minute){
@@ -54,5 +58,9 @@ public class Alarm {
 	
 	public int getTime(){
 		return 2;
+	}
+	
+	setAlarm(){
+		
 	}
 }

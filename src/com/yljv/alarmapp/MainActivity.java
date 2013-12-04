@@ -15,6 +15,7 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 
 /*
+ * shows Login if neccessary
  * shows MainPage
  * slide to left -> go to own Clock
  * slide to right -> go to better halfs Clock ;)
