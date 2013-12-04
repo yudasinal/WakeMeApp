@@ -35,4 +35,8 @@ public class User extends ParseObject {
 	public void addPartner(User partner){
 		this.put("partner", partner);
 	}
+	
+	public void deletePartner(){
+		this.put("partner", null);
+	}
 }
