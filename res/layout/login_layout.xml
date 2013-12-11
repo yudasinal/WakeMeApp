@@ -40,7 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dip"
-                android:text="Login"/>
+                android:text="Login"
+                android:onClick="loggedin"/>
             <TextView
                 android:id = "@+id/registerLink"
                 android:layout_width="fill_parent"
