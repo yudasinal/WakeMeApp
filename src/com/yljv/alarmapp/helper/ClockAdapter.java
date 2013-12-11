@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.yljv.alarmapp.Alarm;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.parse.database.Alarm;
 
 public class ClockAdapter extends ArrayAdapter {
 	
 	public ClockAdapter(Context context) {
 		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
-		this.addAll(getAlarms());
+		this.addAll(MyAlarmManager.getAlarms());
 		
 	}
 	

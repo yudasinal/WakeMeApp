@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.ui;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.R.id;
+import com.yljv.alarmapp.R.layout;
 import com.yljv.alarmapp.helper.ClockAdapter;
+import com.yljv.alarmapp.parse.database.Alarm;
 
 
 

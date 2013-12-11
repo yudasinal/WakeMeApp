@@ -3,23 +3,22 @@ package com.yljv.alarmapp;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
+import com.yljv.alarmapp.ui.MyClockFragment;
 
 /*
+ * shows Login if neccessary
  * shows MainPage
  * slide to left -> go to own Clock
  * slide to right -> go to better halfs Clock ;)
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BasicActivity {
 
 	private ViewPager mPager;
 
