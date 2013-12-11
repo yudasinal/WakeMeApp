@@ -1,4 +1,4 @@
-package com.yljv.alarmapp.helper;
+package com.yljv.alarmapp.parse.database;
 
 public class AccountManager {
 	public void getLogin() {
