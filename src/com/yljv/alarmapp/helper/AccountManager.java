@@ -5,4 +5,8 @@ public class AccountManager {
 		//TODO gets user from the system and logs him in 
 		
 	}
+	
+	public void register(String name, String password){
+		
+	}
 }
