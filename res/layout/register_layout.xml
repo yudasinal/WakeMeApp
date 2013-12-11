@@ -59,6 +59,14 @@
         android:inputType="textPassword"
         android:hint = "Enter your password" />
     
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint = "Confirm your password" />
+    
      <CheckBox
         android:id="@+id/checkFemale"
         android:layout_width="wrap_content"
@@ -71,13 +79,6 @@
         android:layout_height="wrap_content"
         android:text="Male" />
     
-    <EditText
-        android:id="@+id/editPartnerEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint = "Enter your partner's email" />
     
     <Button
         android:id="@+id/btnRegister"
