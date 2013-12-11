@@ -43,7 +43,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.UserRegisteredActivity"
+            android:name="com.yljv.alarmapp.RegisterPartnerActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
     </application>
