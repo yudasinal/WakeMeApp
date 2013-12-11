@@ -1,7 +1,6 @@
 package com.yljv.alarmapp;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,7 +9,6 @@ import android.view.Menu;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
-import com.yljv.alarmapp.ui.MyClockFragment;
 
 /*
  * shows Login if neccessary
@@ -28,11 +26,9 @@ public class MainActivity extends BasicActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_layout);
-
-		Fragment newFragment = new MyClockFragment();
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.add(R.id.fragment_container, newFragment).commit();
+		
+		//this is random stuff to make the app run
+		setContentView(R.layout.login_layout);
 
 
 		// initialize Parse
@@ -50,6 +46,9 @@ public class MainActivity extends BasicActivity {
 		 * ScreenSlidePagerAdapter(getFragmentManager());
 		 * mPager.setAdapter(mPagerAdapter);
 		 */
+		
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivity(intent);
 
 	}
 
