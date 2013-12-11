@@ -11,7 +11,7 @@ import com.yljv.alarmapp.parse.database.User;
 
 public class AccountManager{
 	
-	public void login(final ParseLoginListener listener, String email, String password) {
+	public static void login(final ParseLoginListener listener, String email, String password) {
 		ParseUser.logInInBackground(email, password, new LogInCallback(){
 			@Override
 			public void done(ParseUser user, ParseException e){
@@ -25,7 +25,7 @@ public class AccountManager{
 		});
 	}
 	
-	public void register(final ParseRegisterListener listener, String email, String name, String surname, String password, boolean female){
+	public static void register(final ParseRegisterListener listener, String email, String name, String surname, String password, boolean female){
 		User user = new User(email, name, surname, password, female);
 		user.signUpInBackground(new SignUpCallback(){
 			@Override
@@ -40,8 +40,8 @@ public class AccountManager{
 	}
 	
 	
-	public boolean getCurrentUser(){
-		return ParseUser.getCurrentUser()==null;
+	public static User getCurrentUser(){
+		return (User) ParseUser.getCurrentUser();
 	}
 
 	

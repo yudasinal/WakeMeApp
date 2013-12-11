@@ -18,6 +18,10 @@ public class User extends ParseUser {
 		super.setPassword(password);
 	}
 	
+	public String getName(){
+		return (String) this.get("name");
+	}
+	
 	/*
 	public void addPartner(User partner){
 		
