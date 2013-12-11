@@ -26,10 +26,11 @@ public class MyAlarmManager {
 		return list;
 	}
 	
+	/*
 	public static Alarm getAlarmFromParse(int id){
 		ParseQuery<ParseObject> query = new ParseQuery.getQuery("Alarm");
 		query.whereEqualTo("id", id);
-	}
+	}*/
 	
 	public static int getNewId(){
 		alarmNumber++;

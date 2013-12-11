@@ -32,9 +32,10 @@ public class User extends ParseObject {
 		});
 	}
 	
+	/*
 	public void addPartner(User partner){
 		new 
-	}
+	}*/
 	
 	public void deletePartner(){
 		this.put("partner", null);
