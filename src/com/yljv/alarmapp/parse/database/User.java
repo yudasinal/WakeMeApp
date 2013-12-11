@@ -1,35 +1,21 @@
 package com.yljv.alarmapp.parse.database;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
+import com.parse.ParseUser;
 
-public class User extends ParseObject {
+public class User extends ParseUser {
 	
-	public void User(String email, String password, boolean female){
+	public User(String email, String name, String surname, String password, boolean female){
+		super.setEmail(email);
+		super.setUsername(email);
+		super.setPassword(password);
+		this.put("name", name);
+		this.put("surname", surname);
 		this.put("partner", null);
-		this.put("email", email);
-		this.put("password", password);
-		this.put("female", female);
-		this.saveEventually(new SaveCallback(){
-
-			@Override
-			public void done(ParseException e) {
-				// TODO Auto-generated method stub
-			}
-			
-		});
-		
+		this.put("female", female);		
 	}
 	
 	public void changePassword(String password){
-		this.put("password", password);
-		this.saveEventually(new SaveCallback(){
-			@Override
-			public void done(ParseException e){
-				//TODO
-			}
-		});
+		super.setPassword(password);
 	}
 	
 	/*
