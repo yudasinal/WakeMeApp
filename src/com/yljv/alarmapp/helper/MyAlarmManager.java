@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.helper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,17 +9,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-<<<<<<< HEAD
-public class MyAlarmManager {
-	
-=======
-import android.app.AlarmManager;
-import android.content.Context;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.yljv.alarmapp.ClockActivity;
+import com.yljv.alarmapp.parse.database.Alarm;
 
 public class MyAlarmManager {
 	
-
->>>>>>> cleverrainbow
 	private static int alarmNumber;
 	private static Calendar calendar;
 	private static AlarmManager alarmManager;
@@ -30,13 +26,20 @@ public class MyAlarmManager {
 		return list;
 	}
 	
+	public static Alarm getAlarmFromParse(int id){
+		ParseQuery<ParseObject> query = new ParseQuery.getQuery("Alarm");
+		query.whereEqualTo("id", id);
+	}
 	
 	public static int getNewId(){
 		alarmNumber++;
 		return alarmNumber;
 	}
 	
-	public void setAlarm(Context context, Alarm alarm){
+	public void setAlarm(Context context, int hour, int minute, String alarmName){
+		
+		Alarm alarm = new Alarm(hour, minute, alarmName);
+		alarm.saveEventually();
 		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		
 		Intent intent = new Intent(context, ClockActivity.class);

@@ -1,4 +1,7 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.ui;
+
+import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.R.id;
 
 import android.app.Fragment;
 import android.os.Bundle;

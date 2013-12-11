@@ -10,6 +10,7 @@ import android.view.Menu;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
+import com.yljv.alarmapp.ui.MyClockFragment;
 
 /*
  * shows Login if neccessary

@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.ui;
 
 public class RegistrationFragment {
 

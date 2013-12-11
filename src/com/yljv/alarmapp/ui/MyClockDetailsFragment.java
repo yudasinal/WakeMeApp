@@ -1,6 +1,8 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.ui;
 
 import java.util.Calendar;
+
+import com.yljv.alarmapp.ClockActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.parse.database;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -13,10 +13,11 @@ public class Alarm extends ParseObject{
 	
 	
 	public Alarm(int hour, int minute, String name){
-		this.put("hour", hour);
-		this.put("minute", minute);
-		this.put("name", name);
-		this.saveAlarm();
+		super("Alarm");
+		put("hour", hour);
+		put("minute", minute);
+		put("name", name);
+		this.saveEventually();
 	}
 
 	

@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.parse.database;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -33,7 +33,7 @@ public class User extends ParseObject {
 	}
 	
 	public void addPartner(User partner){
-		this.put("partner", partner);
+		new 
 	}
 	
 	public void deletePartner(){

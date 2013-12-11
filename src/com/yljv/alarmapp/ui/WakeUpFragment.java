@@ -1,4 +1,4 @@
-package com.yljv.alarmapp;
+package com.yljv.alarmapp.ui;
 
 import android.support.v4.app.Fragment;
 
