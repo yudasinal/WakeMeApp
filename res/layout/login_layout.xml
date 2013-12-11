@@ -13,27 +13,36 @@
           android:layout_height="wrap_content"
           android:padding="10dip"
           android:id = "@+id/loginForm">
+          
+            <Button 
+                android:id ="@+id/btnBack"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:text = "Back"/>
             <TextView
                 android:text = "Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id = "@+id/editEmail"
                 android:layout_width="fill_parent"
                 android:layout_height = "wrap_content"
                 android:hint = "Email address"
                 android:layout_marginTop="5dip"
                 android:layout_marginBottom="20dip"
+                android:inputType = "textEmailAddress"
                 android:singleLine="true"/>
             <TextView
                 android:text = "Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
+                android:id = "@+id/editPassword"
                 android:layout_width="fill_parent"
                 android:layout_height = "wrap_content"
                 android:hint = "Password"
                 android:layout_marginTop="5dip"
-                android:password = "true"
+                android:inputType="textPassword"
                 android:singleLine="true" />
             <Button 
                 android:id = "@+id/loginBtn"
