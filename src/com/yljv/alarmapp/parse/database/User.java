@@ -32,4 +32,12 @@ public class User extends ParseUser {
 	public User getPartner(){
 		return (User) this.get("partner");
 	}
+	
+	public String getName(){
+		return (String) this.get("name");
+	}
+	
+	public String getSurname(){
+		return (String) this.get("surname");
+	}
 }
