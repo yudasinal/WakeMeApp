@@ -2,12 +2,8 @@ package com.yljv.alarmapp.parse.database;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 
 public class Alarm extends ParseObject{
 	
@@ -17,18 +13,11 @@ public class Alarm extends ParseObject{
 		put("hour", hour);
 		put("minute", minute);
 		put("name", name);
+		ParseUser user = AccountManager.getCurrentUser();
+		put("user", user);
 		this.saveEventually();
 	}
-
 	
-	public void setTime(int hour, int minute){
-		this.put("hour", hour);
-		this.put("minute", minute);
-	}
-	
-	public void setName(String name){
-		this.put("name", name);
-	}
 	
 	public String getName(){
 		return (String) this.get("name");
@@ -48,6 +37,19 @@ public class Alarm extends ParseObject{
 	
 	public int getTime(){
 		return 2;
+	}
+	
+	public void saveAlarm(final ParseAlarmListener listener){
+		this.saveEventually(new SaveCallback(){
+			@Override
+			public void done(ParseException e) {
+				if(e==null){
+					listener.onAlarmSaved();
+				}else{
+					listener.onAlarmSaveFailed(e);
+				}
+			}
+		});
 	}
 	
 }
