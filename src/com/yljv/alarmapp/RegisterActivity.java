@@ -129,7 +129,7 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 	@Override
 	public void onRegisterSuccess() {
 		// TODO Auto-generated method stub
-		String name = AccountManager.getCurrentUser().getName();
+		String name = AccountManager.getName();
 		Intent intent = new Intent(this, RegisterPartnerActivity.class);
 		intent.putExtra(FIRST_NAME, name);
 
