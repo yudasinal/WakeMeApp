@@ -97,6 +97,10 @@ public class AccountManager{
 		return (String) ParseUser.getCurrentUser().getEmail();
 	}
 	
+	public static void invitePartner(String email){
+		
+	}
+	
 
 	
 }

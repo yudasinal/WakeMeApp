@@ -36,17 +36,6 @@ public class MainActivity extends BasicActivity {
 				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
 		ParseAnalytics.trackAppOpened(getIntent());
 
-		// Parse test
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "bar");
-		testObject.saveInBackground();
-
-		/*
-		 * mPager = (ViewPager) findViewById(R.id.pager); mPagerAdapter = new
-		 * ScreenSlidePagerAdapter(getFragmentManager());
-		 * mPager.setAdapter(mPagerAdapter);
-		 */
-		
 		Intent intent = new Intent(this, SplashActivity.class);
 		startActivity(intent);
 
