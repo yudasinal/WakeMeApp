@@ -3,11 +3,13 @@ package com.yljv.alarmapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import com.parse.ParseException;
 import com.yljv.alarmapp.parse.database.AccountManager;
@@ -22,7 +24,8 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 	EditText editLastName; 
 	EditText editEmail;
 	EditText editPassword;
-	CheckBox checkFemale;
+	RadioButton checkFemale;
+	EditText editPassword2;
 	
 	
 	public void registerAttempt() {
@@ -30,9 +33,64 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 		String lastName = editLastName.getText().toString();
 		String email = editEmail.getText().toString();
 		String password = editPassword.getText().toString();
+		String password2 = editPassword2.getText().toString();
 		Boolean female = checkFemale.isActivated();
-		AccountManager.register(this, email, firstName, lastName, password, female);
-		
+		boolean cancel = false;
+		View focusView = null;
+		// TODO Error fields (user does not exist, etc)
+		//Check for a valid password.
+		if (TextUtils.isEmpty(password)) {
+			editPassword.setError("This field is required");
+			focusView = editPassword;
+			cancel = true;
+		} else if (password.length() < 4) {
+			editPassword.setError("Short password");
+			focusView = editPassword;
+			cancel = true;
+		} else if (!password.equals(password2)) {
+			editPassword.setError("Passwords do not match");
+			focusView = editPassword;
+			cancel = true;
+		} 
+		if (TextUtils.isEmpty(password2)) {
+			editPassword2.setError("This field is required");
+			focusView = editPassword;
+			cancel = true;
+		}
+		if (TextUtils.isEmpty(email)) {
+			editEmail.setError("This field is required");
+			focusView = editEmail;
+			cancel = true;
+			
+		//TODO check if the email is valid(in the form of ""@"" and has a dot) 
+		} else if (!email.contains("@")) {
+			editEmail.setError("Invalid email address");
+			focusView = editEmail;
+			cancel = true; 
+		}
+		if (TextUtils.isEmpty(firstName)) {
+			editFirstName.setError("This field is required");
+			focusView = editFirstName;
+			cancel = true;
+		}
+		if (TextUtils.isEmpty(lastName)) {
+			editLastName.setError("This field is required");
+			focusView = editLastName;
+			cancel = true;
+		} 
+		if (!checkFemale.isChecked()) {
+			checkFemale.setError("The box has to be checked");
+			focusView = checkFemale;
+			cancel = true;
+		} 
+		if (cancel) {
+			// There was an error; don't attempt login and focus the first
+			// form field with an error.
+			focusView.requestFocus();
+		}
+		else {
+			AccountManager.register(this, email, firstName, lastName, password, female);
+		}
 	}
 
 	@Override
@@ -42,8 +100,14 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 		setContentView(R.layout.register_layout);
 		btnRegister = (Button) findViewById(R.id.btnRegister);
 		editFirstName = (EditText) findViewById(R.id.editFirstName);
+		editLastName = (EditText) findViewById(R.id.editLastName);
+		editEmail = (EditText) findViewById(R.id.editEmail);
+		editPassword = (EditText) findViewById(R.id.editPassword);
+		editPassword2 = (EditText) findViewById(R.id.editPassword2);
+		checkFemale = (RadioButton) findViewById(R.id.checkFemale);
 		btnRegister.setOnClickListener(this);
 	}
+	
 
 	@Override
 	public void onClick(View register) {

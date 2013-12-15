@@ -30,17 +30,19 @@ public class SplashActivity extends Activity implements OnClickListener  {
 		switch (v.getId()) {
 			case R.id.btnRegister:
 				toRegister();
+				break;
 			case R.id.btnLogin:
 				toLogin();
+				break;
 		}
 	}
 	
-	public void toLogin() {
+	private void toLogin() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);	
 	}
 	
-	public void toRegister() {
+	private void toRegister() {
 		Intent intent = new Intent(this, RegisterActivity.class);
 		startActivity(intent);
 	}

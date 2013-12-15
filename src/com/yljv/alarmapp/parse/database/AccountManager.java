@@ -39,6 +39,22 @@ public class AccountManager{
 		});
 	}
 	
+	/*
+	public static void registerPartner(final ParseRegisterListener listener, String email){
+		User user = new User(email);
+		user.signUpInBackground(new SignUpCallback(){
+			@Override
+			public void done(ParseException e){
+				if(e==null){
+					listener.onRegisterSuccess();
+				}else{
+					listener.onRegisterFail(e);
+				}
+			}
+		});
+	}
+	*/
+	
 	
 	public static User getCurrentUser(){
 		return (User) ParseUser.getCurrentUser();

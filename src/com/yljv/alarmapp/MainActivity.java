@@ -47,7 +47,7 @@ public class MainActivity extends BasicActivity {
 		 * mPager.setAdapter(mPagerAdapter);
 		 */
 		
-		Intent intent = new Intent(this, RegisterActivity.class);
+		Intent intent = new Intent(this, SplashActivity.class);
 		startActivity(intent);
 
 	}

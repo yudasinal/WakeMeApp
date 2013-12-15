@@ -3,6 +3,7 @@ package com.yljv.alarmapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,8 +36,10 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		switch(v.getId()){
 			case  R.id.loginBtn: 
 				login();
+				break;
 			case R.id.btnBack:
 				backSplash();
+				break;
 		}
 	}
 		
@@ -45,7 +48,39 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		editPassword = (EditText) findViewById(R.id.editPassword);
 		String email = editEmail.getText().toString();
 		String password = editPassword.getText().toString();
-		AccountManager.login(this, email, password);
+		boolean cancel = false;
+		View focusView = null;
+		// TODO Error fields (user does not exist, etc)
+		//Check for a valid password.
+		if (TextUtils.isEmpty(password)) {
+			editPassword.setError("This field is required");
+			focusView = editPassword;
+			cancel = true;
+		} else if (password.length() < 4) {
+			editPassword.setError("Short password");
+			focusView = editPassword;
+			cancel = true;
+		}
+		if (TextUtils.isEmpty(email)) {
+			editEmail.setError("This field is required");
+			focusView = editEmail;
+			cancel = true;
+			
+		//TODO email is not registered in the system 
+		} else if (!email.contains("@")) {
+			editEmail.setError("Email is not registered");
+			focusView = editEmail;
+			cancel = true; 
+		}
+		
+		if (cancel) {
+			// There was an error; don't attempt login and focus the first
+			// form field with an error.
+			focusView.requestFocus();
+
+		} else {
+			AccountManager.login(this, email, password);
+		}
 	}
 	
 	@Override
@@ -57,9 +92,12 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	@Override
 	public void onLoginFail(ParseException e) {
-		// TODO Error fields (user does not exist, etc)
-		
+		View focusView = null;
+		loginBtn.setError("User is not registered, please register first");
+		focusView = loginBtn;
 	}
+	
+	//TODO Password and Username didn't match? 
 	
 	public void backSplash() {
 		Intent intent = new Intent(this, SplashActivity.class);
@@ -68,7 +106,6 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	
 }
-
 
 	
 	
