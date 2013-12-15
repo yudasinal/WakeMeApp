@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Hello_World!" />
+            android:text="My Alarms" />
     </LinearLayout>
     
 <LinearLayout 
@@ -29,7 +29,7 @@
     android:orientation = "vertical">
     
     <TextView
-        android:id = "@+id/main_screen_his"
+        android:id = "@+id/main_screen_partner"
         android:text = "Hello_World!"
         android:layout_gravity = "center"
         android:layout_width = "wrap_content"

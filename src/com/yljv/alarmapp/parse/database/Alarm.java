@@ -17,16 +17,7 @@ public class Alarm extends ParseObject{
 		put("user", user);
 		this.saveEventually();
 	}
-
 	
-	public void setTime(int hour, int minute){
-		this.put("hour", hour);
-		this.put("minute", minute);
-	}
-	
-	public void setName(String name){
-		this.put("name", name);
-	}
 	
 	public String getName(){
 		return (String) this.get("name");

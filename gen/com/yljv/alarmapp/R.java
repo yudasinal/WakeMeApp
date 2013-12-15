@@ -24,28 +24,30 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_forgot_password=0x7f080014;
-        public static final int action_settings=0x7f080015;
+        public static final int action_forgot_password=0x7f080016;
+        public static final int action_settings=0x7f080017;
         public static final int btnBack=0x7f080003;
-        public static final int btnLogin=0x7f080013;
-        public static final int btnRegister=0x7f08000f;
-        public static final int checkFemale=0x7f08000d;
-        public static final int checkMale=0x7f08000e;
+        public static final int btnLogin=0x7f080015;
+        public static final int btnRegister=0x7f080011;
+        public static final int checkFemale=0x7f08000f;
+        public static final int checkMale=0x7f080010;
         public static final int clock_list=0x7f08000a;
         public static final int editEmail=0x7f080004;
         public static final int editFirstName=0x7f08000b;
         public static final int editLastName=0x7f08000c;
         public static final int editPassword=0x7f080005;
-        public static final int login=0x7f080011;
+        public static final int editPassword2=0x7f08000d;
+        public static final int login=0x7f080013;
         public static final int loginBtn=0x7f080006;
         public static final int loginForm=0x7f080002;
-        public static final int main_screen_his=0x7f080009;
         public static final int main_screen_me=0x7f080008;
+        public static final int main_screen_partner=0x7f080009;
         public static final int my_text=0x7f080001;
         public static final int my_time=0x7f080000;
-        public static final int partnerEmail=0x7f080012;
+        public static final int partnerEmail=0x7f080014;
+        public static final int radioGroup=0x7f08000e;
         public static final int registerLink=0x7f080007;
-        public static final int registerSuccess=0x7f080010;
+        public static final int registerSuccess=0x7f080012;
     }
     public static final class layout {
         public static final int alarm_item=0x7f030000;
