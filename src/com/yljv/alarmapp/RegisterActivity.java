@@ -21,11 +21,44 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 	
 	EditText editFirstName; 
 	Button btnRegister;
+	Button btnBack;
 	EditText editLastName; 
 	EditText editEmail;
 	EditText editPassword;
 	RadioButton checkFemale;
 	EditText editPassword2;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.register_layout);
+		btnRegister = (Button) findViewById(R.id.btnRegister);
+		btnBack = (Button) findViewById(R.id.btnBack);
+		editFirstName = (EditText) findViewById(R.id.editFirstName);
+		editLastName = (EditText) findViewById(R.id.editLastName);
+		editEmail = (EditText) findViewById(R.id.editEmail);
+		editPassword = (EditText) findViewById(R.id.editPassword);
+		editPassword2 = (EditText) findViewById(R.id.editPassword2);
+		checkFemale = (RadioButton) findViewById(R.id.checkFemale);
+		btnRegister.setOnClickListener(this);
+		btnBack.setOnClickListener(this);
+	}
+	
+
+	@Override
+	public void onClick(View register) {
+		// TODO Auto-generated method stub
+		//TODO create User here
+		switch (register.getId()) {
+			case R.id.btnRegister:
+				registerAttempt();
+				break;
+			case R.id.btnBack: 
+				back();
+				break;
+		}
+	}
 	
 	
 	public void registerAttempt() {
@@ -92,31 +125,7 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 			AccountManager.register(this, email, firstName, lastName, password, female);
 		}
 	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.register_layout);
-		btnRegister = (Button) findViewById(R.id.btnRegister);
-		editFirstName = (EditText) findViewById(R.id.editFirstName);
-		editLastName = (EditText) findViewById(R.id.editLastName);
-		editEmail = (EditText) findViewById(R.id.editEmail);
-		editPassword = (EditText) findViewById(R.id.editPassword);
-		editPassword2 = (EditText) findViewById(R.id.editPassword2);
-		checkFemale = (RadioButton) findViewById(R.id.checkFemale);
-		btnRegister.setOnClickListener(this);
-	}
 	
-
-	@Override
-	public void onClick(View register) {
-		// TODO Auto-generated method stub
-		//TODO create User here
-		
-		registerAttempt();
-	}
-
 	@Override
 	public void onRegisterSuccess() {
 		// TODO Auto-generated method stub
@@ -133,6 +142,11 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 		//TODO error messages (passwords do not match, etc
 		
 	}
-	
+
+	private void back() {
+		Intent intent = new Intent(this, SplashActivity.class);
+		startActivity(intent);
+		
+	}
 
 }
