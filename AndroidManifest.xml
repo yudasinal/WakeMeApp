@@ -34,8 +34,11 @@
         </activity>
         <activity android:name="com.yljv.alarmapp.ClockActivity" />
         <activity
-            android:name="com.yljv.alarmapp.LoginFragment"
-            android:label="@string/title_activity_login_fragment"
+            android:name="com.yljv.alarmapp.SplashActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.yljv.alarmapp.LoginActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
