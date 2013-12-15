@@ -50,7 +50,7 @@ public class AccountManager{
 				}else{
 					listener.onLoginFail(e);
 				}
-				User newUser = (User) user;
+				ParseUser newUser = (ParseUser) user;
 			}
 		});
 	}
@@ -62,7 +62,7 @@ public class AccountManager{
 		user.put("name", name);
 		user.put("surname", surname);
 		user.put("female", true);
-		user.put("partner", null);
+		//user.put("partner", null);
 		user.setPassword(password);
 		user.signUpInBackground(new SignUpCallback(){
 			@Override
@@ -76,29 +76,13 @@ public class AccountManager{
 		});
 	}
 	
-	/*
-	public static void registerPartner(final ParseRegisterListener listener, String email){
-		User user = new User(email);
-		user.signUpInBackground(new SignUpCallback(){
-			@Override
-			public void done(ParseException e){
-				if(e==null){
-					listener.onRegisterSuccess();
-				}else{
-					listener.onRegisterFail(e);
-				}
-			}
-		});
-	}
-	*/
 	
-	
-	public static User getCurrentUser(){
-		return (User) ParseUser.getCurrentUser();
+	public static ParseUser getCurrentUser(){
+		return (ParseUser) ParseUser.getCurrentUser();
 	}
 	
-	public static User getPartner(){
-		return (User) ParseUser.getCurrentUser().get("partner");
+	public static ParseUser getPartner(){
+		return (ParseUser) ParseUser.getCurrentUser().get("partner");
 	}
 	
 	public static String getName(){
