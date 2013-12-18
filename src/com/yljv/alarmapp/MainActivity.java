@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
@@ -16,14 +17,14 @@ import com.parse.ParseObject;
  * slide to left -> go to own Clock
  * slide to right -> go to better halfs Clock ;)
  */
-public class MainActivity extends BasicActivity {
+public class MainActivity extends SlidingActivity {
 
 	private ViewPager mPager;
 
 	private PagerAdapter mPagerAdapter;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		

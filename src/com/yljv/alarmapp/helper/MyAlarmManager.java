@@ -9,9 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.yljv.alarmapp.ClockActivity;
+import com.yljv.alarmapp.MainActivity;
 import com.yljv.alarmapp.parse.database.Alarm;
 
 public class MyAlarmManager {
@@ -43,7 +41,7 @@ public class MyAlarmManager {
 		alarm.saveEventually();
 		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		
-		Intent intent = new Intent(context, ClockActivity.class);
+		Intent intent = new Intent(context, MainActivity.class);
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getId(), intent, 0);
 		pendingIntents.put((Integer)alarm.getId(), alarmIntent);
 		
