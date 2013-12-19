@@ -1,10 +1,10 @@
 package com.yljv.alarmapp;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.yljv.alarmapp.ui.MenuList;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.yljv.alarmapp.ui.MenuList;
 
 public class MenuMainActivity extends BaseActivity {
 	

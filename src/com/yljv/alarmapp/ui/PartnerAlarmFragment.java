@@ -1,12 +1,12 @@
 package com.yljv.alarmapp.ui;
 
-import com.yljv.alarmapp.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.yljv.alarmapp.R;
 
 public class PartnerAlarmFragment extends Fragment {
 

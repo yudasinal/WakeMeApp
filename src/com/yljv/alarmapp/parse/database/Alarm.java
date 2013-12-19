@@ -7,6 +7,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")

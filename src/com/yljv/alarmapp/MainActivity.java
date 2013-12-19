@@ -11,8 +11,8 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.helper.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.Alarm;
-import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 /*
  * shows Login if neccessary

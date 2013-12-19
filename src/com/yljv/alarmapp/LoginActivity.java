@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.parse.ParseException;
-import com.yljv.alarmapp.parse.database.AccountManager;
+import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.parse.database.ParseLoginListener;
 
 public class LoginActivity extends Activity implements OnClickListener, ParseLoginListener  {
