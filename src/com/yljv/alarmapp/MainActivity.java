@@ -34,7 +34,7 @@ public class MainActivity extends SlidingActivity {
 		//this is random stuff to make the app run
 		setContentView(R.layout.login_layout);
 
-
+		
 		// register ParseObject Subclasses
 		ParseObject.registerSubclass(Alarm.class);
 		// initialize Parse

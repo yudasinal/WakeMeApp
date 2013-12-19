@@ -18,8 +18,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.yljv.alarmapp.ClockActivity;
-import com.yljv.alarmapp.MainActivity;
+import com.yljv.alarmapp.WakeUpActivity;
 import com.yljv.alarmapp.helper.MyBootReceiver;
 
 public class MyAlarmManager {
@@ -42,11 +41,26 @@ public class MyAlarmManager {
 	public static ArrayList<Alarm> myAlarms = new ArrayList<Alarm>();
 	
 	
-	/*
-	public static Alarm getAlarmFromParse(int id){
-		ParseQuery<ParseObject> query = new ParseQuery.getQuery("Alarm");
-		query.whereEqualTo("id", id);
-	}*/
+	
+	public static ArrayList<String> getAllAlarms(){
+		ArrayList<String> alarm = new ArrayList<String>();
+		alarm.add("hello");
+		alarm.add("bye");
+		alarm.add("goodbye");
+		alarm.add("good");
+		alarm.add("bad");
+		/*
+		ArrayList<Alarm> list = new ArrayList<Alarm>();
+		list.add(new Alarm("name1", 12, 4));
+		list.add(new Alarm("name2", 45, 1));
+		list.add(new Alarm("name3", 45, 1));
+		list.add(new Alarm("name4", 45, 1));
+		list.add(new Alarm("name5", 45, 1));
+		*/
+		//MyAlarmManager.retrieveAllMyAlarms();
+		//return myAlarms;
+		return alarm;
+	}
 	
 	public static void setTime(Alarm alarm, int hour, int minute){
 		alarm.put("hour", hour);
@@ -79,7 +93,7 @@ public class MyAlarmManager {
 		PackageManager pm = context.getPackageManager();
 		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 				
-		Intent intent = new Intent(context, ClockActivity.class);
+		Intent intent = new Intent(context, WakeUpActivity.class);
 		//intent.putExtra("id", alarm.getObjectId());
 		intent.putExtra("id", alarm.getAlarmId());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  MyAlarmManager.CURRENT_ALARM_REQUEST, intent, 0);

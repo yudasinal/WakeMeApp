@@ -26,6 +26,17 @@ public class Alarm extends ParseObject{
 		put("time", time);
 	}
 	
+	public Alarm(String name, int hour, int minute){
+		super("Alarm");
+		//put("time", time);
+		put("name", name);
+		ParseUser user = AccountManager.getCurrentUser();
+		put("user", user);
+		put("id", ApplicationSettings.getAlarmId());
+		put("hour", hour);
+		put("minute", minute);
+	}
+	
 	
 	public String getName(){
 		return (String) this.get("name");
