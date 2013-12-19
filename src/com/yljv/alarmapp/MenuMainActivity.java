@@ -2,6 +2,7 @@ package com.yljv.alarmapp;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.yljv.alarmapp.ui.MenuList;
+import com.yljv.alarmapp.ui.MyAlarmListFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,7 @@ public class MenuMainActivity extends BaseActivity {
 			mainView = getSupportFragmentManager().getFragment(savedInstanceState, "mainView");
 		}
 		if (savedInstanceState == null) {
-			mainView = (Fragment) new MyAlarmFragment();
+			mainView = (Fragment) new MyAlarmListFragment();
 		}
 		
 		setContentView(R.layout.content_frame);

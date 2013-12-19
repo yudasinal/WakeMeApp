@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
 
-public class ClockAdapter extends ArrayAdapter {
+public class ClockAdapter extends ArrayAdapter<Alarm> {
 	
 	public ClockAdapter(Context context) {
 		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
