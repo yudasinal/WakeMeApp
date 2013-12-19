@@ -2,6 +2,8 @@ package com.yljv.alarmapp.parse.database;
 
 import java.util.List;
 
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -48,6 +50,7 @@ public class AccountManager{
 				if(user!=null){
 					listener.onLoginSuccessful();
 				}else{
+					Log.d("LoginException", e.getMessage());
 					listener.onLoginFail(e);
 				}
 				ParseUser newUser = (ParseUser) user;
@@ -95,6 +98,10 @@ public class AccountManager{
 	
 	public static String getEmail(){
 		return (String) ParseUser.getCurrentUser().getEmail();
+	}
+	
+	public static void invitePartner(String email){
+		
 	}
 	
 

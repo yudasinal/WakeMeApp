@@ -1,21 +1,29 @@
 package com.yljv.alarmapp.parse.database;
 
+import java.util.Date;
+
+import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.yljv.alarmapp.helper.ApplicationSettings;
 
+@ParseClassName("Alarm")
 public class Alarm extends ParseObject{
 	
-	
-	public Alarm(int hour, int minute, String name){
+	public Alarm(){
 		super("Alarm");
-		put("hour", hour);
-		put("minute", minute);
+	}
+	
+	public Alarm(String name, Date time){
+		super("Alarm");
+		//put("time", time);
 		put("name", name);
 		ParseUser user = AccountManager.getCurrentUser();
 		put("user", user);
-		this.saveEventually();
+		put("id", ApplicationSettings.getAlarmId());
+		put("time", time);
 	}
 	
 	
@@ -29,10 +37,6 @@ public class Alarm extends ParseObject{
 	
 	public int getMinute(){
 		return (Integer) this.get("minute");
-	}
-	
-	public int getId(){
-		return (Integer) this.get("id");
 	}
 	
 	public int getTime(){
@@ -51,5 +55,10 @@ public class Alarm extends ParseObject{
 			}
 		});
 	}
+	
+	public int getAlarmId(){
+		return (Integer) this.get("id");
+	}
+	
 	
 }
