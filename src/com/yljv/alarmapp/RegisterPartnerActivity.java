@@ -20,6 +20,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 	
 	public void registerPartner() {
 		
+		//TODO click on "Male" radio button does not allow registration
 		//TODO Login the user to the MainActivity
 		String email = partnerEmail.getText().toString();
 		boolean cancel = false;
@@ -53,6 +54,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 		registerSuccess.setText("Thank you, " + firstName + "! You have successfully registered.");
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(this);
+		partnerEmail = (EditText) findViewById(R.id.partnerEmail);
 	}
 
 	@Override

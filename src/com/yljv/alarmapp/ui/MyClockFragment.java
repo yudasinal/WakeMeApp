@@ -12,7 +12,6 @@ import android.widget.ListView;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.R.id;
 import com.yljv.alarmapp.R.layout;
-import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
 
 
@@ -24,11 +23,7 @@ public class MyClockFragment extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);
-		//View view = super.onCreateView(inflater, container, saveInstanceState);
-	
-		listView = (ListView) view.findViewById(R.id.clock_list);
-		ClockAdapter clockAdapter = new ClockAdapter(this.getActivity());
-		listView.setAdapter(clockAdapter);
+
 		
 			
 		return view; 
