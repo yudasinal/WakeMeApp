@@ -1,5 +1,14 @@
 package com.yljv.alarmapp;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
+import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.ui.MenuList;
+import com.yljv.alarmapp.ui.MyAlarmListFragment;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -12,6 +21,8 @@ public class MenuMainActivity extends BaseActivity {
 	
 	public MenuMainActivity() {
 		super(R.string.app_name);
+		
+		
 	}
 
 	@Override
@@ -22,7 +33,7 @@ public class MenuMainActivity extends BaseActivity {
 			mainView = getSupportFragmentManager().getFragment(savedInstanceState, "mainView");
 		}
 		if (savedInstanceState == null) {
-			mainView = (Fragment) new MyAlarmFragment();
+			mainView = (Fragment) new MyAlarmListFragment();
 		}
 		
 		setContentView(R.layout.content_frame);
@@ -40,6 +51,8 @@ public class MenuMainActivity extends BaseActivity {
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
+	
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

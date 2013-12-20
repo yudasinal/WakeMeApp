@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.yljv.alarmapp.MenuMainActivity;
-import com.yljv.alarmapp.MyAlarmFragment;
 import com.yljv.alarmapp.R;
 
 public class MenuList extends SherlockListFragment {
@@ -37,7 +36,7 @@ public class MenuList extends SherlockListFragment {
 		Fragment newContent = null; 
 		switch(position) {
 		case 0: 
-			newContent = new MyAlarmFragment();
+			newContent = new MyAlarmListFragment();
 			break;
 		case 1: 
 			newContent = new PartnerAlarmFragment();
