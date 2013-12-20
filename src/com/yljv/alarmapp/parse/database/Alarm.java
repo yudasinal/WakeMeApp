@@ -28,6 +28,7 @@ public class Alarm extends ParseObject{
 	}
 	
 	
+	
 	public String getName(){
 		return (String) this.get("name");
 	}

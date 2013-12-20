@@ -18,6 +18,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.yljv.alarmapp.WakeUpActivity;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.ParsePartnerAlarmListener;
 
@@ -39,6 +40,8 @@ public class MyAlarmManager {
 
 
 	public static ArrayList<Alarm> myAlarms = new ArrayList<Alarm>();
+	
+	
 	
 	
 	/*
@@ -78,7 +81,7 @@ public class MyAlarmManager {
 		PackageManager pm = context.getPackageManager();
 		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 				
-		Intent intent = new Intent(context, ClockActivity.class);
+		Intent intent = new Intent(context, WakeUpActivity.class);
 		//intent.putExtra("id", alarm.getObjectId());
 		intent.putExtra("id", alarm.getAlarmId());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  MyAlarmManager.CURRENT_ALARM_REQUEST, intent, 0);
