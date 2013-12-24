@@ -15,7 +15,7 @@ public class ApplicationSettings {
 	
 	public static int getAlarmId(){
 		int id = preferences.getInt("counter", 0);
-		preferences.edit().putInt("counter", id+1);
+		preferences.edit().putInt("counter", id+1).commit();
 		return id+1;
 	}
 	
@@ -23,7 +23,6 @@ public class ApplicationSettings {
 	public static void setSharedPreferences(Context context) {
 		// TODO Auto-generated method stub
 		preferences = context.getSharedPreferences("preferences", Context.MODE_MULTI_PROCESS);
-		preferences.edit().putInt("counter", 0);
 	}
 
 }

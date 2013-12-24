@@ -13,8 +13,7 @@ public class MyBootReceiver extends BroadcastReceiver {
 		// TODO set the alarm here
 		// only for test
 		Toast.makeText(context, "Alarm Alarm", Toast.LENGTH_LONG).show();
-		int id = intent.getIntExtra("id", -100);
-		Toast.makeText(context, intent.getIntExtra("id", -100), Toast.LENGTH_LONG)
+		Toast.makeText(context, Integer.toString(intent.getIntExtra("id", -100)), Toast.LENGTH_LONG)
 				.show();
 
 	}

@@ -102,7 +102,7 @@ public class MyAlarmManager {
 		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 				
 		Intent intent = new Intent(context, MyBootReceiver.class);
-		int id = alarm.getAlarmId();
+		Log.d("MyAlarmManager", Integer.toString(alarm.getAlarmId()));
 		intent.putExtra("id", alarm.getAlarmId());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
 		

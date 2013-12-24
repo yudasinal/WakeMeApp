@@ -60,7 +60,8 @@ public class MenuMainActivity extends BaseActivity {
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
 		//test Alarm
-		MyAlarmManager.setAlarm(this, 3, 23, 10, "myalarm", false);
+		MyAlarmManager.setAlarm(this, 3, 23, 38, "myalarm", false);
+		MyAlarmManager.setAlarm(this, 3, 23, 39, "myalarm", false);
 	}
 
 	@Override
