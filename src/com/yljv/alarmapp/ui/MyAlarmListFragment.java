@@ -10,10 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.yljv.alarmapp.R;
-<<<<<<< HEAD:src/com/yljv/alarmapp/ui/MyClockFragment.java
-=======
 import com.yljv.alarmapp.helper.ClockAdapter;
->>>>>>> c9f5ac5d9b8cc0386b28650f65fb5d0141c71723:src/com/yljv/alarmapp/ui/MyAlarmListFragment.java
 import com.yljv.alarmapp.parse.database.Alarm;
 
 

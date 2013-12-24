@@ -58,6 +58,7 @@
             android:name="com.yljv.alarmapp.BaseActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.yljv.alarmapp.helper;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 public class ApplicationSettings {
@@ -17,4 +18,12 @@ public class ApplicationSettings {
 		preferences.edit().putInt("counter", id+1);
 		return id+1;
 	}
+	
+
+	public static void setSharedPreferences(Context context) {
+		// TODO Auto-generated method stub
+		preferences = context.getSharedPreferences("preferences", Context.MODE_MULTI_PROCESS);
+		preferences.edit().putInt("counter", 0);
+	}
+
 }
