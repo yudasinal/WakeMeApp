@@ -1,5 +1,7 @@
 package com.yljv.alarmapp.helper;
 
+import com.yljv.alarmapp.WakeUpActivity;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +12,17 @@ public class MyBootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		Intent i = new Intent(context, WakeUpActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
+		
+		
+		
 		// TODO set the alarm here
 		// only for test
-		Toast.makeText(context, "Alarm Alarm", Toast.LENGTH_LONG).show();
+		/*Toast.makeText(context, "Alarm Alarm", Toast.LENGTH_LONG).show();
 		Toast.makeText(context, Integer.toString(intent.getIntExtra("id", -100)), Toast.LENGTH_LONG)
-				.show();
+				.show();*/
 
 	}
 }

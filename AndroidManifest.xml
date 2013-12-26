@@ -59,6 +59,10 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         
+        <activity
+            android:name="com.yljv.alarmapp.WakeUpActivity">
+        </activity>
+        
     </application>
 
 </manifest>

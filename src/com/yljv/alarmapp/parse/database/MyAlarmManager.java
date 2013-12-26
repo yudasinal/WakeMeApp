@@ -80,7 +80,9 @@ public class MyAlarmManager {
 
 	/*
 	 * sets a NEW Alarm
+	 * repeat does not work yet, if you need more alarms, call setAlarm multiple times
 	 * please use constants of this class for the day-variable (SUNDAY-SATURDAY)
+	 * example: MyAlarmManager.setAlarm(context, MyAlarmManager.SUNDAY, 13, 24, "Wake Up", false)
 	 */
 	public static void setAlarm(Context context, int day, int hour, int minute, String alarmName, boolean repeat){
 		
