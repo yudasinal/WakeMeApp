@@ -24,5 +24,6 @@ public class ApplicationSettings {
 		// TODO Auto-generated method stub
 		preferences = context.getSharedPreferences("preferences", Context.MODE_MULTI_PROCESS);
 	}
+	
 
 }

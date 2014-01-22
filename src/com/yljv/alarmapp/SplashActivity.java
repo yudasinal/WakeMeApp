@@ -1,57 +1,40 @@
 package com.yljv.alarmapp;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
+import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class SplashActivity extends Activity implements OnClickListener  {
-	
-	Button btnRegister;
-	Button btnLogin;
-	
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+
+/*
+ * very first screen to see after opening the app
+ * disappears after a few seconds
+ */
+public class SplashActivity extends Activity {
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		
+	public void onCreate(Bundle savedInstanceState) {
+		// register ParseObject Subclasses
+		ParseObject.registerSubclass(Alarm.class);
+		// initialize Parse
 		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
 				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
 		ParseAnalytics.trackAppOpened(getIntent());
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.splash_layout);
-		btnRegister = (Button) findViewById(R.id.btnRegister);
-		btnLogin = (Button) findViewById(R.id.btnLogin);
-		btnRegister.setOnClickListener(this);
-		btnLogin.setOnClickListener(this);
-		
-	}
-	
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {
-			case R.id.btnRegister:
-				toRegister();
-				break;
-			case R.id.btnLogin:
-				toLogin();
-		}
-		
-	}
-	
-	private void toLogin() {
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);	
-	}
-	
-	private void toRegister() {
-		Intent intent = new Intent(this, RegisterActivity.class);
-		startActivity(intent);
-	}
 
+		// initialize Settings
+		ApplicationSettings.preferences = this.getSharedPreferences(
+				"Preferences", this.MODE_APPEND);
+
+		// Alarm Test
+		MyAlarmManager.setAlarm(this, MyAlarmManager.WEDNESDAY, 15, 40,
+				"first alarm", false);
+
+		// Storing Bitmaps test
+		Bitmap bitmap = Bitmap.createBitmap(3, 3, Bitmap.Config.ARGB_8888);
+	}
 }

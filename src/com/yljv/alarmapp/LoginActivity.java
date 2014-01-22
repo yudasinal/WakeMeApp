@@ -86,7 +86,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	@Override
 	public void onLoginSuccessful() {
 		// TODO Auto-generated method stub
-		Intent intent = new Intent (this, MainActivity.class);
+		Intent intent = new Intent (this, MenuMainActivity.class);
 		startActivity(intent);
 	}
 
@@ -100,7 +100,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	//TODO Password and Username didn't match? 
 	
 	public void backSplash() {
-		Intent intent = new Intent(this, SplashActivity.class);
+		Intent intent = new Intent(this, ChoiceActivity.class);
 		startActivity(intent);	
 	}
 

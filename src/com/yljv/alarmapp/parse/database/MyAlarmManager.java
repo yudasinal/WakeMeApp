@@ -68,10 +68,6 @@ public class MyAlarmManager {
 		return myAlarms;
 	}
 	
-	private static void setTime(Alarm alarm, GregorianCalendar cal){
-		alarm.put("time", cal.getTime());
-		alarm.saveEventually();
-	}
 
 	public void setName(Alarm alarm, String name){
 		alarm.put("name", name);
@@ -168,6 +164,9 @@ public class MyAlarmManager {
 		});
 	}
 	
-	
+	public static void addTextToAlarm(final Alarm alarm, String text){
+		alarm.put("message", text);
+	}
+
 	
 }

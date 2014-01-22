@@ -143,7 +143,7 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 	}
 
 	private void back() {
-		Intent intent = new Intent(this, SplashActivity.class);
+		Intent intent = new Intent(this, ChoiceActivity.class);
 		startActivity(intent);
 		
 	}
