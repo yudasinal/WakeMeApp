@@ -1,11 +1,14 @@
 package com.yljv.alarmapp;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.ui.AddAlarmFragment;
 import com.yljv.alarmapp.ui.MenuList;
 import com.yljv.alarmapp.ui.MyAlarmListFragment;
 
@@ -21,6 +24,7 @@ public class MenuMainActivity extends BaseActivity {
 		
 		
 	}
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,5 +67,6 @@ public class MenuMainActivity extends BaseActivity {
 		.replace(R.id.content_frame, fragment)
 		.commit();
 		getSlidingMenu().showContent();	
+		this.invalidateOptionsMenu();
 	}
 }

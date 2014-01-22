@@ -15,7 +15,7 @@ import com.yljv.alarmapp.R;
 public class MenuList extends SherlockListFragment {
 	
 	//TODO make a method that takes partner's name for an item in the menu
-	String[] menu = {"My Alarms", "His Alarms", "Settings"};
+	String[] menu = {"My Alarms", "His Alarms", "Gallery", "Settings"};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +42,9 @@ public class MenuList extends SherlockListFragment {
 			newContent = new PartnerAlarmFragment();
 			break;
 		case 2: 
+			newContent = new GalleryFragment();
+			break;
+		case 3: 
 			newContent = new SettingsFragment();
 			break;
 		}

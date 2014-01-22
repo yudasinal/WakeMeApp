@@ -1,5 +1,6 @@
 package com.yljv.alarmapp;
 
+import com.yljv.alarmapp.R;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -52,9 +53,10 @@ public class BaseActivity extends SlidingFragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 }
