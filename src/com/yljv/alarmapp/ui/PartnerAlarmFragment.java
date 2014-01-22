@@ -1,7 +1,6 @@
 package com.yljv.alarmapp.ui;
 
 import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +13,8 @@ import android.widget.ListView;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
+
+import com.yljv.alarmapp.R;
 
 public class PartnerAlarmFragment extends Fragment {
 

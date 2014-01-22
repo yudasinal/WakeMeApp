@@ -1,23 +1,28 @@
 package com.yljv.alarmapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
+import android.widget.ListPopupWindow;
 
 import com.yljv.alarmapp.R;
 
-public class AddPicForPartnerFragment extends Fragment implements OnClickListener {
+public class AddPicForPartnerFragment extends Fragment implements OnClickListener, OnItemClickListener {
 	
 	Button addPicture;
 	EditText addMessage;
-
+	ListPopupWindow listPopupWindow;
+	String[] picOption = {"Take a picture", "Choose from gallery"};
 	
 
 	@Override
@@ -28,6 +33,16 @@ public class AddPicForPartnerFragment extends Fragment implements OnClickListene
 		addPicture = (Button) view.findViewById(R.id.add_picture);
 		addMessage = (EditText) view.findViewById(R.id.add_message);
 		addPicture.setOnClickListener(this);
+		listPopupWindow = new ListPopupWindow(this.getActivity());
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.popup_layout, picOption);
+		listPopupWindow.setAdapter(arrayAdapter);
+		listPopupWindow.setAnchorView(addPicture);
+		listPopupWindow.setWidth(500);
+		listPopupWindow.setHeight(250);
+		listPopupWindow.setHorizontalOffset(300);
+		listPopupWindow.setVerticalOffset(200);
+		listPopupWindow.setModal(true);
+		listPopupWindow.setOnItemClickListener(this);
 		return view;
 	}
 	
@@ -35,10 +50,18 @@ public class AddPicForPartnerFragment extends Fragment implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		LayoutInflater inflator = (LayoutInflater)getActivity().getBaseContext().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
-		View popUpView = inflator.inflate(R.layout.popup_layout, null);
-		final PopupWindow popUp = new PopupWindow(popUpView,LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			
+		listPopupWindow.show();
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// TODO Auto-generated method stub
+		if (position == 0) {
+			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(intent, 0);
+		}
+		
 	}
 	
 	

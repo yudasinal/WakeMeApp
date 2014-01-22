@@ -63,9 +63,10 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	    then.set(Calendar.MINUTE, minute);
 	  }
 	
-	public void onTimeSet(TimePicker view, int hourOfDat, int minute) {
+	/*public void onTimeSet(TimePicker view, int hourOfDat, int minute) {
 		getTime();
 	}
+	*/
 
 	private void getTime() {
 		//TODO Parse
