@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.parse.Parse;
@@ -24,6 +25,8 @@ public class SplashActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+	    getActionBar().hide();
 		setContentView(R.layout.splash);
 		
 		TextView name = (TextView) findViewById(R.id.name_id);
@@ -55,5 +58,7 @@ public class SplashActivity extends Activity {
 		// Storing Bitmaps test
 		Bitmap bitmap = Bitmap.createBitmap(3, 3, Bitmap.Config.ARGB_8888);
 		*/
+		
+		
 	}
 }
