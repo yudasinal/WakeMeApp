@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
+    <ImageView
         android:id="@+id/add_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:src = "@drawable/ic_launcher"
+        android:clickable = "true" />
 
     <EditText
         android:id="@+id/add_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" >
-
+        
         <requestFocus />
     </EditText>
 
