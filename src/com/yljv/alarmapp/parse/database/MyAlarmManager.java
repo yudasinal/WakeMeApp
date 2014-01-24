@@ -13,17 +13,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yljv.alarmapp.WakeUpActivity;
+import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.MyBootReceiver;
 
+/*
+ * THIS IS THE RIGHT ALARM MANAGER
+ */
 public class MyAlarmManager {
-	
-	public static int CURRENT_ALARM_REQUEST = 1;
 	
 	public static int SUNDAY = 1;
 	public static int MONDAY = 2;
@@ -40,9 +43,7 @@ public class MyAlarmManager {
 
 	public static ArrayList<Alarm> myAlarms = new ArrayList<Alarm>();
 	
-	
-	
-	public static ArrayList<String> getAllAlarms(){
+	public static ArrayList<String> getAllAlarmString(){
 		ArrayList<String> alarm = new ArrayList<String>();
 		alarm.add("hello");
 		alarm.add("bye");
@@ -62,18 +63,22 @@ public class MyAlarmManager {
 		return alarm;
 	}
 	
-	public static void setTime(Alarm alarm, int hour, int minute){
-		alarm.put("hour", hour);
-		alarm.put("minute", minute);
+	public static ArrayList<Alarm> getAllAlarms(){
+		retrieveAllMyAlarms();
+		return myAlarms;
 	}
+	
 
 	public void setName(Alarm alarm, String name){
 		alarm.put("name", name);
+		alarm.saveEventually();
 	}
 
 	/*
 	 * sets a NEW Alarm
+	 * repeat does not work yet, if you need more alarms, call setAlarm multiple times
 	 * please use constants of this class for the day-variable (SUNDAY-SATURDAY)
+	 * example: MyAlarmManager.setAlarm(context, MyAlarmManager.SUNDAY, 13, 24, "Wake Up", false)
 	 */
 	public static void setAlarm(Context context, int day, int hour, int minute, String alarmName, boolean repeat){
 		
@@ -84,20 +89,20 @@ public class MyAlarmManager {
 		cal.set(Calendar.HOUR_OF_DAY, hour);
 		cal.set(Calendar.MINUTE, minute);
 		
+		//Create new Alarm on server
 		Alarm alarm = new Alarm(alarmName, cal.getTime());
 		alarm.saveEventually();
 		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		
-		//enable BootReiver
+		//enable BootReceiver
 		ComponentName receiver = new ComponentName(context, MyBootReceiver.class);
 		PackageManager pm = context.getPackageManager();
 		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 				
-		Intent intent = new Intent(context, WakeUpActivity.class);
-		//intent.putExtra("id", alarm.getObjectId());
+		Intent intent = new Intent(context, MyBootReceiver.class);
+		Log.d("MyAlarmManager", Integer.toString(alarm.getAlarmId()));
 		intent.putExtra("id", alarm.getAlarmId());
-		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  MyAlarmManager.CURRENT_ALARM_REQUEST, intent, 0);
-		CURRENT_ALARM_REQUEST += 1;
+		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
 		
 		
 		
@@ -107,18 +112,15 @@ public class MyAlarmManager {
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), alarmIntent);
 	}
 	
-	public void cancelAlarm(Integer id){
-		alarmManager.cancel(pendingIntents.get(id));
-		pendingIntents.remove(id);
+	public void cancelAlarm(Alarm alarm){
+		alarmManager.cancel(pendingIntents.get(alarm.getAlarmId()));
+		pendingIntents.remove(alarm.getAlarmId());
 	}
 	
 	public static void deleteAlarm(){
 		
 	}
 
-	public static void changeAlarm(Alarm alarm, int hour, int minute){
-		
-	}
 
 	public static void retrieveAllMyAlarms(){
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
@@ -162,6 +164,9 @@ public class MyAlarmManager {
 		});
 	}
 	
-	
+	public static void addTextToAlarm(final Alarm alarm, String text){
+		alarm.put("message", text);
+	}
+
 	
 }

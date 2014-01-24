@@ -37,7 +37,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
-		Intent main = new Intent(this, MainActivity.class);
+		Intent main = new Intent(this, MenuMainActivity.class);
 	
 		startActivity(main);
 		}

@@ -45,7 +45,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 		//menu.findItem(R.id.cancel_alarm).setVisible(true);	
 		menu.findItem(R.id.cancel_alarm).setEnabled(true);
 		menu.findItem(R.id.add_alarm).setEnabled(true);
-		menu.findItem(R.id.save_alarm).setEnabled(false);
+		menu.findItem(R.id.save_alarm).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 		menu.findItem(R.id.save_alarm).setVisible(false);
 
 	}

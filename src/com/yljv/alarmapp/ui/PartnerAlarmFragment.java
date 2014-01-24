@@ -16,6 +16,8 @@ import com.yljv.alarmapp.parse.database.Alarm;
 
 import com.yljv.alarmapp.R;
 
+import com.yljv.alarmapp.R;
+
 public class PartnerAlarmFragment extends Fragment {
 
 	public ListView listView; 

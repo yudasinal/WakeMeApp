@@ -1,12 +1,15 @@
 package com.yljv.alarmapp.parse.database;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")
@@ -24,34 +27,35 @@ public class Alarm extends ParseObject{
 		put("user", user);
 		put("id", ApplicationSettings.getAlarmId());
 		put("time", time);
+		put("activated", true);
 	}
-	
-	public Alarm(String name, int hour, int minute){
-		super("Alarm");
-		//put("time", time);
-		put("name", name);
-		ParseUser user = AccountManager.getCurrentUser();
-		put("user", user);
-		put("id", ApplicationSettings.getAlarmId());
-		put("hour", hour);
-		put("minute", minute);
-	}
-	
 	
 	public String getName(){
 		return (String) this.get("name");
 	}
 	
 	public int getHour(){
-		return (Integer) this.get("hour");
+		GregorianCalendar cal = getTimeAsCalendar();
+		return cal.get(Calendar.HOUR);
 	}
 	
 	public int getMinute(){
-		return (Integer) this.get("minute");
+		GregorianCalendar cal = getTimeAsCalendar();
+		return cal.get(Calendar.MINUTE);
 	}
 	
-	public int getTime(){
-		return 2;
+	public Date getTimeAsDate(){
+		return (Date) this.get("time");
+	}
+	
+	public boolean isActivated(){
+		return (Boolean) this.get("activated");
+	}
+	
+	public GregorianCalendar getTimeAsCalendar(){
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(getTimeAsDate());
+		return cal;
 	}
 	
 	public void saveAlarm(final ParseAlarmListener listener){

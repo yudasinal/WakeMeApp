@@ -1,57 +1,37 @@
 package com.yljv.alarmapp;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.text.Html;
+import android.view.Window;
+import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
+import com.parse.PushService;
+import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class SplashActivity extends Activity implements OnClickListener  {
-	
-	Button btnRegister;
-	Button btnLogin;
-	
+/*
+ * very first screen to see after opening the app
+ * disappears after a few seconds
+ */
+public class SplashActivity extends Activity {
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		
-		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
-				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
-		ParseAnalytics.trackAppOpened(getIntent());
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.splash_layout);
-		btnRegister = (Button) findViewById(R.id.btnRegister);
-		btnLogin = (Button) findViewById(R.id.btnLogin);
-		btnRegister.setOnClickListener(this);
-		btnLogin.setOnClickListener(this);
+		
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+	    getActionBar().hide();
+		setContentView(R.layout.splash);
+		
+		TextView name = (TextView) findViewById(R.id.name_id);
+		name.setText(Html.fromHtml("<b>wakeme</b>app"));
+		
 		
 	}
-	
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {
-			case R.id.btnRegister:
-				toRegister();
-				break;
-			case R.id.btnLogin:
-				toLogin();
-		}
-		
-	}
-	
-	private void toLogin() {
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);	
-	}
-	
-	private void toRegister() {
-		Intent intent = new Intent(this, RegisterActivity.class);
-		startActivity(intent);
-	}
-
 }

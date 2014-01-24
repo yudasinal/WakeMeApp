@@ -26,7 +26,6 @@ public class BaseActivity extends SlidingFragmentActivity {
 		super.onCreate(savedInstanceState);
 		
 		setTitle(appTitle);
-		
 		setBehindContentView(R.layout.menu_frame);
 		android.support.v4.app.FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
 		menuFragment = new MenuList();
