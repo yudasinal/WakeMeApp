@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
@@ -36,13 +38,23 @@ public class MyAlarmListFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
+	
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main, menu);
+		//menu.findItem(R.id.add_alarm).setVisible(true);
+		//menu.findItem(R.id.cancel_alarm).setVisible(true);	
+		menu.findItem(R.id.cancel_alarm).setEnabled(true);
+		menu.findItem(R.id.add_alarm).setEnabled(true);
+		menu.findItem(R.id.save_alarm).setEnabled(false);
+		menu.findItem(R.id.save_alarm).setVisible(false);
+
+	}
 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case R.id.add_alarm:
-			//Fragment newContent = new AddPicForPartnerFragment();
 			Fragment newContent = new AddPicForPartnerFragment();
 			if (getActivity() instanceof MenuMainActivity) {
 				MenuMainActivity mma = (MenuMainActivity) getActivity();

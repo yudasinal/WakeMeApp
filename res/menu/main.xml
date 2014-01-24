@@ -1,11 +1,27 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:AlarmApp="http://schemas.android.com/apk/res-auto" >
+    
+	<item
         android:id="@+id/add_alarm"
         android:orderInCategory="100"
-        android:showAsAction="always"
+        AlarmApp:showAsAction="ifRoom"
         android:title="Add alarm"
         android:titleCondensed = "Add"/>
+	
+	<item
+        android:id="@+id/save_alarm"
+        android:orderInCategory="100"
+        AlarmApp:showAsAction="ifRoom"
+        android:title="Save alarm"
+        android:titleCondensed = "Save"/>
+	
+	<item
+        android:id="@+id/cancel_alarm"
+        android:orderInCategory="100"
+        AlarmApp:showAsAction="ifRoom"
+        android:title="Cancel alarm"
+        android:titleCondensed = "Cancel"/>
+
 </menu>
 
 

@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.yljv.alarmapp.R;
 
 public class AddPicForPartnerFragment extends Fragment implements OnClickListener, OnItemClickListener {
@@ -29,6 +31,18 @@ public class AddPicForPartnerFragment extends Fragment implements OnClickListene
 	String[] picOption = {"Take a picture", "Choose from gallery"};
 	static final int REQUEST_TAKE_PHOTO = 1;
 	private static final int RESULT_LOAD_IMAGE = 1;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main, menu);
+		menu.findItem(R.id.cancel_alarm).setEnabled(true);		
+	}
+
 	
 
 	@Override
@@ -52,6 +66,7 @@ public class AddPicForPartnerFragment extends Fragment implements OnClickListene
 		listPopupWindow.setOnItemClickListener(this);
 		return view;
 	}
+	
 
 	@Override
 	public void onClick(View v) {
