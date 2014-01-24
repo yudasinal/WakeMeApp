@@ -19,9 +19,6 @@ public class ChoiceActivity extends Activity implements OnClickListener  {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		
-		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
-				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
-		ParseAnalytics.trackAppOpened(getIntent());
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_layout);
 		btnRegister = (Button) findViewById(R.id.btnRegister);

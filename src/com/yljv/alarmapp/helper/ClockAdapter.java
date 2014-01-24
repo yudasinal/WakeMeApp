@@ -17,7 +17,7 @@ public class ClockAdapter extends ArrayAdapter<String> {
 	
 	public ClockAdapter(Context context) {
 		super(context, R.layout.alarm_item, new ArrayList<String>());
-		//this.addAll(MyAlarmManager.getAllAlarms());
+		this.addAll(MyAlarmManager.getAllAlarmString());
 		
 	}
 	

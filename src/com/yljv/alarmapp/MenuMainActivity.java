@@ -6,6 +6,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
+import com.parse.PushService;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
@@ -28,23 +29,13 @@ public class MenuMainActivity extends BaseActivity {
 		super(R.string.app_name);
 
 	}
-	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// register ParseObject Subclasses
-		ParseObject.registerSubclass(Alarm.class);
-		
-		// initialize Parse
-		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
-				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
-		ParseAnalytics.trackAppOpened(getIntent());
-
-		ApplicationSettings.setSharedPreferences(this);
-		
-		
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
+
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mainView");
@@ -62,9 +53,30 @@ public class MenuMainActivity extends BaseActivity {
 				.replace(R.id.menu_frame, new MenuList()).commit();
 
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
+		// test Alarm
+		/*MyAlarmManager.setAlarm(this, MyAlarmManager.THURSDAY, 10, 56,
+				"myalarm", false);*/
 		
-		//test Alarm
-		MyAlarmManager.setAlarm(this, MyAlarmManager.THURSDAY, 10, 56, "myalarm", false);
+
+		// register ParseObject Subclasses
+		ParseObject.registerSubclass(Alarm.class);
+
+		// initialize Parse
+		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
+				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
+		ParseAnalytics.trackAppOpened(getIntent());
+
+		ApplicationSettings.setSharedPreferences(this);
+		
+
+		
+		//enable Push Notifications
+		PushService.setDefaultPushCallback(this, MenuMainActivity.class);
+		ParseAnalytics.trackAppOpened(getIntent());
+		// initialize Settings
+		ApplicationSettings.preferences = this.getSharedPreferences(
+				"Preferences", this.MODE_APPEND);
 	}
 
 	@Override
@@ -75,11 +87,9 @@ public class MenuMainActivity extends BaseActivity {
 
 	public void switchContent(Fragment fragment) {
 		mainView = fragment;
-		getSupportFragmentManager()
-		.beginTransaction()
-		.replace(R.id.content_frame, fragment)
-		.commit();
-		getSlidingMenu().showContent();	
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_frame, fragment).commit();
+		getSlidingMenu().showContent();
 		this.invalidateOptionsMenu();
 	}
 }

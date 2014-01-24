@@ -32,33 +32,6 @@ public class SplashActivity extends Activity {
 		TextView name = (TextView) findViewById(R.id.name_id);
 		name.setText(Html.fromHtml("<b>wakeme</b>app"));
 		
-		// initialize Parse
-				Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
-						"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
-				ParseAnalytics.trackAppOpened(getIntent());
-				
-		// register ParseObject Subclasses
-		ParseObject.registerSubclass(Alarm.class);
-		
-		
-
-		
-		//enable Push Notifications
-		PushService.setDefaultPushCallback(this, MenuMainActivity.class);
-		ParseAnalytics.trackAppOpened(getIntent());
-		// initialize Settings
-		ApplicationSettings.preferences = this.getSharedPreferences(
-				"Preferences", this.MODE_APPEND);
-
-		/*
-		// Alarm Test
-		MyAlarmManager.setAlarm(this, MyAlarmManager.WEDNESDAY, 15, 40,
-				"first alarm", false);
-
-		// Storing Bitmaps test
-		Bitmap bitmap = Bitmap.createBitmap(3, 3, Bitmap.Config.ARGB_8888);
-		*/
-		
 		
 	}
 }
