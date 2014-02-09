@@ -4,12 +4,14 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
@@ -40,6 +43,9 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	Button saveButton;
 	Button ringtoneButton;
 	private String chosenRingtone;
+	TextView monday;
+	TextView tuesday;
+	TextView wednesday;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +53,52 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
+		monday = (TextView) view.findViewById(R.id.mon);
+		monday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    monday.setTextColor(Color.BLUE);
+                    break;
+				}
+				return false;
+			}
+		});
+		tuesday = (TextView) view.findViewById(R.id.tue);
+		tuesday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    tuesday.setTextColor(Color.BLUE);
+                    break;
+				}
+				return false;
+			}
+		});
+		wednesday = (TextView) view.findViewById(R.id.wed);
+		wednesday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    wednesday.setTextColor(Color.BLUE);
+                    
+                    break;
+				case MotionEvent.ACTION_POINTER_INDEX_MASK:
+					wednesday.setTextColor(Color.BLACK);
+				}
+				return false;
+			}
+		});
+		/*
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_mon);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_tue);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_wed);
@@ -54,6 +106,7 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_fri);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sat);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sun);	
+		*/
 		timePicker.setOnTimeChangedListener(this);
 		saveButton = (Button) view.findViewById(R.id.save_button);
 		saveButton.setOnClickListener(this);

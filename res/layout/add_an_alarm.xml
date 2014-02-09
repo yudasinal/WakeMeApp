@@ -43,6 +43,49 @@
 	        android:text="Days"/>	     
 	</TableRow>
 	<TableRow
+        android:id="@+id/tableRow7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+	    <TextView
+	        android:id = "@+id/mon"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="M "/>
+	    <TextView
+	        android:id = "@+id/tue"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="T "/>
+	    <TextView
+	        android:id = "@+id/wed"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="W "/>
+	    <TextView
+	        android:id = "@+id/thu"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="T "/>
+	    <TextView
+	        android:id = "@+id/fri"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="F "/>
+	    <TextView
+	        android:id = "@+id/sat"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="S "/>
+	    <TextView
+	        android:id = "@+id/sun"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="S "/>
+	</TableRow>
+	    
+	<!--  
+	<TableRow
         android:id="@+id/tableRow4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,6 +133,8 @@
 	        android:onClick="onCheckboxClicked"
 	        android:orientation="horizontal"/>
 	</TableRow>
+	-->
+	
 	<TableRow>
 	    <TextView 
 	        android:layout_width="match_parent"
