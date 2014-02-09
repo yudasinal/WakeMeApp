@@ -55,7 +55,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case R.id.add_alarm:
-			Fragment newContent = new AddPicForPartnerFragment();
+			Fragment newContent = new AddAlarmFragment();
 			if (getActivity() instanceof MenuMainActivity) {
 				MenuMainActivity mma = (MenuMainActivity) getActivity();
 				mma.switchContent(newContent);
