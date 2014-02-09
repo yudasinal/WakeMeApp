@@ -96,12 +96,20 @@
 	        android:layout_height="wrap_content"
 	        android:text="Volume"/>
 	</TableRow>
+
+	<SeekBar
+	    android:id="@+id/volume"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" />
+
 	<TableRow>
-		<SeekBar
-		    android:id="@+id/volume"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content" />
 	</TableRow>
+	
+	<Button
+	    android:id="@+id/ringtone_button"
+	    android:layout_width = "wrap_content"
+	    android:layout_height = "wrap_content">
+	</Button>
 	
 	<Button
 	    android:id="@+id/save_button"

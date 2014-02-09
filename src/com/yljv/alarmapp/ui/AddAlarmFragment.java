@@ -2,6 +2,11 @@ package com.yljv.alarmapp.ui;
 
 import java.util.Calendar;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -33,7 +38,8 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	CheckBox checkbox_sat;
 	CheckBox checkbox_sun;
 	Button saveButton;
-	
+	Button ringtoneButton;
+	private String chosenRingtone;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +57,9 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		timePicker.setOnTimeChangedListener(this);
 		saveButton = (Button) view.findViewById(R.id.save_button);
 		saveButton.setOnClickListener(this);
+		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
+		ringtoneButton.setText("Ringtone");
+		ringtoneButton.setOnClickListener(this);
 		return view;
 	}
 
@@ -88,8 +97,18 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		saveAlarm();
+		switch (v.getId()) {
+			case R.id.ringtone_button:
+				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+				this.startActivityForResult(intent, 5);
+				break;
+			case R.id.save_button:
+				saveAlarm();
+				break;
+		};
 	}
 
 	private void saveAlarm() {
@@ -105,4 +124,23 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		newContent.setArguments(data);
 	}
 	
+	
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+	     if (resultCode == Activity.RESULT_OK && requestCode == 5)
+	     {
+	          Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
+	          if (uri != null)
+	          {
+	              this.chosenRingtone = uri.toString();
+	              Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), uri);
+	              ringtoneButton.setText(ringtone.getTitle(getActivity()));
+	          }
+	          else
+	          {
+	              this.chosenRingtone = null;
+	          }
+	      }            
+	  }
 }
