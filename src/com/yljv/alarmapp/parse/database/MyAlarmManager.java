@@ -117,7 +117,7 @@ public class MyAlarmManager {
 		pendingIntents.remove(alarm.getAlarmId());
 	}
 	
-	public static void deleteAlarm(){
+	public static void deleteAlarm(Alarm alarm){
 		
 	}
 

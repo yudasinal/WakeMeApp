@@ -24,13 +24,36 @@ public class SplashActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-	    getActionBar().hide();
+		getActionBar().hide();
 		setContentView(R.layout.splash);
-		
+
 		TextView name = (TextView) findViewById(R.id.name_id);
 		name.setText(Html.fromHtml("<b>wakeme</b>app"));
+
+		// test Alarm
+		/*
+		 * MyAlarmManager.setAlarm(this, MyAlarmManager.THURSDAY, 10, 56,
+		 * "myalarm", false);
+		 */
+
+		// initialize Parse
+		Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
+				"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
+		ParseAnalytics.trackAppOpened(getIntent());
+
+		// register ParseObject Subclasses
+		ParseObject.registerSubclass(Alarm.class);
+
+		// enable Push Notifications
+		PushService.setDefaultPushCallback(this, MenuMainActivity.class);
+		ParseAnalytics.trackAppOpened(getIntent());
+
+		// initialize Settings
+		ApplicationSettings.setSharedPreferences(this);
+		ApplicationSettings.preferences = this.getSharedPreferences(
+				"Preferences", this.MODE_APPEND);
 		
 		
 	}

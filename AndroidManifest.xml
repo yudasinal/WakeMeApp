@@ -21,11 +21,11 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.yljv.alarmapp.permission.C2D_MESSAGE" />
-    
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    
-    <uses-feature android:name="android.hardware.camera"
-                  android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -68,6 +68,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
