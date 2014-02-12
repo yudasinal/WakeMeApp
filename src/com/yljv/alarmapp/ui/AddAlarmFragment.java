@@ -2,9 +2,16 @@ package com.yljv.alarmapp.ui;
 
 import java.util.Calendar;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -12,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
@@ -33,7 +41,11 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	CheckBox checkbox_sat;
 	CheckBox checkbox_sun;
 	Button saveButton;
-	
+	Button ringtoneButton;
+	private String chosenRingtone;
+	TextView monday;
+	TextView tuesday;
+	TextView wednesday;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +53,52 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
+		monday = (TextView) view.findViewById(R.id.mon);
+		monday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    monday.setTextColor(Color.BLUE);
+                    break;
+				}
+				return false;
+			}
+		});
+		tuesday = (TextView) view.findViewById(R.id.tue);
+		tuesday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    tuesday.setTextColor(Color.BLUE);
+                    break;
+				}
+				return false;
+			}
+		});
+		wednesday = (TextView) view.findViewById(R.id.wed);
+		wednesday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    wednesday.setTextColor(Color.BLUE);
+                    
+                    break;
+				case MotionEvent.ACTION_POINTER_INDEX_MASK:
+					wednesday.setTextColor(Color.BLACK);
+				}
+				return false;
+			}
+		});
+		/*
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_mon);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_tue);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_wed);
@@ -48,9 +106,13 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_fri);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sat);
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sun);	
+		*/
 		timePicker.setOnTimeChangedListener(this);
 		saveButton = (Button) view.findViewById(R.id.save_button);
 		saveButton.setOnClickListener(this);
+		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
+		ringtoneButton.setText("Ringtone");
+		ringtoneButton.setOnClickListener(this);
 		return view;
 	}
 
@@ -88,8 +150,18 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		saveAlarm();
+		switch (v.getId()) {
+			case R.id.ringtone_button:
+				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+				this.startActivityForResult(intent, 5);
+				break;
+			case R.id.save_button:
+				saveAlarm();
+				break;
+		};
 	}
 
 	private void saveAlarm() {
@@ -105,4 +177,23 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		newContent.setArguments(data);
 	}
 	
+	
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+	     if (resultCode == Activity.RESULT_OK && requestCode == 5)
+	     {
+	          Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
+	          if (uri != null)
+	          {
+	              this.chosenRingtone = uri.toString();
+	              Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), uri);
+	              ringtoneButton.setText(ringtone.getTitle(getActivity()));
+	          }
+	          else
+	          {
+	              this.chosenRingtone = null;
+	          }
+	      }            
+	  }
 }

@@ -25,7 +25,6 @@ public class ClockAdapter extends ArrayAdapter<String> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.alarm_item, parent, false);
-		
 		TextView textView = (TextView) rowView.findViewById(R.id.my_text);
 		String item = (String) getItem(position);
 		textView.setText(item);
@@ -36,9 +35,6 @@ public class ClockAdapter extends ArrayAdapter<String> {
 		Integer time = item.getTime();
 		timeView.setText(time);
 */		
-		
-		
-		
 				
 		return rowView;
 	}
