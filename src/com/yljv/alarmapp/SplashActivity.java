@@ -1,6 +1,7 @@
 package com.yljv.alarmapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
@@ -25,7 +26,7 @@ public class SplashActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		//getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
 		setContentView(R.layout.splash);
 
@@ -55,6 +56,24 @@ public class SplashActivity extends Activity {
 		ApplicationSettings.preferences = this.getSharedPreferences(
 				"Preferences", this.MODE_APPEND);
 		
+		//Thread to display the splash activity 
 		
+		Thread splashScreen = new Thread() {
+			
+			public void run() {
+				try {
+					sleep(3500);
+					startActivity(new Intent(getApplicationContext(), MenuMainActivity.class));
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+				finally {
+					finish();
+				}		
+			}
+		};
+		
+		splashScreen.start();
 	}
 }

@@ -19,11 +19,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 
-public class AddPicForPartnerFragment extends Fragment implements OnClickListener, OnItemClickListener {
+public class AddPicForPartnerFragment extends SherlockFragment implements OnClickListener, OnItemClickListener {
+	
+	public static final String MESSAGE_FOR_ALARM = "com.yljv.alarmapp.MESSAGE_FOR_ALARM";
 	
 	ImageView addPicture;
 	EditText addMessage;
@@ -43,7 +48,22 @@ public class AddPicForPartnerFragment extends Fragment implements OnClickListene
 		menu.findItem(R.id.cancel_alarm).setEnabled(true);		
 	}
 
-	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.cancel_alarm:
+			getFragmentManager().popBackStackImmediate();
+			break;
+		//Save button has to be a preview button
+		case R.id.save_alarm: 
+			Fragment newFragment = new PreviewPictureFragment();
+			if(getActivity() instanceof MenuMainActivity) {
+				MenuMainActivity mma = new MenuMainActivity();
+				mma.switchContent(newFragment);
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

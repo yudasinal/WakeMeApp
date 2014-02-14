@@ -1,6 +1,5 @@
 package com.yljv.alarmapp;
 
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.parse.Parse;
@@ -83,7 +82,8 @@ public class MenuMainActivity extends BaseActivity {
 	public void switchContent(Fragment fragment) {
 		mainView = fragment;
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, fragment).commit();
+				.replace(R.id.content_frame, fragment)
+				.addToBackStack(null).commit();
 		getSlidingMenu().showContent();
 		this.invalidateOptionsMenu();
 	}
