@@ -82,7 +82,7 @@ public class MyAlarmManager {
 	 */
 	public static void setAlarm(Context context, int day, int hour, int minute, String alarmName, boolean repeat){
 		
-		GregorianCalendar now = new GregorianCalendar();
+		//GregorianCalendar now = new GregorianCalendar();
 		//set alarm to hour:minute
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());

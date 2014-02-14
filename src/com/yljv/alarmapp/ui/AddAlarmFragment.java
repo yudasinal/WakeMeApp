@@ -25,10 +25,16 @@ import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class AddAlarmFragment extends Fragment implements OnTimeChangedListener, OnClickListener {
 	
 	public final static String ALARM_NAME = "com.yljv.alarmapp.ALARM_NAME";
+	private String chosenRingtone;
+	public int changedHour;
+	public int changedMinute;
+	public int currentDay;
+	public boolean repeatAlarm = false;
 
 	TimePicker timePicker;
 	EditText alarmName;
@@ -42,10 +48,10 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	CheckBox checkbox_sun;
 	Button saveButton;
 	Button ringtoneButton;
-	private String chosenRingtone;
 	TextView monday;
 	TextView tuesday;
 	TextView wednesday;
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,12 +129,15 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 
 	    then.set(Calendar.HOUR_OF_DAY, hourOfDay);
 	    then.set(Calendar.MINUTE, minute);
+	    changedHour = view.getCurrentHour();
+	    changedMinute = view.getCurrentMinute();
+	    currentDay = then.get(Calendar.DAY_OF_WEEK);
 	  }
 	
 	/*public void onTimeSet(TimePicker view, int hourOfDat, int minute) {
 		getTime();
 	}
-	*/
+	
 
 	private void getTime() {
 		//TODO Parse
@@ -144,8 +153,9 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 			if (checkMon == true) {
 				alarm();
 			}
+		}
 		*/
-	}
+	
 	
 
 	@Override
@@ -168,30 +178,29 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		// TODO Auto-generated method stub
 		String nameAlarm = alarmName.getText().toString();
 		Fragment newContent = new MyAlarmListFragment();
+		Bundle data = new Bundle();
+		data.putString(ALARM_NAME,nameAlarm);
+		newContent.setArguments(data);
+		MyAlarmManager.setAlarm(getActivity(), currentDay, changedHour, changedMinute, nameAlarm, repeatAlarm);
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);
 		} 
-		Bundle data = new Bundle();
-		data.putString(ALARM_NAME,nameAlarm);
-		newContent.setArguments(data);
+		
 	}
 	
 	
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
-	     if (resultCode == Activity.RESULT_OK && requestCode == 5)
-	     {
+	     if (resultCode == Activity.RESULT_OK && requestCode == 5) {
 	          Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
-	          if (uri != null)
-	          {
+	          if (uri != null) {
 	              this.chosenRingtone = uri.toString();
 	              Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), uri);
 	              ringtoneButton.setText(ringtone.getTitle(getActivity()));
 	          }
-	          else
-	          {
+	          else {
 	              this.chosenRingtone = null;
 	          }
 	      }            

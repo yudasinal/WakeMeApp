@@ -55,6 +55,23 @@ public class MenuMainActivity extends BaseActivity {
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
 		
+		// initialize Parse
+				Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
+						"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
+				ParseAnalytics.trackAppOpened(getIntent());
+
+				// register ParseObject Subclasses
+				ParseObject.registerSubclass(Alarm.class);
+
+				// enable Push Notifications
+				PushService.setDefaultPushCallback(this, MenuMainActivity.class);
+				ParseAnalytics.trackAppOpened(getIntent());
+				
+				// initialize Settings
+				ApplicationSettings.setSharedPreferences(this);
+				ApplicationSettings.preferences = this.getSharedPreferences(
+						"Preferences", this.MODE_APPEND);
+		
 	}
 
 	@Override
