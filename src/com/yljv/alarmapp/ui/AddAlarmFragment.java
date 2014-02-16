@@ -23,11 +23,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class AddAlarmFragment extends Fragment implements OnTimeChangedListener, OnClickListener {
+public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedListener, OnClickListener {
 	
 	public final static String ALARM_NAME = "com.yljv.alarmapp.ALARM_NAME";
 	private String chosenRingtone;
@@ -46,7 +50,6 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	CheckBox checkbox_fri;
 	CheckBox checkbox_sat;
 	CheckBox checkbox_sun;
-	Button saveButton;
 	Button ringtoneButton;
 	TextView monday;
 	TextView tuesday;
@@ -114,8 +117,6 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sun);	
 		*/
 		timePicker.setOnTimeChangedListener(this);
-		saveButton = (Button) view.findViewById(R.id.save_button);
-		saveButton.setOnClickListener(this);
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
 		ringtoneButton.setOnClickListener(this);
@@ -167,11 +168,7 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
 				this.startActivityForResult(intent, 5);
-				break;
-			case R.id.save_button:
-				saveAlarm();
-				break;
-		};
+		}
 	}
 
 	private void saveAlarm() {
@@ -189,7 +186,6 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 		
 	}
 	
-	
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
 	     if (resultCode == Activity.RESULT_OK && requestCode == 5) {
@@ -205,4 +201,34 @@ public class AddAlarmFragment extends Fragment implements OnTimeChangedListener,
 	          }
 	      }            
 	  }
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main, menu);
+		//menu.findItem(R.id.add_alarm).setVisible(true);
+		//menu.findItem(R.id.cancel_alarm).setVisible(true);	
+		menu.findItem(R.id.cancel_alarm).setEnabled(true);
+		menu.findItem(R.id.add_alarm).setEnabled(false);
+		menu.findItem(R.id.add_alarm).setVisible(false);
+		menu.findItem(R.id.save_alarm).setEnabled(true);
+
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.save_alarm:
+			saveAlarm();
+			break;
+		case R.id.cancel_alarm:
+			getFragmentManager().popBackStackImmediate();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

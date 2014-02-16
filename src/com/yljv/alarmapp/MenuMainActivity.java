@@ -1,6 +1,5 @@
 package com.yljv.alarmapp;
 
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.parse.Parse;
@@ -54,7 +53,7 @@ public class MenuMainActivity extends BaseActivity {
 
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-		
+		/*
 		// initialize Parse
 				Parse.initialize(this, "Xhd6iekMpDunfKFfbUxGaAORtC0TwkQ9jYGJHqc4",
 						"P7d6CWqkG26FcB6tCXIchuiSFOMwpj1WmfnNGISL");
@@ -70,8 +69,8 @@ public class MenuMainActivity extends BaseActivity {
 				// initialize Settings
 				ApplicationSettings.setSharedPreferences(this);
 				ApplicationSettings.preferences = this.getSharedPreferences(
-						"Preferences", this.MODE_APPEND);
-		
+						"Preferences", this.MODE_APPEND);	
+						*/
 	}
 
 	@Override
@@ -83,7 +82,8 @@ public class MenuMainActivity extends BaseActivity {
 	public void switchContent(Fragment fragment) {
 		mainView = fragment;
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, fragment).commit();
+				.replace(R.id.content_frame, fragment)
+				.addToBackStack(null).commit();
 		getSlidingMenu().showContent();
 		this.invalidateOptionsMenu();
 	}

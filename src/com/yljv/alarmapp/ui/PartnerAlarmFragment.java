@@ -53,12 +53,6 @@ public class PartnerAlarmFragment extends Fragment {
 		
 		//Button on action bar to add a photo
 		
-		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-			super.onCreateOptionsMenu(menu, inflater);
-		    menu.clear();
-		}
-			
 
 }
 

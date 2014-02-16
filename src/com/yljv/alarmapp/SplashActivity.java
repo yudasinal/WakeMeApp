@@ -28,15 +28,13 @@ import com.yljv.alarmapp.parse.database.ParseRegisterListener;
  * very first screen to see after opening the app
  * disappears after a few seconds
  */
-public class SplashActivity extends Activity implements ParsePartnerListener, ParseRegisterListener {
+public class SplashActivity extends Activity {
 
-	ParsePartnerListener list;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		list = this;
 		
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
@@ -76,35 +74,6 @@ public class SplashActivity extends Activity implements ParsePartnerListener, Pa
 	public void cont() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		this.startActivity(intent);
-	}
-
-	@Override
-	public void onPartnerFound() {
-		
-	}
-
-	@Override
-	public void onPartnerNotExisting() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onPartnerQueryError(Exception e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onRegisterSuccess() {
-		// TODO Auto-generated method stub
-		Log.i("WakeMeApp", "registered");
-	}
-
-	@Override
-	public void onRegisterFail(ParseException e) {
-		// TODO Auto-generated method stub
-		Log.i("WakeMeApp", "not registered");
 	}
 
 }
