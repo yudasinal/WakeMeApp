@@ -17,10 +17,11 @@ import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.yljv.alarmapp.WakeUpActivity;
 import com.yljv.alarmapp.helper.AccountManager;
+import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.helper.MyBootReceiver;
 
 /*
@@ -92,6 +93,10 @@ public class MyAlarmManager {
 		//Create new Alarm on server
 		Alarm alarm = new Alarm(alarmName, cal.getTime());
 		alarm.saveEventually();
+		ParsePush push = new ParsePush();
+		push.setChannel(AccountManager.getUserChannel());
+		push.setMessage("Hey, I just set a new Alarm!");
+		push.sendInBackground();
 		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		
 		//enable BootReceiver

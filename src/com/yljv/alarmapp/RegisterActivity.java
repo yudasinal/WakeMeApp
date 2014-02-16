@@ -100,6 +100,7 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 			focusView = editEmail;
 			cancel = true; 
 		}
+		/*
 		if (TextUtils.isEmpty(firstName)) {
 			editFirstName.setError("This field is required");
 			focusView = editFirstName;
@@ -114,14 +115,14 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 			checkFemale.setError("The box has to be checked");
 			focusView = checkFemale;
 			cancel = true;
-		} 
+		} */
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
 		}
 		else {
-			AccountManager.register(this, email, firstName, lastName, password, female);
+			AccountManager.register(this, email, password);
 		}
 	}
 	

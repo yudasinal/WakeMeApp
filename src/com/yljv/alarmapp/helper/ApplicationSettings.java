@@ -13,16 +13,34 @@ public class ApplicationSettings {
 	
 	public static SharedPreferences preferences;
 	
+	
+
+	public static void setSharedPreferences(Context context) {
+		// TODO Auto-generated method stub
+		preferences = context.getSharedPreferences("preferences", Context.MODE_MULTI_PROCESS);
+	}
+	
 	public static int getAlarmId(){
 		int id = preferences.getInt("counter", 0);
 		preferences.edit().putInt("counter", id+1).commit();
 		return id+1;
 	}
 	
-
-	public static void setSharedPreferences(Context context) {
-		// TODO Auto-generated method stub
-		preferences = context.getSharedPreferences("preferences", Context.MODE_MULTI_PROCESS);
+	
+	public static void setPartner(String partnerEmail){
+		preferences.edit().putString("partner", partnerEmail);
+	}
+	
+	public static void setUser(String userEmail){
+		preferences.edit().putString("user", userEmail);
+	}
+	
+	public static String getUser(){
+		return preferences.getString("user", "");
+	}
+	
+	public static String getPartner(){
+		return preferences.getString("partner", "");
 	}
 	
 

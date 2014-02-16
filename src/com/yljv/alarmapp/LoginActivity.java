@@ -4,16 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.PushService;
 import com.yljv.alarmapp.helper.AccountManager;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.ParseLoginListener;
+import com.yljv.alarmapp.parse.database.ParsePartnerListener;
 
-public class LoginActivity extends Activity implements OnClickListener, ParseLoginListener  {
+public class LoginActivity extends Activity implements OnClickListener, ParseLoginListener, ParsePartnerListener  {
 	
 	EditText editPassword;
 	EditText editEmail;
@@ -85,9 +90,10 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	
 	@Override
 	public void onLoginSuccessful() {
-		// TODO Auto-generated method stub
+		PushService.subscribe(this, AccountManager.getPartnerChannel(), MenuMainActivity.class);
 		Intent intent = new Intent (this, MenuMainActivity.class);
 		startActivity(intent);
+		
 	}
 
 	@Override
@@ -102,6 +108,26 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	public void backSplash() {
 		Intent intent = new Intent(this, ChoiceActivity.class);
 		startActivity(intent);	
+	}
+
+	@Override
+	public void onPartnerFound() {
+		// TODO Auto-generated method stub
+		Log.i("WakeMeApp", "partner found");
+		
+	}
+
+	@Override
+	public void onPartnerNotExisting() {
+		// TODO Auto-generated method stub
+		Log.i("WakeMeApp", "partner not found");
+	}
+
+	@Override
+	public void onPartnerQueryError(Exception e) {
+		// TODO Auto-generated method stub
+		Log.i("WakeMeApp", "partner error");
+		
 	}
 
 	
