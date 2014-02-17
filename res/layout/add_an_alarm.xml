@@ -1,160 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
-	    <TextView 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="Name"/>
-	</TableRow>
-	<TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
-	    <EditText
-	        android:id="@+id/alarm_name"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"/>
-	</TableRow>
-	<TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
-	    <TimePicker
-	        android:id="@+id/timePicker"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-	</TableRow>
-	<TableRow
-	    android:id="@+id/tableRow4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
-	    <TextView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="Days"/>	     
-	</TableRow>
-	<TableRow
-        android:id="@+id/tableRow7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-	    <TextView
-	        android:id = "@+id/mon"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="M "/>
-	    <TextView
-	        android:id = "@+id/tue"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="T "/>
-	    <TextView
-	        android:id = "@+id/wed"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="W "/>
-	    <TextView
-	        android:id = "@+id/thu"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="T "/>
-	    <TextView
-	        android:id = "@+id/fri"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="F "/>
-	    <TextView
-	        android:id = "@+id/sat"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="S "/>
-	    <TextView
-	        android:id = "@+id/sun"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="S "/>
-	</TableRow>
-	    
-	<!--  
-	<TableRow
-        android:id="@+id/tableRow4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-	    <CheckBox android:id="@+id/checkbox_mon"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="M"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	    <CheckBox android:id="@+id/checkbox_tue"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="T"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	    <CheckBox android:id="@+id/checkbox_wed"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="W"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	    <CheckBox android:id="@+id/checkbox_thu"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="T"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	    <CheckBox android:id="@+id/checkbox_fri"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="F"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	    <CheckBox android:id="@+id/checkbox_sat"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="S"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	    <CheckBox android:id="@+id/checkbox_sun"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="S"
-	        android:onClick="onCheckboxClicked"
-	        android:orientation="horizontal"/>
-	</TableRow>
-	-->
-	
-	<TableRow>
-	    <TextView 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="Volume"/>
-	</TableRow>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-	<SeekBar
-	    android:id="@+id/volume"
+	<TableLayout 
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" />
-
-	<TableRow>
-	</TableRow>
+	    android:layout_height="match_parent">
+	   
+		<TableRow
+	        android:id="@+id/tableRow2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:layout_marginBottom="20dp" >
+		    <EditText
+		        android:id="@+id/alarm_name"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="30dp"
+		        android:hint="Alarm name"/>
+		</TableRow>
+		<TableRow
+	        android:id="@+id/tableRow3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:layout_marginBottom="20dp" >
+		    <TimePicker
+		        android:id="@+id/timePicker"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+		</TableRow>
 	
-	<Button
-	    android:id="@+id/ringtone_button"
-	    android:layout_width = "wrap_content"
-	    android:layout_height = "wrap_content">
-	</Button>
-	
+		<LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:layout_marginBottom="30dp"
+	        android:textSize="62dp" >
+		    <TextView
+		        android:id = "@+id/mon"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="M "/>
+		    <TextView
+		        android:id = "@+id/tue"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="T "/>
+		    <TextView
+		        android:id = "@+id/wed"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="W "/>
+		    <TextView
+		        android:id = "@+id/thu"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="T "/>
+		    <TextView
+		        android:id = "@+id/fri"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="F "/>
+		    <TextView
+		        android:id = "@+id/sat"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="S "/>
+		    <TextView
+		        android:id = "@+id/sun"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="10dp"
+		        android:text="S "/>
+		</LinearLayout>
+		 
+		<SeekBar
+		    android:id="@+id/volume"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom = "15dp" />
+		<Button
+		    android:id="@+id/ringtone_button"
+		    android:layout_width = "wrap_content"
+		    android:layout_height = "wrap_content">
+		</Button>
+		
+		<LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal" >
 
-</TableLayout>
+        <Button
+            android:id="@+id/set_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set" />
+
+        <Button
+            android:id="@+id/cancel_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+    </LinearLayout>
+	
+	</TableLayout>
+	
+</LinearLayout>

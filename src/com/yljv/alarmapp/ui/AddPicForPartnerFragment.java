@@ -2,6 +2,7 @@ package com.yljv.alarmapp.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
@@ -29,7 +31,9 @@ import com.yljv.alarmapp.R;
 public class AddPicForPartnerFragment extends SherlockFragment implements OnClickListener, OnItemClickListener {
 	
 	public static final String MESSAGE_FOR_ALARM = "com.yljv.alarmapp.MESSAGE_FOR_ALARM";
+	public static String picturePath;
 	
+	Button previewButton;
 	ImageView addPicture;
 	EditText addMessage;
 	ListPopupWindow listPopupWindow;
@@ -70,10 +74,12 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.add_for_partner, container, false);
+		previewButton = (Button) view.findViewById(R.id.preview);
 		addPicture = (ImageView) view.findViewById(R.id.add_picture);
 		addMessage = (EditText) view.findViewById(R.id.add_message);
 		addPicture.isClickable();
 		addPicture.setOnClickListener(this);
+		previewButton.setOnClickListener(this);
 		listPopupWindow = new ListPopupWindow(this.getActivity());
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.popup_layout, picOption);
 		listPopupWindow.setAdapter(arrayAdapter);
@@ -90,8 +96,18 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		listPopupWindow.show();
+		switch(v.getId()) {
+		case R.id.add_picture:
+			listPopupWindow.show();
+			break;
+		case R.id.preview:
+			Fragment newContent = new PreviewPictureFragment();
+			if (getActivity() instanceof MenuMainActivity) {
+				MenuMainActivity mma = (MenuMainActivity) getActivity();
+				mma.switchContent(newContent);
+			} 
+			break;
+		}
 	}
 
 
@@ -145,7 +161,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			cursor.moveToFirst();
 			
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
+			picturePath = cursor.getString(columnIndex);
 			cursor.close();
 			
 			addPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath));

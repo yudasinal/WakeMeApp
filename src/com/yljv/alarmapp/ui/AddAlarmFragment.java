@@ -43,17 +43,12 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	TimePicker timePicker;
 	EditText alarmName;
 	SeekBar volume;
-	CheckBox checkbox_mon;
-	CheckBox checkbox_tue;
-	CheckBox checkbox_wed;
-	CheckBox checkbox_thu;
-	CheckBox checkbox_fri;
-	CheckBox checkbox_sat;
-	CheckBox checkbox_sun;
 	Button ringtoneButton;
 	TextView monday;
 	TextView tuesday;
 	TextView wednesday;
+	Button setAlarm;
+	Button cancelAlarm;
 	
 	
 	@Override
@@ -61,6 +56,10 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+		setAlarm = (Button) view.findViewById(R.id.set_alarm);
+		cancelAlarm = (Button) view.findViewById(R.id.cancel_alarm);
+		setAlarm.setOnClickListener(this);
+		cancelAlarm.setOnClickListener(this);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
 		monday = (TextView) view.findViewById(R.id.mon);
 		monday.setOnTouchListener(new View.OnTouchListener() {
@@ -68,10 +67,22 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-                    monday.setTextColor(Color.BLUE);
-                    break;
+				boolean scheduled = false;
+				if(!scheduled){
+					switch(event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+	                    monday.setTextColor(Color.BLUE);
+	                    scheduled = true;
+	                    break;
+					}
+				}
+				else{
+					switch(event.getAction()) {
+					case MotionEvent.ACTION_UP:
+	                    monday.setTextColor(Color.BLACK);
+	                    scheduled = true;
+	                    break;
+					}
 				}
 				return false;
 			}
@@ -82,9 +93,11 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
+				boolean scheduled  = false;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
                     tuesday.setTextColor(Color.BLUE);
+                    scheduled = true;
                     break;
 				}
 				return false;
@@ -96,26 +109,16 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
+				boolean scheduled = true;
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
                     wednesday.setTextColor(Color.BLUE);
-                    
+                    scheduled = true;
                     break;
-				case MotionEvent.ACTION_POINTER_INDEX_MASK:
-					wednesday.setTextColor(Color.BLACK);
 				}
 				return false;
 			}
 		});
-		/*
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_mon);
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_tue);
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_wed);
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_thu);
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_fri);
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sat);
-		checkbox_mon = (CheckBox) view.findViewById(R.id.checkbox_sun);	
-		*/
 		timePicker.setOnTimeChangedListener(this);
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
@@ -134,30 +137,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	    changedMinute = view.getCurrentMinute();
 	    currentDay = then.get(Calendar.DAY_OF_WEEK);
 	  }
-	
-	/*public void onTimeSet(TimePicker view, int hourOfDat, int minute) {
-		getTime();
-	}
-	
-
-	private void getTime() {
-		//TODO Parse
-		/*timePicker.getMinute();
-		timePicker.getHour();
-		Boolean checkMon = checkbox_mon.isActivated();
-		Boolean checkTue = checkbox_tue.isActivated();
-		Boolean checkWed = checkbox_wed.isActivated();
-		Boolean checkThu = checkbox_thu.isActivated();
-		Boolean checkFri = checkbox_fri.isActivated();
-		Boolean checkSat = checkbox_sat.isActivated();
-		Boolean checkSun = checkbox_sun.isActivated();
-			if (checkMon == true) {
-				alarm();
-			}
-		}
-		*/
-	
-	
+		
 
 	@Override
 	public void onClick(View v) {
@@ -168,6 +148,13 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
 				this.startActivityForResult(intent, 5);
+				break;
+			case R.id.cancel_alarm:
+				getFragmentManager().popBackStackImmediate();
+				break;
+			case R.id.set_alarm:
+				saveAlarm();
+				break;
 		}
 	}
 
@@ -202,6 +189,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	      }            
 	  }
 	
+	/*
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -231,4 +219,5 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	*/
 }

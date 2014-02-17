@@ -3,5 +3,6 @@
     <string-array name="photo_options">
         <item>Take a photo</item>
         <item>Choose a photo from the gallery</item>
+        <item />
     </string-array>
 </resources>
