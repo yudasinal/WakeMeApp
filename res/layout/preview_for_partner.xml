@@ -5,25 +5,23 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/add_picture"
+        android:id="@+id/my_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src = "@drawable/ic_launcher"
         android:clickable = "true" />
 
-    <EditText
-        android:id="@+id/add_message"
+    <TextView
+        android:id="@+id/my_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
-        
+        android:layout_marginLeft="10dip" 
+        android:layout_marginRight="10dip" 
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="5dip"
+        android:ems="10" 
+        android:maxWidth="250dip">
         <requestFocus />
-    </EditText>
-    
-    <Button 
-        android:id="@+id/preview"
-        android:layout_width = "wrap_content"
-        android:layout_height="wrap_content"
-        android:text = "Preview"/>
+    </TextView>
 
 </LinearLayout>
