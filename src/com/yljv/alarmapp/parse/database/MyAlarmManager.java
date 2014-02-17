@@ -96,6 +96,7 @@ public class MyAlarmManager {
 		ParsePush push = new ParsePush();
 		push.setChannel(AccountManager.getUserChannel());
 		push.setMessage("Hey, I just set a new Alarm!");
+		push.setExpirationTime(cal.getTimeInMillis());
 		push.sendInBackground();
 		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		
