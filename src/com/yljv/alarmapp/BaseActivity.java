@@ -40,7 +40,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setIcon(R.drawable.ic_launcher);
+		getSupportActionBar().setIcon(R.drawable.launchericon_googleplay);
 	}
 	
 	@Override	

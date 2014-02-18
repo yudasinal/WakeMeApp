@@ -125,6 +125,13 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		ringtoneButton.setOnClickListener(this);
 		return view;
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+        getActivity().getActionBar().setTitle("Set an alarm");
+       
+	}
 
 	@Override
 	public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -144,15 +151,15 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		switch (v.getId()) {
 			case R.id.ringtone_button:
 				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
 				this.startActivityForResult(intent, 5);
 				break;
-			case R.id.cancel_alarm:
+			case R.id.set_alarm:
 				getFragmentManager().popBackStackImmediate();
 				break;
-			case R.id.set_alarm:
+			case R.id.cancel_alarm:
 				saveAlarm();
 				break;
 		}
