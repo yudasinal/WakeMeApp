@@ -59,8 +59,6 @@ public class SplashActivity extends Activity {
 		ApplicationSettings.preferences = this.getSharedPreferences(
 				"Preferences", this.MODE_APPEND);
 
-		ArrayList<Alarm> list = MyAlarmManager.getAllAlarms();
-		ArrayList<Alarm> list2 = list;
 		
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -73,7 +71,7 @@ public class SplashActivity extends Activity {
 	}
 
 	public void cont() {
-		Intent intent = new Intent(this, LoginActivity.class);
+		Intent intent = new Intent(this, MenuMainActivity.class);
 		this.startActivity(intent);
 	}
 
