@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#fff963">
 
 	<TableLayout 
 	    android:layout_width="match_parent"
@@ -13,21 +14,26 @@
 	        android:id="@+id/tableRow2"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:gravity="center_horizontal"
-	        android:layout_marginBottom="20dp" >
+	        android:gravity="center_horizontal" >
 		    <EditText
 		        android:id="@+id/alarm_name"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_width="280dp"
+		        android:layout_height="48dp"
 		        android:layout_marginTop="30dp"
-		        android:hint="Alarm name"/>
+		        android:background="@drawable/my_edit_text"
+		        android:hint="alarm name"
+		        android:drawablePadding="10dp"
+		        android:drawableLeft="@drawable/clock"
+		        android:textSize="20sp"
+		        android:textColor="#ff4040"
+		        android:paddingLeft="10dp"
+		        android:textCursorDrawable="@null"/>
 		</TableRow>
 		<TableRow
 	        android:id="@+id/tableRow3"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:gravity="center_horizontal"
-	        android:layout_marginBottom="20dp" >
+	        android:gravity="center_horizontal" >
 		    <TimePicker
 		        android:id="@+id/timePicker"
 		        android:layout_width="wrap_content"
@@ -38,57 +44,75 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="center_horizontal"
-	        android:layout_marginBottom="30dp"
+	        android:layout_marginBottom="15dp"
 	        android:textSize="62dp" >
 		    <TextView
 		        android:id = "@+id/mon"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:layout_marginRight="20dp"
+		        android:textSize="20sp"
 		        android:text="M "/>
 		    <TextView
 		        android:id = "@+id/tue"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:textSize="20sp"
+		        android:layout_marginRight="20dp"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/wed"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:textSize="20sp"
+		        android:layout_marginRight="20dp"
 		        android:text="W "/>
 		    <TextView
 		        android:id = "@+id/thu"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:textSize="20sp"
+		        android:layout_marginRight="20dp"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/fri"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:textSize="20sp"
+		        android:layout_marginRight="20dp"
 		        android:text="F "/>
 		    <TextView
 		        android:id = "@+id/sat"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:textSize="20sp"
+		        android:layout_marginRight="20dp"
 		        android:text="S "/>
 		    <TextView
 		        android:id = "@+id/sun"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="10dp"
+		        android:textSize="20sp"
 		        android:text="S "/>
 		</LinearLayout>
-		 
+		
+		<TableRow
+	        android:id="@+id/tableRow3"
+	        android:gravity="center_horizontal"
+	        android:layout_marginBottom="10dp" >
+		    <ImageView
+		        android:id="@+id/volumeIcon"
+		        android:src="@drawable/volume" />
+		</TableRow>
+
 		<SeekBar
 		    android:id="@+id/volume"
-		    android:layout_width="match_parent"
+		    android:layout_width="280dp"
 		    android:layout_height="wrap_content"
-		    android:layout_marginBottom = "15dp" />
+		    android:layout_marginBottom="15dp"
+		    android:progressDrawable="@drawable/progress"
+		    android:thumb="@drawable/thumb" />
+
 		<Button
 		    android:id="@+id/ringtone_button"
 		    android:layout_width = "wrap_content"
@@ -102,15 +126,21 @@
 
         <Button
             android:id="@+id/set_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Set" />
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:background="@drawable/my_cancel_button"
+            android:layout_marginRight="3dp"
+            android:textColor="#ff4040"
+            android:text="Cancel" />
 
         <Button
             android:id="@+id/cancel_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel" />
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+		    android:background="@drawable/my_cancel_button"
+		    android:layout_marginLeft="3dp"
+            android:textColor="#ff4040"
+            android:text="Set" />
 
     </LinearLayout>
 	

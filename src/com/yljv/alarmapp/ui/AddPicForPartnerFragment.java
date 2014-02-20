@@ -101,7 +101,11 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			listPopupWindow.show();
 			break;
 		case R.id.preview:
+			String myMessage = addMessage.getText().toString();
+			Bundle data = new Bundle();
+			data.putString(MESSAGE_FOR_ALARM, myMessage);
 			Fragment newContent = new PreviewPictureFragment();
+			newContent.setArguments(data);
 			if (getActivity() instanceof MenuMainActivity) {
 				MenuMainActivity mma = (MenuMainActivity) getActivity();
 				mma.switchContent(newContent);
