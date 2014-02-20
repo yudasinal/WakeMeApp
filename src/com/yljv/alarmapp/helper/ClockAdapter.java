@@ -13,12 +13,11 @@ import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class ClockAdapter extends ArrayAdapter<String> {
+public class ClockAdapter extends ArrayAdapter<Alarm> {
 	
 	public ClockAdapter(Context context) {
-		super(context, R.layout.alarm_item, new ArrayList<String>());
-		this.addAll(MyAlarmManager.getAllAlarmString());
-		
+		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
+		this.addAll(MyAlarmManager.getAllAlarms());
 	}
 	
 	@Override
@@ -26,15 +25,19 @@ public class ClockAdapter extends ArrayAdapter<String> {
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.alarm_item, parent, false);
 		TextView textView = (TextView) rowView.findViewById(R.id.my_text);
-		String item = (String) getItem(position);
-		textView.setText(item);
-/*		String text = item.getName();
-		textView.setText(text); 
-		
 		TextView timeView = (TextView) rowView.findViewById(R.id.my_time);
-		Integer time = item.getTime();
-		timeView.setText(time);
-*/		
+		ArrayList<Alarm> myAlarms = MyAlarmManager.getAllMyAlarms();
+		if (myAlarms == null) {
+			textView.setText("Hello");
+			timeView.setText("Goodbye");
+		}
+		else if (myAlarms != null) {
+			Alarm myAlarm = myAlarms.get(position);
+			String text = myAlarm.getName();
+			String time = myAlarm.getAlarmTime();
+			timeView.setText(time);
+			textView.setText(text);
+		}
 				
 		return rowView;
 	}

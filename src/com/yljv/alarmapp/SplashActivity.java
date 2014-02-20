@@ -72,7 +72,7 @@ public class SplashActivity extends Activity {
 	}
 
 	public void cont() {
-		Intent intent = new Intent(this, LoginActivity.class);
+		Intent intent = new Intent(this, MenuMainActivity.class);
 		this.startActivity(intent);
 	}
 

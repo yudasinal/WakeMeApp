@@ -64,10 +64,26 @@ public class MyAlarmManager {
 		return alarm;
 	}
 	
+	public static ArrayList<Alarm> getAllAlarms() {
+
+		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
+	//commented out, until logged in
+			//query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.orderByAscending("time");
+		try {
+			myAlarms = (ArrayList<Alarm>) query.find();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			}
+		return myAlarms;
+	}
+	
+	/*
 	public static ArrayList<Alarm> getAllAlarms(){
 		retrieveAllMyAlarms();
 		return myAlarms;
 	}
+	*/
 	
 
 	public void setName(Alarm alarm, String name){
@@ -108,10 +124,6 @@ public class MyAlarmManager {
 		Log.d("MyAlarmManager", Integer.toString(alarm.getAlarmId()));
 		intent.putExtra("id", alarm.getAlarmId());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
-		
-		
-		
-		
 		//TODO: what happens when day is today and time has passed already?
 		
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), alarmIntent);
@@ -140,7 +152,7 @@ public class MyAlarmManager {
 		        	}
 		        } else {
 		        	//query failed
-		            //TODO what happens when Alarm retrievel failed
+		            //TODO what happens when Alarm retrieval failed
 		        }
 		    }
 		});
