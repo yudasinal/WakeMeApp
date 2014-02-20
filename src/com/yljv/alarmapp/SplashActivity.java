@@ -60,6 +60,9 @@ public class SplashActivity extends Activity {
 				"Preferences", this.MODE_APPEND);
 
 		
+		ArrayList<Alarm> list = MyAlarmManager.getAllAlarms();
+		
+		
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			public void run() {
