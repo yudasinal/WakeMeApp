@@ -63,8 +63,6 @@ public class MyAlarmManager {
 		//return myAlarms;
 		return alarm;
 	}
-	
-	
 	//TODO: check for owner
 	//should do work in background
 	/*
@@ -84,6 +82,7 @@ public class MyAlarmManager {
 		}
 		return myAlarms;
 	}
+
 	
 
 	public void setName(Alarm alarm, String name){
@@ -125,10 +124,6 @@ public class MyAlarmManager {
 		Log.d("MyAlarmManager", Integer.toString(alarm.getAlarmId()));
 		intent.putExtra("id", alarm.getAlarmId());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
-		
-		
-		
-		
 		//TODO: what happens when day is today and time has passed already?
 		
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), alarmIntent);
@@ -157,7 +152,7 @@ public class MyAlarmManager {
 		        	}
 		        } else {
 		        	//query failed
-		            //TODO what happens when Alarm retrievel failed
+		            //TODO what happens when Alarm retrieval failed
 		        }
 		    }
 		});

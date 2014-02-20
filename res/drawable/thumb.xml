@@ -8,9 +8,7 @@
         android:startColor="#E5492A" />
     
     <solid android:color="#ff4040" />
-    
-    <padding android:left="20dp" />
-    
+   
     
     <size
         android:height="20dp"

@@ -44,6 +44,26 @@ public class Alarm extends ParseObject{
 		return cal.get(Calendar.MINUTE);
 	}
 	
+	
+	/*
+	 *Prints the time of an alarm in appropriate format 
+	 *Ex.: 9:00 AM, 12:00 PM, etc 
+	 */
+	public String getAlarmTime() {
+		int myHour = this.getHour();
+		String myMinute = String.valueOf(this.getMinute());
+		if(this.getHour() > 12) {
+			myHour = myHour - 12;
+			String myHourString = String.valueOf(myHour);
+			String myTime = myHourString + ":" + myMinute + " " + "PM";
+			return myTime;
+		}
+		else {	
+			String myTime = String.valueOf(myHour) + ":" + myMinute + " " + "AM";;
+			return myTime;
+		}
+	}
+	
 	public Date getTimeAsDate(){
 		return (Date) this.get("time");
 	}

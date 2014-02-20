@@ -13,12 +13,11 @@ import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class ClockAdapter extends ArrayAdapter<String> {
-
+public class ClockAdapter extends ArrayAdapter<Alarm> {
+	
 	public ClockAdapter(Context context) {
-		super(context, R.layout.alarm_item, new ArrayList<String>());
-		this.addAll(MyAlarmManager.getAllAlarmString());
-
+		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
+		this.addAll(MyAlarmManager.getAllAlarms());
 	}
 
 	@Override
