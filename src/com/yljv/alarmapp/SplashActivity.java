@@ -1,5 +1,6 @@
 package com.yljv.alarmapp;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,20 +8,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.PushService;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.parse.database.Alarm;
-import com.yljv.alarmapp.parse.database.ParsePartnerListener;
-import com.yljv.alarmapp.parse.database.ParseRegisterListener;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 
 
@@ -61,6 +59,7 @@ public class SplashActivity extends Activity {
 		ApplicationSettings.preferences = this.getSharedPreferences(
 				"Preferences", this.MODE_APPEND);
 
+		
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			public void run() {

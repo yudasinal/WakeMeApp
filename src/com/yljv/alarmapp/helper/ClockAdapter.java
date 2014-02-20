@@ -26,7 +26,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		View rowView = inflater.inflate(R.layout.alarm_item, parent, false);
 		TextView textView = (TextView) rowView.findViewById(R.id.my_text);
 		TextView timeView = (TextView) rowView.findViewById(R.id.my_time);
-		ArrayList<Alarm> myAlarms = MyAlarmManager.getAllMyAlarms();
+		ArrayList<Alarm> myAlarms = MyAlarmManager.getAllAlarms();
 		if (myAlarms == null) {
 			textView.setText("Hello");
 			timeView.setText("Goodbye");

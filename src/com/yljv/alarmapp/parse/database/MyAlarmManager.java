@@ -63,27 +63,22 @@ public class MyAlarmManager {
 		//return myAlarms;
 		return alarm;
 	}
-	
-	public static ArrayList<Alarm> getAllAlarms() {
 
+	public static ArrayList<Alarm> getAllAlarms(){
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
-	//commented out, until logged in
-			//query.whereEqualTo("user", ParseUser.getCurrentUser());
+
+		//commented out, until logged in
+		//query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.orderByAscending("time");
 		try {
 			myAlarms = (ArrayList<Alarm>) query.find();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();			}
+			e.printStackTrace();
+		}
 		return myAlarms;
 	}
-	
-	/*
-	public static ArrayList<Alarm> getAllAlarms(){
-		retrieveAllMyAlarms();
-		return myAlarms;
-	}
-	*/
+
 	
 
 	public void setName(Alarm alarm, String name){
@@ -112,6 +107,7 @@ public class MyAlarmManager {
 		ParsePush push = new ParsePush();
 		push.setChannel(AccountManager.getUserChannel());
 		push.setMessage("Hey, I just set a new Alarm!");
+		push.setExpirationTime(cal.getTimeInMillis());
 		push.sendInBackground();
 		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		
@@ -139,7 +135,7 @@ public class MyAlarmManager {
 	}
 
 
-	public static void retrieveAllMyAlarms(){
+	private static void retrieveAllMyAlarms(){
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
 		query.orderByAscending("time");
 		query.findInBackground(new FindCallback<Alarm>() {
@@ -158,9 +154,6 @@ public class MyAlarmManager {
 		});
 	}
 	
-	public static ArrayList<Alarm> getAllMyAlarms(){
-		return myAlarms;
-	}
 	
 	public static void findAllPartnerAlarms(final ParsePartnerAlarmListener listener){
 		ParseUser partner = AccountManager.getPartner();
