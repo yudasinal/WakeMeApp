@@ -64,8 +64,21 @@ public class MyAlarmManager {
 		return alarm;
 	}
 	
+	
+	//TODO: check for owner
+	//should do work in background
 	public static ArrayList<Alarm> getAllAlarms(){
-		retrieveAllMyAlarms();
+		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
+
+		//commented out, until logged in
+		//query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.orderByAscending("time");
+		try {
+			myAlarms = (ArrayList<Alarm>) query.find();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return myAlarms;
 	}
 	
@@ -128,7 +141,7 @@ public class MyAlarmManager {
 	}
 
 
-	public static void retrieveAllMyAlarms(){
+	private static void retrieveAllMyAlarms(){
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
 		query.orderByAscending("time");
 		query.findInBackground(new FindCallback<Alarm>() {
@@ -147,9 +160,6 @@ public class MyAlarmManager {
 		});
 	}
 	
-	public static ArrayList<Alarm> getAllMyAlarms(){
-		return myAlarms;
-	}
 	
 	public static void findAllPartnerAlarms(final ParsePartnerAlarmListener listener){
 		ParseUser partner = AccountManager.getPartner();
