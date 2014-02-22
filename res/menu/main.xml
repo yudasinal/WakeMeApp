@@ -9,18 +9,11 @@
         android:titleCondensed = "Add"/>
 	
 	<item
-        android:id="@+id/save_alarm"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="Save alarm"
-        android:titleCondensed = "Save"/>
-	
-	<item
-        android:id="@+id/cancel_alarm"
+        android:id="@+id/delete_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="Cancel alarm"
-        android:titleCondensed = "Cancel"/>
+        android:titleCondensed = "Delete"/>
 
 </menu>
 
