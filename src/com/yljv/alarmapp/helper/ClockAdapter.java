@@ -22,24 +22,59 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.alarm_item, parent, false);
-		TextView textView = (TextView) rowView.findViewById(R.id.my_text);
-		TextView timeView = (TextView) rowView.findViewById(R.id.my_time);
-		ArrayList<Alarm> myAlarms = MyAlarmManager.getAllAlarms();
-		if (myAlarms == null) {
-			textView.setText("Hello");
-			timeView.setText("Goodbye");
+		View rowView = convertView;
+		ViewHolder holder;
+		ArrayList<Alarm> myAlarms;
+		
+		if(rowView == null) {
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+			rowView = inflater.inflate(R.layout.alarm_item, null);
+			holder = new ViewHolder();
+			holder.textView = (TextView) rowView.findViewById(R.id.my_text);
+			holder.timeView = (TextView) rowView.findViewById(R.id.my_time);
+			myAlarms = MyAlarmManager.getAllAlarms();
+			rowView.setTag(holder);
+			
+			if (myAlarms == null) {
+				ViewHolder myHolder = (ViewHolder)rowView.getTag();
+				myHolder.textView.setText("Hello");
+				myHolder.timeView.setText("Goodbye");
+			}
+			else if (myAlarms != null) {
+				ViewHolder myHolder = (ViewHolder)rowView.getTag();
+				Alarm myAlarm = myAlarms.get(position);
+				String text = myAlarm.getName();
+				String time = myAlarm.getAlarmTime();
+				myHolder.timeView.setText(time);
+				myHolder.textView.setText(text);
+			}
 		}
-		else if (myAlarms != null) {
-			Alarm myAlarm = myAlarms.get(position);
-			String text = myAlarm.getName();
-			String time = myAlarm.getAlarmTime();
-			timeView.setText(time);
-			textView.setText(text);
+		else {
+			holder = (ViewHolder) rowView.getTag();
 		}
-				
 		return rowView;
+	}
+	
+	static class ViewHolder {
+		TextView textView;
+		TextView timeView;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

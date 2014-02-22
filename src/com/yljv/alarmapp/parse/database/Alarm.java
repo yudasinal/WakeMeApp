@@ -51,18 +51,54 @@ public class Alarm extends ParseObject{
 	 */
 	public String getAlarmTime() {
 		int myHour = this.getHour();
-		String myMinute = String.valueOf(this.getMinute());
-		if(this.getHour() > 12) {
-			myHour = myHour - 12;
-			String myHourString = String.valueOf(myHour);
-			String myTime = myHourString + ":" + myMinute + " " + "PM";
-			return myTime;
-		}
-		else {	
-			String myTime = String.valueOf(myHour) + ":" + myMinute + " " + "AM";;
-			return myTime;
-		}
+		int myMinute = this.getMinute();
+		String myAlarmTime = verifyTime(myHour, myMinute);
+		return myAlarmTime;
 	}
+	
+	private String verifyTime(int hour, int minute) {
+		String myTime = new String();
+		String myHourString = String.valueOf(hour);
+		String myMinuteString = String.valueOf(minute);
+		int lengthMinute = myMinuteString.length();
+		if (hour == 12) {
+			if(lengthMinute == 1) {
+				myTime = myHourString + ":0" + myMinuteString + " " + "PM";
+			}
+			else {
+				myTime = myHourString + ":" + myMinuteString + " " + "PM";
+			}
+		}
+
+		else if(hour == 0) {
+			if(lengthMinute == 1) {
+				myTime = "12" + ":0" + myMinuteString + " " + "AM";
+			}
+			else {
+				myTime = "12" + ":" + myMinuteString + " " + "AM";
+			}
+		}
+		else {
+			Calendar cal = Calendar.getInstance();
+			if (cal.get(Calendar.AM_PM) == Calendar.AM) {
+				if(lengthMinute == 1) {
+					myTime = myHourString + ":0" + myMinuteString + " " + "AM";
+				}
+				else {
+					myTime = myHourString + ":" + myMinuteString + " " + "AM,";
+				}
+			}
+		    else if (cal.get(Calendar.AM_PM) == Calendar.PM)
+				if(lengthMinute == 1) {
+					myTime = myHourString + ":0" + myMinuteString + " " + "PM";
+				}
+				else {
+					myTime = myHourString + ":" + myMinuteString + " " + "PM";
+				}
+		}
+		return myTime;	
+	}
+
 	
 	public Date getTimeAsDate(){
 		return (Date) this.get("time");

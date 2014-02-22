@@ -66,9 +66,8 @@ public class MyAlarmManager {
 
 	public static ArrayList<Alarm> getAllAlarms(){
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
-
 		//commented out, until logged in
-		//query.whereEqualTo("user", ParseUser.getCurrentUser());
+		query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.orderByAscending("time");
 		try {
 			myAlarms = (ArrayList<Alarm>) query.find();
