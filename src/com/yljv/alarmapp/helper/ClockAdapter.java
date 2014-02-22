@@ -19,7 +19,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
 		this.addAll(MyAlarmManager.getAllAlarms());
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View rowView = convertView;

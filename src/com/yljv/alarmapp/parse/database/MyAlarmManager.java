@@ -63,7 +63,11 @@ public class MyAlarmManager {
 		//return myAlarms;
 		return alarm;
 	}
-
+	//TODO: check for owner
+	//should do work in background
+	/*
+	 * shoudn't get alarms from server, they should be saved on the phone
+	 */
 	public static ArrayList<Alarm> getAllAlarms(){
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
 		//commented out, until logged in
