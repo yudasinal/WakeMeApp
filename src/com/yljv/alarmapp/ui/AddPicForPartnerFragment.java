@@ -60,7 +60,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			getFragmentManager().popBackStackImmediate();
 			break;
 		//Save button has to be a preview button
-		case R.id.save_alarm: 
+		case R.id.delete_alarm: 
 			Fragment newFragment = new PreviewPictureFragment();
 			if(getActivity() instanceof MenuMainActivity) {
 				MenuMainActivity mma = new MenuMainActivity();

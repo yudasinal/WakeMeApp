@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-    
-	<stroke
-		android:color="@android:color/transparent" />
-	
-	<solid android:color="@android:color/white" />
-	
-	<item android:state_pressed="true"
-        android:color="#ff4040" /> 
-	
 
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item android:state_pressed="true" >
+	    <shape>
+			<stroke
+				android:color="@android:color/transparent" />
+		
+			<solid android:color="#ffecec" />
+		</shape>
+	    
+	</item>
+    <item> 
+		<shape>
+			<stroke
+				android:color="@android:color/transparent" />
+		
+			<solid android:color="@android:color/white" />
+		</shape>
+	</item>
+	    
+</selector>

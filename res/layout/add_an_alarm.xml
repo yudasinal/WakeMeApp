@@ -140,7 +140,7 @@
 		    android:background="@drawable/my_cancel_button"
 		    android:layout_marginLeft="3dp"
             android:textColor="#ff4040"
-            android:text="Set" />
+            android:text="Save" />
 
     </LinearLayout>
 	
