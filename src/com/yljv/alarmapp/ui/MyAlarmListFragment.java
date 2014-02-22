@@ -2,6 +2,7 @@ package com.yljv.alarmapp.ui;
 
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -36,23 +37,26 @@ public class MyAlarmListFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActionBar myBar = getActivity().getActionBar();
+		myBar.setTitle("My Alarms");
 		setHasOptionsMenu(true);
 	}
 	
-	public void onPrepareOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
-		//menu.findItem(R.id.add_alarm).setVisible(true);
-		//menu.findItem(R.id.cancel_alarm).setVisible(true);	
-		menu.findItem(R.id.cancel_alarm).setEnabled(true);
-		menu.findItem(R.id.add_alarm).setEnabled(true);
-		menu.findItem(R.id.save_alarm).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-		menu.findItem(R.id.save_alarm).setVisible(false);
-		getActivity().invalidateOptionsMenu();
+    MenuItem mDynamicMenuItem;
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		mDynamicMenuItem.setVisible(false);
+		
 
 	}
 	
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		mDynamicMenuItem = menu.findItem(R.id.save_alarm);
 		inflater.inflate(R.menu.main, menu);
+		getActivity().invalidateOptionsMenu();
 	}
 	
 

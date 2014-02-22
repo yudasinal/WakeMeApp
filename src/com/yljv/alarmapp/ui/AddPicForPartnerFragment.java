@@ -44,6 +44,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActivity().getActionBar().setTitle("Customize alarm");
 		setHasOptionsMenu(true);
 	}
 	

@@ -13,7 +13,7 @@ import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")
-public class Alarm extends ParseObject{
+public class Alarm extends ParseObject implements Comparable<Alarm>{
 	
 	public Alarm(){
 		super("Alarm");
@@ -129,6 +129,11 @@ public class Alarm extends ParseObject{
 	
 	public int getAlarmId(){
 		return (Integer) this.get("id");
+	}
+
+	@Override
+	public int compareTo(Alarm other) {
+		return getAlarmTime().compareTo(other.getAlarmTime());
 	}
 	
 	

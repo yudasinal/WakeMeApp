@@ -31,6 +31,7 @@ public class PartnerAlarmFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);
 		listView = (ListView) view.findViewById(R.id.clock_list);
+		getActivity().getActionBar().setTitle("Partner Alarms");
 		listView.setAdapter(new ClockAdapter(this.getActivity()));
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			

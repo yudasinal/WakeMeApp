@@ -22,6 +22,7 @@ public class PreviewPictureFragment extends SherlockFragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.preview_for_partner, container, false);
+		getActivity().getActionBar().setTitle("Preview");
 		
 		
 		Bundle bundle = this.getArguments();

@@ -27,6 +27,7 @@ public class GalleryFragment extends SherlockFragment{
 		View view = inflater.inflate(R.layout.gallery_layout, container, false);
 		gridView = (GridView) view.findViewById(R.id.gridView);
 		myPictureAdapter = new PictureAdapter(getActivity(), R.layout.gallery_row, getData());
+		getActivity().getActionBar().setTitle("Gallery");
 		gridView.setAdapter(myPictureAdapter);
 		return view;
 	}

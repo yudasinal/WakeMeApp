@@ -4,14 +4,23 @@
   "http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="vertical">
+  android:orientation="vertical"
+  android:minHeight="50dp"
+  android:paddingLeft="10dp"
+  android:paddingTop="5dp"
+  android:background="#ffffffff"
+  >
   
     <TextView android:id="@+id/my_time"
-	  android:textSize="16sp"
+	  android:textSize="20sp"
 	  android:textStyle="bold"
-	  android:layout_width="match_parent"
+	  android:layout_width="110dp"
 	  android:layout_height="wrap_content"
+	  android:paddingBottom="5dp"
+	  android:paddingTop="5dp"
 	  android:text = "Time"
+	  android:background="@drawable/time_box"
+	  android:gravity = "center"
 	  />
 
   	<TextView android:id="@+id/my_text"
