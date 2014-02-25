@@ -29,8 +29,8 @@ public class PartnerAlarmFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.my_clock_layout, container, false);
-		listView = (ListView) view.findViewById(R.id.clock_list);
+		View view = inflater.inflate(R.layout.partner_clock_layout, container, false);
+		listView = (ListView) view.findViewById(R.id.partner_clock_list);
 		getActivity().getActionBar().setTitle("Partner Alarms");
 		listView.setAdapter(new ClockAdapter(this.getActivity()));
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -40,11 +40,11 @@ public class PartnerAlarmFragment extends Fragment {
 					long arg3) {
 				// TODO Auto-generated method stub
 				Fragment newContent = null;
-					newContent = new AddPicForPartnerFragment();
-					if (getActivity() instanceof MenuMainActivity) {
-						MenuMainActivity mma = (MenuMainActivity) getActivity();
-						mma.switchContent(newContent);
-					} 
+				newContent = new AddPicForPartnerFragment();
+				if (getActivity() instanceof MenuMainActivity) {
+					MenuMainActivity mma = (MenuMainActivity) getActivity();
+					mma.switchContent(newContent);
+				} 
 			}
 		});
 		

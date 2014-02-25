@@ -45,13 +45,14 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="center_horizontal"
 	        android:layout_marginBottom="15dp"
-	        android:textSize="62dp" >
+	        android:textSize="62sp" >
 		    <TextView
 		        android:id = "@+id/mon"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_marginRight="20dp"
 		        android:textSize="20sp"
+		        android:textColor="#ffc4a4"
 		        android:text="M "/>
 		    <TextView
 		        android:id = "@+id/tue"
@@ -59,6 +60,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
+		        android:textColor="#ffc4a4"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/wed"
@@ -66,6 +68,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
+		        android:textColor="#ffc4a4"
 		        android:text="W "/>
 		    <TextView
 		        android:id = "@+id/thu"
@@ -73,6 +76,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
+		        android:textColor="#ffc4a4"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/fri"
@@ -80,6 +84,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
+		        android:textColor="#ffc4a4"
 		        android:text="F "/>
 		    <TextView
 		        android:id = "@+id/sat"
@@ -87,11 +92,13 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
+		        android:textColor="#ffc4a4"
 		        android:text="S "/>
 		    <TextView
 		        android:id = "@+id/sun"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
+		        android:textColor="#ffc4a4"
 		        android:textSize="20sp"
 		        android:text="S "/>
 		</LinearLayout>
@@ -112,35 +119,47 @@
 		    android:layout_marginBottom="15dp"
 		    android:progressDrawable="@drawable/progress"
 		    android:thumb="@drawable/thumb" />
-
-		<Button
-		    android:id="@+id/ringtone_button"
-		    android:layout_width = "wrap_content"
-		    android:layout_height = "wrap_content">
-		</Button>
 		
 		<LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="center_horizontal" >
 
-        <Button
-            android:id="@+id/set_alarm"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:background="@drawable/my_cancel_button"
-            android:layout_marginRight="3dp"
-            android:textColor="#ff4040"
-            android:text="Cancel" />
+			<Button
+			    android:id="@+id/ringtone_button"
+			    android:background = "@drawable/ringtone_field"
+			    android:layout_width = "150dp"
+			    android:layout_height = "28dp"
+			    android:layout_marginBottom="10dp"
+			    android:text="Alarm tone"
+			    android:textColor="#ff0404"
+			    android:drawableRight="@drawable/select_alarmtone">
+			</Button>
+		
+		</LinearLayout>
+		
+		<LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal" >
 
-        <Button
-            android:id="@+id/cancel_alarm"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-		    android:background="@drawable/my_cancel_button"
-		    android:layout_marginLeft="3dp"
-            android:textColor="#ff4040"
-            android:text="Save" />
+	        <Button
+	            android:id="@+id/set_alarm"
+	            android:layout_width="100dp"
+	            android:layout_height="40dp"
+	            android:background="@drawable/my_cancel_button"
+	            android:layout_marginRight="3dp"
+	            android:textColor="#ff4040"
+	            android:text="Cancel" />
+	
+	        <Button
+	            android:id="@+id/cancel_alarm"
+	            android:layout_width="100dp"
+	            android:layout_height="40dp"
+			    android:background="@drawable/my_cancel_button"
+			    android:layout_marginLeft="3dp"
+	            android:textColor="#ff4040"
+	            android:text="Save" />
 
     </LinearLayout>
 	

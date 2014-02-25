@@ -85,7 +85,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm>{
 					myTime = myHourString + ":0" + myMinuteString + " " + "AM";
 				}
 				else {
-					myTime = myHourString + ":" + myMinuteString + " " + "AM,";
+					myTime = myHourString + ":" + myMinuteString + " " + "AM";
 				}
 			}
 		    else if (cal.get(Calendar.AM_PM) == Calendar.PM)

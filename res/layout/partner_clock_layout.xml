@@ -6,10 +6,8 @@
     android:background="#ffffffff" >
     
     <ListView
-        android:id="@+id/clock_list"
+        android:id="@+id/partner_clock_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:choiceMode="singleChoice" 
-        android:longClickable="true"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
