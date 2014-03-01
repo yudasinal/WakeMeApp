@@ -27,6 +27,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedListener, OnClickListener, OnTouchListener {
 	
@@ -34,7 +35,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	private String chosenRingtone;
 	public int changedHour;
 	public int changedMinute;
-	public boolean repeatAlarm = false;
 
 	TimePicker timePicker;
 	EditText alarmName;
@@ -124,7 +124,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	}
 
 	private void saveAlarm() {
-		// TODO Auto-generated method stub
 		String nameAlarm = alarmName.getText().toString();
 		Fragment newContent = new MyAlarmListFragment();
 		Bundle data = new Bundle();
@@ -132,12 +131,16 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		newContent.setArguments(data);
 		Alarm alarm = new Alarm(nameAlarm);
 		alarm.setTime(changedHour, changedMinute);
-		//TODO boolean, set alarm
+		for(int i = 0; i < 7; i++){
+			if(scheduled[i]){
+				alarm.setRepeat(Alarm.MONDAY+i, true);
+			}
+		}
+		MyAlarmManager.setAlarm(this.getActivity(), alarm);
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);
 		} 
-		
 	}
 	
 	@Override

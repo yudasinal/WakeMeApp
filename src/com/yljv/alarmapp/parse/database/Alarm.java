@@ -15,13 +15,13 @@ import com.yljv.alarmapp.helper.ApplicationSettings;
 @ParseClassName("Alarm")
 public class Alarm extends ParseObject implements Comparable<Alarm>{
 	
-	final static int MONDAY = 0;
-	final static int TUESDAY = 1;
-	final static int WEDNESDAY = 2;
-	final static int THURSDAY = 3;
-	final static int FRIDAY = 4;
-	final static int SATURDAY = 5;
-	final static int SUNDAY= 6;
+	public final static int MONDAY = 0;
+	public final static int TUESDAY = 1;
+	public final static int WEDNESDAY = 2;
+	public final static int THURSDAY = 3;
+	public final static int FRIDAY = 4;
+	public final static int SATURDAY = 5;
+	public final static int SUNDAY= 6;
 	
 	final static int AM = Calendar.AM;
 	final static int PM = Calendar.PM;
