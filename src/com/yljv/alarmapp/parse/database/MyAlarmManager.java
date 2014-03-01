@@ -1,5 +1,6 @@
 package com.yljv.alarmapp.parse.database;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,7 +22,6 @@ import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yljv.alarmapp.helper.AccountManager;
-import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.helper.MyBootReceiver;
 
 /*
@@ -41,8 +41,12 @@ public class MyAlarmManager {
 	private static AlarmManager alarmManager;
 	private static HashMap<Integer, PendingIntent> pendingIntents = new HashMap<Integer,PendingIntent>();
 
+	
+	private static Context mContext;
 
 	public static ArrayList<Alarm> myAlarms = new ArrayList<Alarm>();
+	
+	private final static String mFile = "alarmsFile";
 	
 	public static ArrayList<String> getAllAlarmString(){
 		ArrayList<String> alarm = new ArrayList<String>();
@@ -88,6 +92,64 @@ public class MyAlarmManager {
 		alarm.put("name", name);
 		alarm.saveEventually();
 	}
+	
+	public static void setAlarm(Context context, Alarm alarm){
+		
+		GregorianCalendar now = new GregorianCalendar();
+		
+		AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);	
+		ComponentName receiver = new ComponentName(context, MyBootReceiver.class);
+		PackageManager pm = context.getPackageManager();
+		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+		
+		
+		//TODO check if time already passed
+		
+		GregorianCalendar cn = null;
+		
+		boolean[] weekdaysR = alarm.getWeekdaysRepeated();
+		int counter = 0;
+		for(int i = 0; i < weekdaysR.length; i++){
+			if(weekdaysR[i]){
+				cn = new GregorianCalendar();
+				cn.set(Calendar.MINUTE, alarm.getMinute());
+				cn.set(Calendar.HOUR_OF_DAY, alarm.getHourOfDay());
+				cn.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY+i);
+				Intent intent = new Intent(context, MyBootReceiver.class);
+				intent.putExtra("id", alarm.getAlarmId());
+				PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
+				alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(), alarmIntent);
+				counter++;
+			}
+		}
+		
+		if(counter==0){
+			cn = alarm.getTimeAsCalendar();
+			if(cn.getTimeInMillis() < now.getTimeInMillis()){
+				cn.set(Calendar.WEEK_OF_YEAR, now.get(Calendar.WEEK_OF_YEAR) + 1);
+			}
+			if(cn.getTimeInMillis() < now.getTimeInMillis()){
+				cn.set(Calendar.YEAR, now.get(Calendar.YEAR) + 1);
+			}
+			Intent intent = new Intent(context, MyBootReceiver.class);
+			intent.putExtra("id", alarm.getAlarmId());
+			PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
+			alarmMgr.set(AlarmManager.RTC_WAKEUP, alarm.getTimeAsCalendar().getTimeInMillis(), alarmIntent);
+			counter++;
+		}
+		
+		
+		if(cn!=null){
+			alarm.saveEventually();
+			ParsePush push = new ParsePush();
+			push.setChannel(AccountManager.getUserChannel());
+			push.setMessage("Hey, I just set a new Alarm!");
+			push.setExpirationTime(cn.getTimeInMillis());
+			push.sendInBackground();
+		}
+		
+		//addAlarmToFile(alarm);		
+	}
 
 	/*
 	 * sets a NEW Alarm
@@ -95,7 +157,7 @@ public class MyAlarmManager {
 	 * please use constants of this class for the day-variable (SUNDAY-SATURDAY)
 	 * example: MyAlarmManager.setAlarm(context, MyAlarmManager.SUNDAY, 13, 24, "Wake Up", false)
 	 */
-	public static void setAlarm(Context context, int day, int hour, int minute, String alarmName, boolean repeat){
+	/*public static void setAlarm(Context context, int hour, int minute, String alarmName, boolean[] repeats){
 		
 		//GregorianCalendar now = new GregorianCalendar();
 		//set alarm to hour:minute
@@ -125,8 +187,10 @@ public class MyAlarmManager {
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,  alarm.getAlarmId(), intent, 0);
 		//TODO: what happens when day is today and time has passed already?
 		
+		//addAlarmToFile(alarm);
+		
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), alarmIntent);
-	}
+	}*/
 	
 	public void cancelAlarm(Alarm alarm){
 		alarmManager.cancel(pendingIntents.get(alarm.getAlarmId()));
@@ -177,9 +241,24 @@ public class MyAlarmManager {
 		});
 	}
 	
-	public static void addTextToAlarm(final Alarm alarm, String text){
+	public static void addTextToPartnerAlarm(final Alarm alarm, String text){
 		alarm.put("message", text);
 	}
+	
+	/*
+	private static void addAlarmToFile(Alarm alarm){
+		FileOutputStream outStream;
+		
+		try{
+			outStream = mContext.openFileOutput(mFile, Context.MODE_APPEND | Context.MODE_PRIVATE);
+			outStream.write();
+		}
+	}
+	*/
 
+	
+	public static void setContext(Context c){
+		mContext = c;
+	}
 	
 }

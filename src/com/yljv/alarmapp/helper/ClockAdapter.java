@@ -44,7 +44,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 				ViewHolder myHolder = (ViewHolder)rowView.getTag();
 				Alarm myAlarm = myAlarms.get(position);
 				String text = myAlarm.getName();
-				String time = myAlarm.getAlarmTime();
+				String time = myAlarm.getTimeAsString();
 				myHolder.timeView.setText(time);
 				myHolder.textView.setText(text);
 			}

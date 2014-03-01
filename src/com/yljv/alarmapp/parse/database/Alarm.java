@@ -15,47 +15,72 @@ import com.yljv.alarmapp.helper.ApplicationSettings;
 @ParseClassName("Alarm")
 public class Alarm extends ParseObject{
 	
+	final static int MONDAY = 0;
+	final static int TUESDAY = 1;
+	final static int WEDNESDAY = 2;
+	final static int THURSDAY = 3;
+	final static int FRIDAY = 4;
+	final static int SATURDAY = 5;
+	final static int SUNDAY= 6;
+	
+	final static int AM = Calendar.AM;
+	final static int PM = Calendar.PM;
+	
+	final static String NAME_COLLUMN = "name";
+	final static String USER_COLLUMN = "user";
+	final static String ID_COLLUMN = "id";
+	final static String TIME_COLLUMN = "time";
+
+	
+	private String name;
+	private int id;
+	private GregorianCalendar time;
+	private boolean activated = true;
+	private boolean[] weekdays = new boolean[7];
+	
+	
+	
 	public Alarm(){
 		super("Alarm");
 	}
 	
-	public Alarm(String name, Date time){
+	public Alarm(String name){
 		super("Alarm");
-		//put("time", time);
-		put("name", name);
+		this.setName(name);
 		ParseUser user = ParseUser.getCurrentUser();
-		put("user", user);
-		put("id", ApplicationSettings.getAlarmId());
-		put("time", time);
-		put("activated", true);
+		this.setUser(user);
+		this.setID(ApplicationSettings.getAlarmId());
+		this.setActivated(true);
 	}
-	
-	public String getName(){
-		return (String) this.get("name");
+
+	public void setTime(int hour, int minute){
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE, minute);
+		this.setTime(cal);
 	}
-	
-	public int getHour(){
-		GregorianCalendar cal = getTimeAsCalendar();
-		return cal.get(Calendar.HOUR);
-	}
-	
-	public int getMinute(){
-		GregorianCalendar cal = getTimeAsCalendar();
-		return cal.get(Calendar.MINUTE);
-	}
-	
 	
 	/*
 	 *Prints the time of an alarm in appropriate format 
 	 *Ex.: 9:00 AM, 12:00 PM, etc 
 	 */
-	public String getAlarmTime() {
+	public String getTimeAsString() {
 		int myHour = this.getHour();
 		int myMinute = this.getMinute();
-		String myAlarmTime = verifyTime(myHour, myMinute);
-		return myAlarmTime;
+		boolean AM = this.isAM();
+		
+		String hourS;
+		String minuteS;
+		String amS;
+		
+		hourS = Integer.toString(myHour);
+		minuteS = (myMinute < 10) ? "0" + Integer.toString(myMinute) : Integer.toString(myMinute);
+		amS = (AM) ? "AM" : "PM";
+
+		return hourS + ":" + minuteS + " " + amS;
 	}
 	
+	/*
 	private String verifyTime(int hour, int minute) {
 		String myTime = new String();
 		String myHourString = String.valueOf(hour);
@@ -97,21 +122,27 @@ public class Alarm extends ParseObject{
 				}
 		}
 		return myTime;	
-	}
-
+	}*/
 	
-	public Date getTimeAsDate(){
-		return (Date) this.get("time");
+	public int getHourOfDay(){
+		return this.time.get(Calendar.HOUR_OF_DAY);
 	}
 	
-	public boolean isActivated(){
-		return (Boolean) this.get("activated");
+	public int getHour(){
+		return this.time.get(Calendar.HOUR);
+	}
+	
+	public int getMinute(){
+		return this.time.get(Calendar.MINUTE);
+	}
+	
+	public boolean isAM(){
+		int time = this.time.get(Calendar.AM_PM);
+		return (time==Alarm.AM) ? true : false;
 	}
 	
 	public GregorianCalendar getTimeAsCalendar(){
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(getTimeAsDate());
-		return cal;
+		return this.time;
 	}
 	
 	public void saveAlarm(final ParseAlarmListener listener){
@@ -131,5 +162,42 @@ public class Alarm extends ParseObject{
 		return (Integer) this.get("id");
 	}
 	
+	public void setRepeat(int day, boolean activated){
+		weekdays[day] = activated;
+	}
 	
+	public void setName(String name){
+		this.name = name;
+		put(NAME_COLLUMN, name);
+	}
+	
+	public void setTime(GregorianCalendar cal){
+		this.time = cal;
+		put(TIME_COLLUMN, cal.getTime());
+	}
+	
+	public void setUser(ParseUser user){
+		put(USER_COLLUMN, user);
+	}
+	
+	public void setID(int id){
+		this.id = id;
+		put(ID_COLLUMN, id);
+	}
+	
+	public void setActivated(boolean activated){
+		this.activated = activated;
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public boolean isActivated(){
+		return this.activated;
+	}
+	
+	public boolean[] getWeekdaysRepeated(){
+		return this.weekdays;
+	}
 }

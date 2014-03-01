@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,12 +23,9 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.parse.database.MyAlarmManager;
+import com.yljv.alarmapp.parse.database.Alarm;
 
 public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedListener, OnClickListener {
 	
@@ -37,7 +33,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	private String chosenRingtone;
 	public int changedHour;
 	public int changedMinute;
-	public int currentDay;
 	public boolean repeatAlarm = false;
 
 	TimePicker timePicker;
@@ -142,7 +137,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	    then.set(Calendar.MINUTE, minute);
 	    changedHour = view.getCurrentHour();
 	    changedMinute = view.getCurrentMinute();
-	    currentDay = then.get(Calendar.DAY_OF_WEEK);
 	  }
 		
 
@@ -172,7 +166,9 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		Bundle data = new Bundle();
 		data.putString(ALARM_NAME,nameAlarm);
 		newContent.setArguments(data);
-		MyAlarmManager.setAlarm(getActivity(), currentDay, changedHour, changedMinute, nameAlarm, repeatAlarm);
+		Alarm alarm = new Alarm(nameAlarm);
+		alarm.setTime(changedHour, changedMinute);
+		//TODO boolean, set alarm
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);

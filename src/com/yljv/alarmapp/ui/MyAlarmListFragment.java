@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);	
 		listView = (ListView) view.findViewById(R.id.clock_list);
 		listView.setAdapter(new ClockAdapter(this.getActivity()));	
+		
 		return view; 
 	}
 	
