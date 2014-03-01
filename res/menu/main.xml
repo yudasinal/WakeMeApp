@@ -5,23 +5,24 @@
         android:id="@+id/add_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="Add alarm"
-        android:titleCondensed = "Add"/>
+        android:title="Add"
+        android:titleCondensed = "Add"
+        android:icon="@drawable/ic_action_new"/>
 	
 	<item
-        android:id="@+id/save_alarm"
+        android:id="@+id/edit_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="Save alarm"
-        android:titleCondensed = "Save"/>
+        android:title="Edit alarm"
+        android:icon="@drawable/ic_action_edit"/>
 	
 	<item
-        android:id="@+id/cancel_alarm"
+        android:id="@+id/delete_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="Cancel alarm"
-        android:titleCondensed = "Cancel"/>
-
+        android:icon="@drawable/ic_action_discard"/>
+	
 </menu>
 
 

@@ -1,6 +1,7 @@
 package com.yljv.alarmapp.helper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			holder.textView = (TextView) rowView.findViewById(R.id.my_text);
 			holder.timeView = (TextView) rowView.findViewById(R.id.my_time);
 			myAlarms = MyAlarmManager.getAllAlarms();
+			Collections.sort(myAlarms);
 			rowView.setTag(holder);
 			
 			if (myAlarms == null) {
@@ -52,6 +54,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		else {
 			holder = (ViewHolder) rowView.getTag();
 		}
+
 		return rowView;
 	}
 	

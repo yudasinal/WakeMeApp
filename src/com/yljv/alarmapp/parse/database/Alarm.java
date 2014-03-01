@@ -13,7 +13,7 @@ import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")
-public class Alarm extends ParseObject{
+public class Alarm extends ParseObject implements Comparable<Alarm>{
 	
 	final static int MONDAY = 0;
 	final static int TUESDAY = 1;
@@ -110,7 +110,7 @@ public class Alarm extends ParseObject{
 					myTime = myHourString + ":0" + myMinuteString + " " + "AM";
 				}
 				else {
-					myTime = myHourString + ":" + myMinuteString + " " + "AM,";
+					myTime = myHourString + ":" + myMinuteString + " " + "AM";
 				}
 			}
 		    else if (cal.get(Calendar.AM_PM) == Calendar.PM)
@@ -160,6 +160,11 @@ public class Alarm extends ParseObject{
 	
 	public int getAlarmId(){
 		return (Integer) this.get("id");
+	}
+
+	@Override
+	public int compareTo(Alarm other) {
+		return this.getTimeAsCalendar().compareTo(other.getTimeAsCalendar());
 	}
 	
 	public void setRepeat(int day, boolean activated){

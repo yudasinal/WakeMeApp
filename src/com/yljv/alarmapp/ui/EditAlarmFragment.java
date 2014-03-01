@@ -1,5 +1,6 @@
 package com.yljv.alarmapp.ui;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -14,9 +15,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,16 +25,21 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedListener, OnClickListener, OnTouchListener {
+public class EditAlarmFragment extends SherlockFragment implements OnTimeChangedListener, OnClickListener {
 	
 	public final static String ALARM_NAME = "com.yljv.alarmapp.ALARM_NAME";
 	private String chosenRingtone;
 	public int changedHour;
 	public int changedMinute;
+	public int currentDay;
 	public boolean repeatAlarm = false;
 
 	TimePicker timePicker;
@@ -43,15 +49,8 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	TextView monday;
 	TextView tuesday;
 	TextView wednesday;
-	TextView thursday;
-	TextView friday;
-	TextView saturday;
-	TextView sunday;
 	Button setAlarm;
 	Button cancelAlarm;
-	boolean[] scheduled = new boolean[7];
-	int red = Color.parseColor("#ff0404");
-	int tintedRed = Color.parseColor("#ffc4a4");
 	
 	
 	@Override
@@ -65,19 +64,63 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		cancelAlarm.setOnClickListener(this);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
 		monday = (TextView) view.findViewById(R.id.mon);
-		monday.setOnTouchListener(this);
+		monday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				boolean scheduled = false;
+				if(!scheduled){
+					switch(event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+	                    monday.setTextColor(Color.BLUE);
+	                    scheduled = true;
+	                    break;
+					}
+				}
+				else{
+					switch(event.getAction()) {
+					case MotionEvent.ACTION_UP:
+	                    monday.setTextColor(Color.BLACK);
+	                    scheduled = true;
+	                    break;
+					}
+				}
+				return false;
+			}
+		});
 		tuesday = (TextView) view.findViewById(R.id.tue);
-		tuesday.setOnTouchListener(this);
+		tuesday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				boolean scheduled  = false;
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    tuesday.setTextColor(Color.BLUE);
+                    scheduled = true;
+                    break;
+				}
+				return false;
+			}
+		});
 		wednesday = (TextView) view.findViewById(R.id.wed);
-		wednesday.setOnTouchListener(this);
-		thursday = (TextView) view.findViewById(R.id.thu);
-		thursday.setOnTouchListener(this);
-		friday = (TextView) view.findViewById(R.id.fri);
-		friday.setOnTouchListener(this);
-		saturday = (TextView) view.findViewById(R.id.sat);
-		saturday.setOnTouchListener(this);
-		sunday = (TextView) view.findViewById(R.id.sun);
-		sunday.setOnTouchListener(this);
+		wednesday.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				boolean scheduled = true;
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+                    wednesday.setTextColor(Color.BLUE);
+                    scheduled = true;
+                    break;
+				}
+				return false;
+			}
+		});
 		timePicker.setOnTimeChangedListener(this);
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
@@ -96,11 +139,11 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
 		// TODO Auto-generated method stub
 		Calendar then=Calendar.getInstance();
-
 	    then.set(Calendar.HOUR_OF_DAY, hourOfDay);
 	    then.set(Calendar.MINUTE, minute);
 	    changedHour = view.getCurrentHour();
 	    changedMinute = view.getCurrentMinute();
+	    currentDay = then.get(Calendar.DAY_OF_WEEK);
 	  }
 		
 
@@ -130,9 +173,9 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		Bundle data = new Bundle();
 		data.putString(ALARM_NAME,nameAlarm);
 		newContent.setArguments(data);
-		Alarm alarm = new Alarm(nameAlarm);
-		alarm.setTime(changedHour, changedMinute);
-		//TODO boolean, set alarm
+		
+		//TODO save alarm
+		//MyAlarmManager.setAlarm(getActivity(), currentDay, changedHour, changedMinute, nameAlarm, repeatAlarm);
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);
@@ -157,110 +200,34 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	  }
 	
 	/*
-	 * Activates or deactivates a day to schedule the alarm. Colour of letter changes onTouch
-	 */
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		switch(v.getId()) {
-		case R.id.mon:
-			if(!scheduled[0]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                monday.setTextColor(red);
-	                scheduled[0] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                monday.setTextColor(tintedRed);
-	                scheduled[0] = false;
-				}
-			}
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main, menu);
+		//menu.findItem(R.id.add_alarm).setVisible(true);
+		//menu.findItem(R.id.cancel_alarm).setVisible(true);	
+		menu.findItem(R.id.cancel_alarm).setEnabled(true);
+		menu.findItem(R.id.add_alarm).setEnabled(false);
+		menu.findItem(R.id.add_alarm).setVisible(false);
+		menu.findItem(R.id.save_alarm).setEnabled(true);
+
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.save_alarm:
+			saveAlarm();
 			break;
-		case R.id.tue:
-			if(!scheduled[1]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                tuesday.setTextColor(red);
-	                scheduled[1] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                tuesday.setTextColor(tintedRed);
-	                scheduled[1] = false;
-				}
-			}
-			break;
-		case R.id.wed:
-			if(!scheduled[2]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                wednesday.setTextColor(red);
-	                scheduled[2] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                wednesday.setTextColor(tintedRed);
-	                scheduled[2] = false;
-				}
-			}
-			break;
-		case R.id.thu:
-			if(!scheduled[3]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                thursday.setTextColor(red);
-	                scheduled[3] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                thursday.setTextColor(tintedRed);
-	                scheduled[3] = false;
-				}
-			}
-			break;
-		case R.id.fri:
-			if(!scheduled[4]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                friday.setTextColor(red);
-	                scheduled[4] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                friday.setTextColor(tintedRed);
-	                scheduled[4] = false;
-				}
-			}
-			break;
-		case R.id.sat:
-			if(!scheduled[5]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                saturday.setTextColor(red);
-	                scheduled[5] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                saturday.setTextColor(tintedRed);
-	                scheduled[5] = false;
-				}
-			}
-			break;
-		case R.id.sun:
-			if(!scheduled[6]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                sunday.setTextColor(red);
-	                scheduled[6] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                sunday.setTextColor(tintedRed);
-	                scheduled[6] = false;
-				}
-			}
+		case R.id.cancel_alarm:
+			getFragmentManager().popBackStackImmediate();
 			break;
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
+	*/
 }
