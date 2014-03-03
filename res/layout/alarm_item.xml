@@ -32,17 +32,70 @@
 		  android:layout_below="@id/my_time"
   	/>
   	
-  	<TextView android:id="@+id/my_days"
-  	    android:layout_width="match_parent"
-  	    android:layout_height ="wrap_content"
-  	    android:layout_centerInParent="true"
-  	    android:gravity="center"
-  	    android:layout_centerVertical="true"
-  	    android:textSize="16sp"
-  	    android:paddingLeft="10dp"
-  	    android:text="M T W T F S S"
-  	    android:textColor="#ffc4a4"
-  	    />
+  	<LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:layout_marginBottom="15dp"
+	        android:layout_centerInParent="true"
+	        android:textSize="20sp"
+	        android:paddingTop="5dp" >
+		    <TextView
+		        android:id = "@+id/mon"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="5dp"
+		        android:textSize="20sp"
+		        android:textColor="#ffc4a4"
+		        android:text="M "/>
+		    <TextView
+		        android:id = "@+id/tue"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:layout_marginRight="5dp"
+		        android:textColor="#ffc4a4"
+		        android:text="T "/>
+		    <TextView
+		        android:id = "@+id/wed"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:layout_marginRight="5dp"
+		        android:textColor="#ffc4a4"
+		        android:text="W "/>
+		    <TextView
+		        android:id = "@+id/thu"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:layout_marginRight="5dp"
+		        android:textColor="#ffc4a4"
+		        android:text="T "/>
+		    <TextView
+		        android:id = "@+id/fri"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:layout_marginRight="5dp"
+		        android:textColor="#ffc4a4"
+		        android:text="F "/>
+		    <TextView
+		        android:id = "@+id/sat"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:layout_marginRight="5dp"
+		        android:textColor="#ffc4a4"
+		        android:text="S "/>
+		    <TextView
+		        android:id = "@+id/sun"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textColor="#ffc4a4"
+		        android:textSize="20sp"
+		        android:text="S "/>
+		</LinearLayout>
 
   	
   	<ImageView android:id="@+id/set_alarm"

@@ -26,6 +26,7 @@ import android.widget.TimePicker.OnTimeChangedListener;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedListener, OnClickListener, OnTouchListener {
@@ -34,8 +35,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	private String chosenRingtone;
 	public int changedHour;
 	public int changedMinute;
-	public int currentDay;
-	public boolean repeatAlarm = false;
 
 	TimePicker timePicker;
 	EditText alarmName;
@@ -102,7 +101,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	    then.set(Calendar.MINUTE, minute);
 	    changedHour = view.getCurrentHour();
 	    changedMinute = view.getCurrentMinute();
-	    currentDay = then.get(Calendar.DAY_OF_WEEK);
 	  }
 		
 
@@ -126,18 +124,23 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	}
 
 	private void saveAlarm() {
-		// TODO Auto-generated method stub
 		String nameAlarm = alarmName.getText().toString();
 		Fragment newContent = new MyAlarmListFragment();
 		Bundle data = new Bundle();
 		data.putString(ALARM_NAME,nameAlarm);
 		newContent.setArguments(data);
-		MyAlarmManager.setAlarm(getActivity(), currentDay, changedHour, changedMinute, nameAlarm, repeatAlarm);
+		Alarm alarm = new Alarm(nameAlarm);
+		alarm.setTime(changedHour, changedMinute);
+		for(int i = 0; i < 7; i++){
+			if(scheduled[i]){
+				alarm.setRepeat(Alarm.MONDAY+i, true);
+			}
+		}
+		MyAlarmManager.setNewAlarm(this.getActivity(), alarm);
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);
 		} 
-		
 	}
 	
 	@Override

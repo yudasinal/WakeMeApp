@@ -56,8 +56,6 @@ public class SplashActivity extends Activity {
 
 		// initialize Settings
 		ApplicationSettings.setSharedPreferences(this);
-		ApplicationSettings.preferences = this.getSharedPreferences(
-				"Preferences", this.MODE_APPEND);
 
 		
 		ArrayList<Alarm> list = MyAlarmManager.getAllAlarms();

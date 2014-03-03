@@ -66,7 +66,7 @@ public class AccountManager{
 			@Override
 			public void done(ParseUser user, ParseException e){
 				if(user!=null){
-					ApplicationSettings.setUser(user.getUsername());
+					ApplicationSettings.setUserEmail(user.getUsername());
 					listener.onLoginSuccessful();
 				}else{
 					Log.d("LoginException", e.getMessage());

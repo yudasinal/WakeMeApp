@@ -40,6 +40,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);	
 		listView = (ListView) view.findViewById(R.id.clock_list);
+
 		ClockAdapter myAdapter = new ClockAdapter(this.getActivity());
 		listView.setAdapter(myAdapter);	
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -157,7 +158,12 @@ public class MyAlarmListFragment extends SherlockFragment {
 			break;
 		case R.id.delete_alarm:
 			AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this.getActivity());
-			deleteDialog.setMessage("Delete selected alarm?");
+			if(count > 1) {
+				deleteDialog.setMessage("Delete selected alarms?");
+			}
+			else {
+				deleteDialog.setMessage("Delete selected alarm?");
+			}
 			deleteDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
