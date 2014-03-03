@@ -50,13 +50,11 @@ public class AccountManager{
 	}
 	
 	public static String getUserChannel(){
-		String id = "user_" + ParseUser.getCurrentUser().getObjectId();
-		return id;
+		return ApplicationSettings.getUserEmail();
 	}
 	
 	public static String getPartnerChannel(){
-		String id = "user_" + ((ParseUser) ParseUser.getCurrentUser().getParseObject("partner")).getObjectId();
-		return id;
+		return ApplicationSettings.getPartnerEmail();
 	}
 	
 	
@@ -96,20 +94,17 @@ public class AccountManager{
 	}
 	
 	
-	public static ParseUser getPartner(){
+	/*public static ParseUser getPartner(){
 		return (ParseUser) ParseUser.getCurrentUser().get("partner");
-	}
+	}*/
 	
 	public static String getName(){
-		return (String) ParseUser.getCurrentUser().get("name");
-	}
-	
-	public static String getSurname(){
-		return (String) ParseUser.getCurrentUser().get("surname");
+		return ApplicationSettings.getUserEmail();
+		//return (String) ParseUser.getCurrentUser().get("name");
 	}
 	
 	public static String getEmail(){
-		return (String) ParseUser.getCurrentUser().getEmail();
+		return ApplicationSettings.getUserEmail();
 	}
 	
 	public static void invitePartner(String email){

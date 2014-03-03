@@ -1,9 +1,11 @@
 package com.yljv.alarmapp.parse.database;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.content.ContentValues;
 import android.provider.BaseColumns;
 
 import com.parse.ParseClassName;
@@ -14,91 +16,79 @@ import com.yljv.alarmapp.helper.ApplicationSettings;
 @ParseClassName("Alarm")
 public class Alarm extends ParseObject implements Comparable<Alarm> {
 
-	public final static int MONDAY = 0;
-	public final static int TUESDAY = 1;
-	public final static int WEDNESDAY = 2;
-	public final static int THURSDAY = 3;
-	public final static int FRIDAY = 4;
-	public final static int SATURDAY = 5;
-	public final static int SUNDAY = 6;
-
 	final static int AM = Calendar.AM;
 	final static int PM = Calendar.PM;
 
-	final static String NAME_COLLUMN = "name";
-	final static String USER_COLLUMN = "user";
-	final static String ID_COLLUMN = "id";
-	final static String TIME_COLLUMN = "time";
-
-	private String name;
-	private int id;
-	private GregorianCalendar time;
-	private boolean activated = true;
-	private boolean[] weekdays = new boolean[7];
-	private boolean visible = true;
-	private URI musicURI = null;
-	private String msg = "";
-	private int volume = 5; //TODO find default volume
+	
+	private ContentValues values;
 
 	public Alarm() {
 		super("Alarm");
+		values = new ContentValues();
+		values.put(AlarmEntry.COLUMN_NAME, "Alarm");
+		values.put(AlarmEntry.COLUMN_ACTIVATED, "1");
+		values.put(AlarmEntry.COLUMN_VISIBILITY, "1");
+		values.put(AlarmEntry.COLUMN_MUSIC_URI, "");
+		values.put(AlarmEntry.COLUMN_ID, ApplicationSettings.getAlarmId() * 10);
+		values.put(AlarmEntry.COLUMN_VOLUME, 5);
+		values.put(AlarmEntry.COLUMN_MSG, "");
+		values.put(AlarmEntry.COLUMN_WEEKDAYS, "0000000");
 	}
 
-	public Alarm(String name) {
-		super("Alarm");
-		this.setName(name);
-		ParseUser user = ParseUser.getCurrentUser();
-		this.setUser(user);
-		this.setID(ApplicationSettings.getAlarmId());
-		this.setActivated(true);
+	
+	public Alarm(ContentValues cv){
+		this.values = cv;
 	}
 
 	@Override
 	public int compareTo(Alarm other) {
-		// return this.getTimeAsCalendar().compareTo(other.getTimeAsCalendar());
-		return this.name.compareTo(other.name);
+		 return this.getTimeAsCalendar().compareTo(other.getTimeAsCalendar());
+		//return this.name.compareTo(other.name);
 	}
 
 	public int getAlarmId() {
-		return this.id;
+		return (Integer) values.get(AlarmEntry.COLUMN_ID);
 	}
-
+	
 	/*
-	 * eg: 18:00 returns 6
+	 * eg: 18 returns 6
 	 */
-	public int getHour() {
-		return this.time.get(Calendar.HOUR);
+	public int getHour(){
+		int hour = ((Integer) values.get(AlarmEntry.COLUMN_TIME)) / 60;
+		return (hour > 12) ? hour-12 : hour;
 	}
 
 	/*
 	 * eg: 18:00 returns 18
 	 */
 	public int getHourOfDay() {
-		return this.time.get(Calendar.HOUR_OF_DAY);
+		return ((Integer) values.get(AlarmEntry.COLUMN_TIME)) / 60;
 	}
 	
 	public String getMessage(){
-		return this.msg;
+		return (String) values.get(AlarmEntry.COLUMN_MSG);
 	}
 
 	public int getMinute() {
-		return this.time.get(Calendar.MINUTE);
+		return ((Integer) values.get(AlarmEntry.COLUMN_TIME)) % 60;
 	}
 	
-	public URI getMusicURI(){
-		return this.musicURI;
+	public String getMusicURIPath(){
+		return (String) values.get(AlarmEntry.COLUMN_MUSIC_URI);
 	}
 	
 	public int getMusicVolume(){
-		return this.volume;
+		return (Integer) values.get(AlarmEntry.COLUMN_VOLUME);
 	}
 
 	public String getName() {
-		return this.name;
+		return (String) values.get(AlarmEntry.COLUMN_NAME);
 	}
 
 	public GregorianCalendar getTimeAsCalendar() {
-		return this.time;
+		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+		cal.setTimeInMillis((Integer) values.get(AlarmEntry.COLUMN_TIME));
+		return cal;
 	}
 
 	/*
@@ -106,9 +96,17 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	 * etc
 	 */
 	public String getTimeAsString() {
-		int myHour = this.getHour();
+		int myHour = this.getHourOfDay();
 		int myMinute = this.getMinute();
-		boolean AM = this.isAM();
+		boolean am = true;
+		
+		if(myHour > 12){
+			myHour -= 12;
+			am = false;
+		}
+		if(myHour == 12){
+			am = false;
+		}
 
 		String hourS;
 		String minuteS;
@@ -117,92 +115,141 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		hourS = Integer.toString(myHour);
 		minuteS = (myMinute < 10) ? "0" + Integer.toString(myMinute) : Integer
 				.toString(myMinute);
-		amS = (AM) ? "AM" : "PM";
+		amS = am ? "AM" : "PM";
 
 		return hourS + ":" + minuteS + " " + amS;
 	}
+	
+	public ContentValues getValues(){
+		return this.values;
+	}
+	
+	//TODO public String getDate
 
 	public boolean[] getWeekdaysRepeated() {
-		return this.weekdays;
+		boolean[] resA = new boolean[7];
+		String res = (String) values.get(AlarmEntry.COLUMN_WEEKDAYS);
+		if(res==null){
+			return resA;
+		}
+		for(int i = 0; i < 7 ; i++){
+			if(res.charAt(i) == '1'){
+				resA[i] = true;
+			}
+		}
+		return resA;
 	}
 
+	
 	public boolean isActivated() {
-		return this.activated;
+		String res =  (String) values.get(AlarmEntry.COLUMN_ACTIVATED);
+		return (res.equals("1")) ? true : false;
 	}
 
 	public boolean isAM() {
-		int time = this.time.get(Calendar.AM_PM);
-		return (time == Alarm.AM) ? true : false;
+		int time = (Integer) values.get(AlarmEntry.COLUMN_TIME);
+		return (time >= 13*60) ? true : false;
 	}
 
 	public boolean isVisible() {
-		return this.visible;
+		String res = (String) values.get(AlarmEntry.COLUMN_VISIBILITY);
+		return (res.equals("1")) ? true : false;
 	}
 
 	public void setActivated(boolean activated) {
-		this.activated = activated;
+		if(activated){
+			values.put(AlarmEntry.COLUMN_ACTIVATED, 1);
+		}else{
+			values.put(AlarmEntry.COLUMN_ACTIVATED, 0);
+		}
 	}
 
 	private void setID(int id) {
-		this.id = id;
-		put(ID_COLLUMN, id);
+		values.put(AlarmEntry.COLUMN_ID, id);
 	}
 	
 	public void setMessage(String msg){
-		this.msg = msg;
+		values.put(AlarmEntry.COLUMN_MSG, msg);
 	}
 
 	
 	public void setMusicURI(URI uri){
-		this.musicURI = uri;
+		values.put(AlarmEntry.COLUMN_MUSIC_URI, uri.getPath());
 	}
 	
 	public void setMusicVolume(int volume){
-		this.volume = volume;
+		values.put(AlarmEntry.COLUMN_VOLUME, volume);
 	}
 
 	public void setName(String name) {
-		this.name = name;
-		put(NAME_COLLUMN, name);
+		values.put(AlarmEntry.COLUMN_NAME, name);
+	}
+	
+	public void setPicture(File file){
+		values.put(AlarmEntry.COLUMN_PICTURE, file.getAbsolutePath());
 	}
 
 	public void setRepeat(int day, boolean activated) {
-		weekdays[day] = activated;
+		StringBuilder sb = new StringBuilder((String) values.get(AlarmEntry.COLUMN_WEEKDAYS));
+		if(activated){
+			sb.replace(day, day+1, "1");
+		}else{
+			sb.replace(day, day+1, "0");
+		}
+		values.put(AlarmEntry.COLUMN_WEEKDAYS, sb.toString());
 	}
 
 	public void setTime(int hour, int minute) {
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(Calendar.HOUR_OF_DAY, hour);
-		cal.set(Calendar.MINUTE, minute);
-		this.setTime(cal);
+		values.put(AlarmEntry.COLUMN_TIME, hour * 60 + minute);
 	}
 
 	public void setTime(GregorianCalendar cal) {
-		this.time = cal;
-		put(TIME_COLLUMN, cal.getTime());
+		int time = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+		values.put(AlarmEntry.COLUMN_TIME, time);
 	}
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-	public void setUser(ParseUser user) {
-		put(USER_COLLUMN, user);
+	public void setValues(ContentValues values){
+		this.values = values;
 	}
 	
-	/*public static abstract class AlarmEntry implements BaseColumns{
-		public static final String TABLE_NAME = "entry";
-		public static final String COLLUMN_NAME= "name";
-		public static final String COLLUMN_ID = "id";
-		public static final String COLLUMN_TIME = "time";
+	public void setVisible(boolean visible) {
+		if(!visible){
+			values.put(AlarmEntry.COLUMN_VISIBILITY, 0);
+		} else{
+			values.put(AlarmEntry.COLUMN_VISIBILITY, 1);
+		}
+		
+	}
+
+	private void setUser(ParseUser user) {
+	}
+	
+	public static abstract class AlarmEntry implements BaseColumns{
+		public static final String COLUMN_NAME= "alarmName";
+		public static final String COLUMN_ID = "alarmID";
+		public static final String COLUMN_TIME = "time";
 		public static final String COLUMN_ACTIVATED = "activated";
 		public static final String COLUMN_WEEKDAYS = "weekdays";
 		public static final String COLUMN_VISIBILITY = "visibility";
 		public static final String COLUMN_MUSIC_URI = "URI";
 		public static final String COLUMN_VOLUME = "volume";
 		public static final String COLUMN_MSG = "msg";
+		public static final String COLUMN_PICTURE = "picture";
 		
-		public static final String SQL_CREATE_ENTRIES = 
+		public static final String TABLE_NAME = "my_alarm_entry";
+		
+		
+
+		public final static String COLUMN_USER = "user";
 	}
-	*/
+	
+	public static abstract class PartnerAlarmEntry implements BaseColumns{
+		public static final String COLUMN_NAME= "name";
+		public static final String COLUMN_ID = "id";
+		public static final String COLUMN_TIME = "time";
+		public static final String COLUMN_MSG = "msg";
+		public static final String TABLE_NAME = "partner_alarm_entry";
+		public static final String COLUMN_PICTURE = "picture";
+	}
+	
 }

@@ -1,6 +1,5 @@
 package com.yljv.alarmapp.ui;
 
-import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -24,11 +23,11 @@ import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class MyAlarmListFragment extends SherlockFragment {
 	
 	private ListView listView;
-	ArrayList<Alarm> list = new ArrayList<Alarm>();
 	public int myAlarmID;
 	private MenuItem deleteAlarm;
 	private MenuItem cancelAlarm;
@@ -162,11 +161,16 @@ public class MyAlarmListFragment extends SherlockFragment {
 			deleteDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
+					/*ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
 					Alarm myAlarm = myAdapter.getItem(selectedPosition);
 				    myAdapter.remove(myAlarm);
 				    myAdapter.notifyDataSetChanged();
-				    deleteAlarm.setVisible(false);
+				    deleteAlarm.setVisible(false);*/
+					
+					ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
+				    Alarm myAlarm = myAdapter.getItem(selectedPosition);
+				    MyAlarmManager.deleteAlarm(myAlarm);
+				    myAdapter.notifyDataSetChanged();
 				}
 			});
 			deleteDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
