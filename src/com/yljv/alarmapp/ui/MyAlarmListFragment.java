@@ -40,6 +40,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);	
 		listView = (ListView) view.findViewById(R.id.clock_list);
+
 		ClockAdapter myAdapter = new ClockAdapter(this.getActivity());
 		listView.setAdapter(myAdapter);	
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

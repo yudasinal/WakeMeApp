@@ -24,5 +24,12 @@ public class MyBootReceiver extends BroadcastReceiver {
 		Toast.makeText(context, Integer.toString(intent.getIntExtra("id", -100)), Toast.LENGTH_LONG)
 				.show();*/
 
+		/*
+		 * Get the alarm
+		 * get picture
+		 * get message
+		 * get music
+		 * set new alarm if repeating
+		 */
 	}
 }

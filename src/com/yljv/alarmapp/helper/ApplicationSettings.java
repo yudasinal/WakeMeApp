@@ -5,42 +5,60 @@ import android.content.SharedPreferences;
 
 public class ApplicationSettings {
 
-	public static String TIME_SCALE = "time_scale";
-	public static String NOTIFICATION_ON = "notification_on";
-	public static String VIBRATION_ON = "vibration_on";
+	public final static String NOTIFICATION_ON_KEY = "notification_on";
+	
+	private final static String PARTNER_EMAIL_KEY = "parter_email";
+	private final static String PARTNER_NAME_KEY = "partner_name";
+	private final static String ALARM_ID_COUNTER_KEY = "counter";
+	private final static String USER_EMAIL_KEY = "user";
 	
 	public int alarmIdCounter = 0;
 	
-	public static SharedPreferences preferences;
+	private static SharedPreferences preferences;
 	
 	
 
 	public static void setSharedPreferences(Context context) {
-		// TODO Auto-generated method stub
-		preferences = context.getSharedPreferences("preferences", Context.MODE_MULTI_PROCESS);
+		// TODO do this at beginning!!!
+		preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
 	}
 	
 	public static int getAlarmId(){
-		int id = preferences.getInt("counter", 0);
-		preferences.edit().putInt("counter", id+1).commit();
+		int id = preferences.getInt(ALARM_ID_COUNTER_KEY, 0);
+		preferences.edit().putInt(ALARM_ID_COUNTER_KEY, id+1).commit();		
 		return id+1;
 	}
 	
 	
-	public static void setPartner(String partnerEmail){
-		preferences.edit().putString("partner", partnerEmail);
+	public static String getPartnerEmail(){
+		return preferences.getString(PARTNER_EMAIL_KEY, "");
+	}
+
+	public static String getPartnerName(){
+		return preferences.getString(PARTNER_NAME_KEY, "Partner");
+	}
+
+	public static String getUserEmail(){
+		return preferences.getString(USER_EMAIL_KEY, "");
+	}
+
+	public static boolean isNotificationActivated(){
+		return preferences.getBoolean(NOTIFICATION_ON_KEY, true);
 	}
 	
-	public static void setUser(String userEmail){
-		preferences.edit().putString("user", userEmail);
+	public static void setNotificationActivated(boolean activated){
+		preferences.edit().putBoolean(NOTIFICATION_ON_KEY, activated);
+	}
+	public static void setPartnerEmail(String partnerEmail){
+		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail);
 	}
 	
-	public static String getUser(){
-		return preferences.getString("user", "");
+	public static void setPartnerName(String partnerName){
+		preferences.edit().putString(PARTNER_NAME_KEY, partnerName);
 	}
 	
-	public static String getPartner(){
-		return preferences.getString("partner", "");
+	public static void setUserEmail(String userEmail){
+		preferences.edit().putString(USER_EMAIL_KEY, userEmail);
 	}
 	
 
