@@ -136,7 +136,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 				alarm.setRepeat(Alarm.MONDAY+i, true);
 			}
 		}
-		MyAlarmManager.setAlarm(this.getActivity(), alarm);
+		MyAlarmManager.setNewAlarm(this.getActivity(), alarm);
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);
