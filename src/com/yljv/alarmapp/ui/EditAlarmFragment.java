@@ -57,12 +57,18 @@ public class EditAlarmFragment extends SherlockFragment implements OnTimeChanged
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
+		Bundle bundle = this.getArguments();
+		int alarmPosition = bundle.getInt("edit alarm");
+		Alarm myAlarm = MyAlarmManager.getAllAlarms().get(alarmPosition);
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+		timePicker.setCurrentHour(myAlarm.getHour());
+		timePicker.setCurrentMinute(myAlarm.getMinute());
 		setAlarm = (Button) view.findViewById(R.id.set_alarm);
 		cancelAlarm = (Button) view.findViewById(R.id.cancel_alarm);
 		setAlarm.setOnClickListener(this);
 		cancelAlarm.setOnClickListener(this);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
+		alarmName.setText(myAlarm.getName());
 		monday = (TextView) view.findViewById(R.id.mon);
 		monday.setOnTouchListener(new View.OnTouchListener() {
 			

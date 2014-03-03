@@ -6,8 +6,10 @@ import java.util.Collections;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yljv.alarmapp.R;
@@ -15,6 +17,8 @@ import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class ClockAdapter extends ArrayAdapter<Alarm> {
+	boolean alarmSet;
+	
 	
 	public ClockAdapter(Context context) {
 		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
@@ -26,6 +30,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		View rowView = convertView;
 		ViewHolder holder;
 		ArrayList<Alarm> myAlarms;
+		final ImageView setAlarm;
 		
 		if(rowView == null) {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -36,6 +41,22 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			myAlarms = MyAlarmManager.getAllAlarms();
 			Collections.sort(myAlarms);
 			rowView.setTag(holder);
+			setAlarm = (ImageView) rowView.findViewById(R.id.set_alarm);
+			setAlarm.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(!alarmSet) {
+						setAlarm.setImageResource(R.drawable.alarm_activated);
+						alarmSet = true;
+					}
+					else {
+						setAlarm.setImageResource(R.drawable.alarm_deactivated);
+						alarmSet = false;
+					}
+				}
+
+			});
 			
 			if (myAlarms == null) {
 				ViewHolder myHolder = (ViewHolder)rowView.getTag();
@@ -57,6 +78,9 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 
 		return rowView;
 	}
+	
+	
+	
 	
 	static class ViewHolder {
 		TextView textView;

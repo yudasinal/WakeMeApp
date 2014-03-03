@@ -7,10 +7,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -28,61 +28,82 @@ import com.yljv.alarmapp.parse.database.Alarm;
 public class MyAlarmListFragment extends SherlockFragment {
 	
 	private ListView listView;
-	public final static String  EDIT_ALARM = "com.yljv.alarmapp.ui.EDIT_ALARM";
 	ArrayList<Alarm> list = new ArrayList<Alarm>();
 	public int myAlarmID;
 	private MenuItem deleteAlarm;
+	private MenuItem cancelAlarm;
+	private MenuItem addAlarm;
 	private int selectedPosition;
+	private int count = 0;
+	private boolean[] selectedItems;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);	
 		listView = (ListView) view.findViewById(R.id.clock_list);
 		ClockAdapter myAdapter = new ClockAdapter(this.getActivity());
 		listView.setAdapter(myAdapter);	
-		listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		selectedItems = new boolean[myAdapter.getCount()];
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				
 				deleteAlarm.setVisible(true);
+				addAlarm.setVisible(false);
+				cancelAlarm.setVisible(true);
 				selectedPosition = position;
 				listView.setItemChecked(position, true);
+				selectedItems[position] = true;
+				count++;
+				
 				return true;
 			}
 		});
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-					deleteAlarm.setVisible(false);
-			}
-			
-		});
 		
-
-		//listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		//listView.setSelector(R.drawable.background_list_item);
-		/*
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				Alarm myAlarm = (Alarm) parent.getSelectedItem();
-				EditAlarmFragment editAlarm = new EditAlarmFragment();
-				myAlarmID = myAlarm.getAlarmId();
-				Bundle bundle = new Bundle();
-				bundle.putInt(EDIT_ALARM, myAlarmID);
-				editAlarm.setArguments(bundle);
-				if (getActivity() instanceof MenuMainActivity) {
-					MenuMainActivity mma = (MenuMainActivity) getActivity();
-					mma.switchContent(editAlarm);
-				} 
+				if(count != 0) {
+					if(!listView.isItemChecked(position) && count == 1) {
+						Log.e("AlarmApp", "count == 1 item checked");
+						listView.setItemChecked(position, false);
+						count--;
+						deleteAlarm.setVisible(false);
+						cancelAlarm.setVisible(false);
+						addAlarm.setVisible(true);
+						selectedItems[position] = false;
+					}
+					else if(listView.isItemChecked(position)) {
+						Log.e("AlarmApp", "count != 0 item not checked");
+						listView.setItemChecked(position, true);
+						selectedItems[position] = true;
+						count++;
+					}
+					else {
+					Log.e("AlarmApp", "count != 0 item checked");
+					listView.setItemChecked(position, false);
+					selectedItems[position] = false;
+					count--;
+					}	
+				}
+				else{
+					Log.e("AlarmApp", "count == 0");
+					int alarmPosition = parent.getSelectedItemPosition();
+					EditAlarmFragment editAlarm = new EditAlarmFragment();
+					Bundle bundle = new Bundle();
+					bundle.putInt("edit alarm", alarmPosition);
+					editAlarm.setArguments(bundle);
+					if (getActivity() instanceof MenuMainActivity) {
+						MenuMainActivity mma = (MenuMainActivity) getActivity();
+						mma.switchContent(editAlarm);
+					} 
+				}
 			}
 		});
-		*/
 		
 		return view; 
 	}
@@ -100,7 +121,10 @@ public class MyAlarmListFragment extends SherlockFragment {
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		deleteAlarm = (MenuItem) menu.findItem(R.id.delete_alarm);
+		addAlarm = (MenuItem) menu.findItem(R.id.add_alarm);
+		cancelAlarm = (MenuItem) menu.findItem(R.id.cancel_alarm);
 		deleteAlarm.setVisible(false);
+		cancelAlarm.setVisible(false);
 	}
 	
 	@Override
@@ -120,12 +144,16 @@ public class MyAlarmListFragment extends SherlockFragment {
 				mma.switchContent(newContent);
 			} 
 			break;
-		case R.id.edit_alarm:
-			newContent = new EditAlarmFragment();
-			if (getActivity() instanceof MenuMainActivity) {
-				MenuMainActivity mma = (MenuMainActivity) getActivity();
-				mma.switchContent(newContent);
+		case R.id.cancel_alarm:
+			for(int i = 0; i < selectedItems.length -1; i++) {
+				if(selectedItems[i] == true) {
+					selectedItems[i] = false;
+					listView.setItemChecked(i, false);
+				}
 			}
+			deleteAlarm.setVisible(false);
+			cancelAlarm.setVisible(false);
+			addAlarm.setVisible(true);
 			break;
 		case R.id.delete_alarm:
 			AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this.getActivity());
@@ -134,7 +162,8 @@ public class MyAlarmListFragment extends SherlockFragment {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
-				    myAdapter.remove(myAdapter.getItem(selectedPosition));
+					Alarm myAlarm = myAdapter.getItem(selectedPosition);
+				    myAdapter.remove(myAlarm);
 				    myAdapter.notifyDataSetChanged();
 				    deleteAlarm.setVisible(false);
 				}
