@@ -116,6 +116,7 @@ public class MyAlarmManager {
 
 
 	public static void deleteAlarm(Alarm alarm) {
+		
 		myAlarms.remove(alarm);				
 		
 		db.delete(AlarmEntry.TABLE_NAME, AlarmEntry.COLUMN_ID +"="+alarm.getAlarmId(), null);		
@@ -187,7 +188,7 @@ public class MyAlarmManager {
 		return partnerAlarms;
 	}
 
-	public static void retrievePartnerAlarmsFromParse(
+	public static void updatePartnerAlarms(
 			final ParsePartnerAlarmListener listener) {
 		
 		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");

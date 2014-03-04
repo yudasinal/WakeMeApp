@@ -53,6 +53,8 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	int red = Color.parseColor("#ff0404");
 	int tintedRed = Color.parseColor("#ffc4a4");
 	
+	Alarm alarm;
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +84,8 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
 		ringtoneButton.setOnClickListener(this);
+		
+		alarm = new Alarm();
 		return view;
 	}
 	
@@ -128,10 +132,8 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		Bundle data = new Bundle();
 		data.putString(ALARM_NAME,nameAlarm);
 		newContent.setArguments(data);
-		Alarm alarm = new Alarm();
-		//changedHour and changedMinute = 0
+		
 		alarm.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-		//alarm.setTime(10, 15);
 		alarm.setName(nameAlarm);
 		for(int i = 0; i < 7; i++){
 			if(scheduled[i]){
