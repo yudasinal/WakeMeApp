@@ -28,15 +28,16 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public Alarm() {
 		super("Alarm");
 		values = new ContentValues();
-		values.put(AlarmEntry.COLUMN_NAME, "Alarm");
-		values.put(AlarmEntry.COLUMN_MUSIC_URI, "");
-		values.put(AlarmEntry.COLUMN_ID, ApplicationSettings.getAlarmId() * 10);
-		values.put(AlarmEntry.COLUMN_VOLUME, 5);
-		values.put(AlarmEntry.COLUMN_MSG, "");
 		values.put(AlarmEntry.COLUMN_WEEKDAYS, "0000000");
-		
-		values.put(AlarmEntry.COLUMN_ACTIVATED, 1);
-		values.put(AlarmEntry.COLUMN_VISIBILITY, 1);
+		this.setName("Alarm");
+		this.setID(ApplicationSettings.getAlarmId() * 10);
+		this.setMusicVolume(5);
+		this.setMessage("");
+		for(int i = 0; i < 7; i++){
+			this.setRepeat(i, false);
+		}
+		this.setActivated(true);
+		this.setVisible(true);
 	}
 
 	
@@ -163,35 +164,43 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public void setActivated(boolean activated) {
 		if(activated){
 			values.put(AlarmEntry.COLUMN_ACTIVATED, 1);
+			put(AlarmEntry.COLUMN_ACTIVATED, 1);
 		}else{
 			values.put(AlarmEntry.COLUMN_ACTIVATED, 0);
+			put(AlarmEntry.COLUMN_ACTIVATED, 0);
 		}
 	}
 
 	private void setID(int id) {
 		values.put(AlarmEntry.COLUMN_ID, id);
+		put(AlarmEntry.COLUMN_ID, id);
 	}
 
 	public void setMessage(String msg){
 		values.put(AlarmEntry.COLUMN_MSG, msg);
+		put(AlarmEntry.COLUMN_MSG, msg);
 	}
 
 	
 	public void setMusicURI(URI uri){
 		values.put(AlarmEntry.COLUMN_MUSIC_URI, uri.getPath());
+		put(AlarmEntry.COLUMN_MUSIC_URI, uri.getPath());
 	}
 	
 
 	public void setMusicVolume(int volume){
 		values.put(AlarmEntry.COLUMN_VOLUME, volume);
+		this.put(AlarmEntry.COLUMN_VOLUME, volume);
 	}
 
 	public void setName(String name) {
 		values.put(AlarmEntry.COLUMN_NAME, name);
+		this.put(AlarmEntry.COLUMN_NAME, name);
 	}
 	
 	public void setPicture(File file){
 		values.put(AlarmEntry.COLUMN_PICTURE, file.getAbsolutePath());
+		this.put(AlarmEntry.COLUMN_PICTURE, file.getAbsoluteFile());
 	}
 
 	public void setRepeat(int day, boolean activated) {
@@ -202,15 +211,19 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 			sb.replace(day, day+1, "0");
 		}
 		values.put(AlarmEntry.COLUMN_WEEKDAYS, sb.toString());
+		this.put(AlarmEntry.COLUMN_WEEKDAYS, sb.toString());
 	}
 
 	public void setTime(int hour, int minute) {
-		values.put(AlarmEntry.COLUMN_TIME, hour * 60 + minute);
+		int time = hour * 60 + minute;
+		values.put(AlarmEntry.COLUMN_TIME, time );
+		this.put(AlarmEntry.COLUMN_TIME, time);
 	}
 
 	public void setTime(GregorianCalendar cal) {
 		int time = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
 		values.put(AlarmEntry.COLUMN_TIME, time);
+		this.put(AlarmEntry.COLUMN_TIME, time);
 	}
 
 	public void setValues(ContentValues values){
@@ -223,6 +236,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		} else{
 			values.put(AlarmEntry.COLUMN_VISIBILITY, 1);
 		}
+		this.put(AlarmEntry.COLUMN_VISIBILITY, visible);
 		
 	}
 

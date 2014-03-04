@@ -8,6 +8,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yljv.alarmapp.helper.AccountManager;
+import com.yljv.alarmapp.helper.ApplicationSettings;
 
 
 public class PartnerAlarmManager {
@@ -17,16 +18,16 @@ public class PartnerAlarmManager {
 	//TODO create Items for each day alarm gets repeated
 		public static void findAllPartnerAlarms(
 				final ParsePartnerAlarmListener listener) {
-			ParseUser partner = AccountManager.getPartner();
+			String partner = ApplicationSettings.getPartnerEmail();
 		
-			ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
+			ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 			query.whereEqualTo("user", partner);
 			query.orderByAscending("time");
-			query.findInBackground(new FindCallback<Alarm>() {
-				public void done(List<Alarm> list, ParseException e) {
+			query.findInBackground(new FindCallback<AlarmInstance>() {
+				public void done(List<AlarmInstance> list, ParseException e) {
 					if (e == null) {
 						// query worked
-						listener.partnerAlarmsFound(list);
+						partnerAlarms = (ArrayList) list;
 					} else {
 						// query failed
 						listener.partnerAlarmsSearchFailed(e);
