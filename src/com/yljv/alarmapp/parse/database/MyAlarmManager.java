@@ -133,6 +133,15 @@ public class MyAlarmManager {
 		// cancelAlarm(alarm)
 	}
 	
+	public static Alarm findAlarmById(int id){
+		for(Alarm alarm : myAlarms){
+			if(alarm.getAlarmId() == id){
+				return alarm;
+			}
+		}
+		return null;
+	}
+	
 	public static ArrayList<AlarmInstance> getPartnerAlarms(){
 		
 		partnerAlarms.clear();

@@ -51,6 +51,8 @@ public class EditAlarmFragment extends SherlockFragment implements
 	TextView wednesday;
 	Button setAlarm;
 	Button cancelAlarm;
+	
+	Alarm alarm;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,16 +60,17 @@ public class EditAlarmFragment extends SherlockFragment implements
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
 		Bundle bundle = this.getArguments();
 		int alarmPosition = bundle.getInt("edit alarm");
-		Alarm myAlarm = MyAlarmManager.getAllAlarms().get(alarmPosition);
+		//Alarm myAlarm = MyAlarmManager.getAllAlarms().get(alarmPosition);
+		alarm = MyAlarmManager.findAlarmById(bundle.getInt("edit alarm"));
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-		timePicker.setCurrentHour(myAlarm.getHour());
-		timePicker.setCurrentMinute(myAlarm.getMinute());
+		timePicker.setCurrentHour(alarm.getHour());
+		timePicker.setCurrentMinute(alarm.getMinute());
 		setAlarm = (Button) view.findViewById(R.id.set_alarm);
 		cancelAlarm = (Button) view.findViewById(R.id.cancel_alarm);
 		setAlarm.setOnClickListener(this);
 		cancelAlarm.setOnClickListener(this);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
-		alarmName.setText(myAlarm.getName());
+		alarmName.setText(alarm.getName());
 		monday = (TextView) view.findViewById(R.id.mon);
 		monday.setOnTouchListener(new View.OnTouchListener() {
 
