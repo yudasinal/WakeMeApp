@@ -16,8 +16,11 @@ import com.yljv.alarmapp.helper.ApplicationSettings;
 @ParseClassName("Alarm")
 public class Alarm extends ParseObject implements Comparable<Alarm> {
 
+
+
 	final static int AM = Calendar.AM;
 	final static int PM = Calendar.PM;
+
 
 	
 	private ContentValues values;
@@ -26,13 +29,14 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		super("Alarm");
 		values = new ContentValues();
 		values.put(AlarmEntry.COLUMN_NAME, "Alarm");
-		values.put(AlarmEntry.COLUMN_ACTIVATED, 1);
-		values.put(AlarmEntry.COLUMN_VISIBILITY, 1);
 		values.put(AlarmEntry.COLUMN_MUSIC_URI, "");
 		values.put(AlarmEntry.COLUMN_ID, ApplicationSettings.getAlarmId() * 10);
 		values.put(AlarmEntry.COLUMN_VOLUME, 5);
 		values.put(AlarmEntry.COLUMN_MSG, "");
 		values.put(AlarmEntry.COLUMN_WEEKDAYS, "0000000");
+		
+		values.put(AlarmEntry.COLUMN_ACTIVATED, 1);
+		values.put(AlarmEntry.COLUMN_VISIBILITY, 1);
 	}
 
 	
@@ -42,7 +46,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 	@Override
 	public int compareTo(Alarm other) {
-		 return this.getTimeAsCalendar().compareTo(other.getTimeAsCalendar());
+		return this.getTimeAsCalendar().compareTo(other.getTimeAsCalendar());
 		//return this.name.compareTo(other.name);
 	}
 
@@ -139,13 +143,13 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		}
 		return resA;
 	}
-
+	
 	
 	public boolean isActivated() {
 		int res =  (Integer) values.get(AlarmEntry.COLUMN_ACTIVATED);
 		return (res == 1) ? true : false;
 	}
-
+	
 	public boolean isAM() {
 		int time = (Integer) values.get(AlarmEntry.COLUMN_TIME);
 		return (time >= 13*60) ? true : false;
@@ -167,7 +171,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	private void setID(int id) {
 		values.put(AlarmEntry.COLUMN_ID, id);
 	}
-	
+
 	public void setMessage(String msg){
 		values.put(AlarmEntry.COLUMN_MSG, msg);
 	}
@@ -177,6 +181,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		values.put(AlarmEntry.COLUMN_MUSIC_URI, uri.getPath());
 	}
 	
+
 	public void setMusicVolume(int volume){
 		values.put(AlarmEntry.COLUMN_VOLUME, volume);
 	}
@@ -225,22 +230,21 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 	
 	public static abstract class AlarmEntry implements BaseColumns{
-		public static final String COLUMN_NAME= "alarmName";
-		public static final String COLUMN_ID = "alarmID";
-		public static final String COLUMN_TIME = "time";
-		public static final String COLUMN_ACTIVATED = "activated";
-		public static final String COLUMN_WEEKDAYS = "weekdays";
-		public static final String COLUMN_VISIBILITY = "visibility";
-		public static final String COLUMN_MUSIC_URI = "URI";
-		public static final String COLUMN_VOLUME = "volume";
-		public static final String COLUMN_MSG = "msg";
-		public static final String COLUMN_PICTURE = "picture";
+		 public static final String COLUMN_NAME= "alarmName";
+		 public static final String COLUMN_ID = "alarmID";
+		 public static final String COLUMN_TIME = "time";
+	  	 public static final String COLUMN_ACTIVATED = "activated";
+	  	 public static final String COLUMN_WEEKDAYS = "weekdays";
+	  	 public static final String COLUMN_VISIBILITY = "visibility";
+	  	 public static final String COLUMN_MUSIC_URI = "URI";
+	  	 public static final String COLUMN_VOLUME = "volume";
+	  	 public static final String COLUMN_MSG = "msg";
+		 public static final String COLUMN_PICTURE = "picture";
 		
-		public static final String TABLE_NAME = "my_alarm_entry";
-		
-		
-
-		public final static String COLUMN_USER = "user";
+		 public static final String TABLE_NAME = "my_alarm_entry";
+		 
+		 
+		 public final static String COLUMN_USER = "user";
 	}
 	
 	public static abstract class PartnerAlarmEntry implements BaseColumns{
@@ -251,5 +255,5 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		public static final String TABLE_NAME = "partner_alarm_entry";
 		public static final String COLUMN_PICTURE = "picture";
 	}
-	
+
 }

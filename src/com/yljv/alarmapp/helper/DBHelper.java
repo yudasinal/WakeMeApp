@@ -1,16 +1,14 @@
 package com.yljv.alarmapp.helper;
 
-import com.yljv.alarmapp.parse.database.Alarm.AlarmEntry;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.yljv.alarmapp.parse.database.Alarm.AlarmEntry;
 
 public class DBHelper extends SQLiteOpenHelper{
 
 	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_NAME = "Alarms.db";
-	
 
 	public static final String COMMA = ", ";
 	public static final String TEXT_TYPE = " TEXT";

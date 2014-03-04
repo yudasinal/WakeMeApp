@@ -157,7 +157,12 @@ public class MyAlarmListFragment extends SherlockFragment {
 			break;
 		case R.id.delete_alarm:
 			AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this.getActivity());
-			deleteDialog.setMessage("Delete selected alarm?");
+			if(count > 1) {
+				deleteDialog.setMessage("Delete selected alarms?");
+			}
+			else {
+				deleteDialog.setMessage("Delete selected alarm?");
+			}
 			deleteDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

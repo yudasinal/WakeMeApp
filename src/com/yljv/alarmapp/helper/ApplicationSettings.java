@@ -31,6 +31,7 @@ public class ApplicationSettings {
 	
 	
 	public static String getPartnerEmail(){
+
 		return preferences.getString(PARTNER_EMAIL_KEY, "john@gmail.com");
 	}
 
@@ -39,6 +40,7 @@ public class ApplicationSettings {
 	}
 
 	public static String getUserEmail(){
+
 		return preferences.getString(USER_EMAIL_KEY, "jane@gmail.com");
 	}
 
