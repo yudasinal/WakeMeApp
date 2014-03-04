@@ -31,7 +31,8 @@ public class ApplicationSettings {
 	
 	
 	public static String getPartnerEmail(){
-		return preferences.getString(PARTNER_EMAIL_KEY, "");
+
+		return preferences.getString(PARTNER_EMAIL_KEY, "john@gmail.com");
 	}
 
 	public static String getPartnerName(){
@@ -39,7 +40,8 @@ public class ApplicationSettings {
 	}
 
 	public static String getUserEmail(){
-		return preferences.getString(USER_EMAIL_KEY, "");
+
+		return preferences.getString(USER_EMAIL_KEY, "jane@gmail.com");
 	}
 
 	public static boolean isNotificationActivated(){

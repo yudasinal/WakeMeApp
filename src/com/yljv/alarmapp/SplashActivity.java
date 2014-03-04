@@ -16,8 +16,10 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.PushService;
+import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 
@@ -49,6 +51,7 @@ public class SplashActivity extends Activity {
 
 		// register ParseObject Subclasses
 		ParseObject.registerSubclass(Alarm.class);
+		ParseObject.registerSubclass(AlarmInstance.class);
 
 		// enable Push Notifications
 		PushService.setDefaultPushCallback(this, MenuMainActivity.class);
@@ -57,6 +60,9 @@ public class SplashActivity extends Activity {
 		// initialize Settings
 		ApplicationSettings.setSharedPreferences(this);
 
+		
+		//Initialize MyAlarmManager
+		MyAlarmManager.setContext(this);
 		
 		ArrayList<Alarm> list = MyAlarmManager.getAllAlarms();
 		

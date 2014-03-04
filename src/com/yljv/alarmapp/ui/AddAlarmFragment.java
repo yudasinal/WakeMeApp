@@ -129,11 +129,14 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		Bundle data = new Bundle();
 		data.putString(ALARM_NAME,nameAlarm);
 		newContent.setArguments(data);
-		Alarm alarm = new Alarm(nameAlarm);
-		alarm.setTime(changedHour, changedMinute);
+		Alarm alarm = new Alarm();
+		//changedHour and changedMinute = 0
+		alarm.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+		//alarm.setTime(10, 15);
+		alarm.setName(nameAlarm);
 		for(int i = 0; i < 7; i++){
 			if(scheduled[i]){
-				alarm.setRepeat(Alarm.MONDAY+i, true);
+				alarm.setRepeat(i, true);
 			}
 		}
 		MyAlarmManager.setNewAlarm(this.getActivity(), alarm);

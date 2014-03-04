@@ -3,13 +3,34 @@ package com.yljv.alarmapp.helper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
+import com.yljv.alarmapp.parse.database.Alarm.AlarmEntry;
 
 public class DBHelper extends SQLiteOpenHelper{
 
 	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_NAME = "Alarms.db";
+
+	public static final String COMMA = ", ";
+	public static final String TEXT_TYPE = " TEXT";
+	public static final String INT_TYPE = " INTEGER";
+	
+	
+	
+	public static final String SQL_CREATE_ENTRIES = 
+			"CREATE TABLE " + AlarmEntry.TABLE_NAME + " (" + 
+			AlarmEntry.COLUMN_ID + " INTEGER PRIMARY KEY" + COMMA +
+			AlarmEntry.COLUMN_NAME + TEXT_TYPE + COMMA + 
+			AlarmEntry.COLUMN_TIME + INT_TYPE + COMMA + 
+			AlarmEntry.COLUMN_ACTIVATED + INT_TYPE + COMMA +
+			AlarmEntry.COLUMN_VISIBILITY + INT_TYPE + COMMA + 
+			AlarmEntry.COLUMN_MUSIC_URI + TEXT_TYPE + COMMA + 
+			AlarmEntry.COLUMN_VOLUME + INT_TYPE  + COMMA + 
+			AlarmEntry.COLUMN_MSG + TEXT_TYPE + COMMA + 
+			AlarmEntry.COLUMN_PICTURE + TEXT_TYPE + COMMA + 
+			AlarmEntry.COLUMN_WEEKDAYS + TEXT_TYPE + 
+			" );";
+	public static final String SQL_DELETE_ENTRIES = 
+			"DROP TABLE IF EXISTS " + AlarmEntry.TABLE_NAME;
 	
 	public DBHelper(Context context){
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -17,13 +38,17 @@ public class DBHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-		
+		db.execSQL(SQL_CREATE_ENTRIES);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-		
+		db.execSQL(SQL_DELETE_ENTRIES);
+		onCreate(db);
+	}
+	
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion){
+		onUpgrade(db, oldVersion, newVersion);
 	}
 }
