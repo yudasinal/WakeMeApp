@@ -94,7 +94,6 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 
 	@Override
 	public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-		// TODO Auto-generated method stub
 		Calendar then=Calendar.getInstance();
 
 	    then.set(Calendar.HOUR_OF_DAY, hourOfDay);

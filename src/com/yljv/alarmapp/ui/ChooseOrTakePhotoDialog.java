@@ -19,12 +19,10 @@ public class ChooseOrTakePhotoDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setItems(R.array.photo_options, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				switch(which) {
 				case 0:
 					Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 

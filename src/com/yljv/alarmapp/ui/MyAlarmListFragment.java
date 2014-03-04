@@ -92,10 +92,14 @@ public class MyAlarmListFragment extends SherlockFragment {
 				}
 				else{
 					Log.e("AlarmApp", "count == 0");
-					int alarmPosition = parent.getSelectedItemPosition();
+					Alarm alarm = (Alarm) listView.getAdapter().getItem(position);
+					int alarmID = alarm.getAlarmId();
+					
+					//int alarmPosition = parent.getSelectedItemPosition();
 					EditAlarmFragment editAlarm = new EditAlarmFragment();
 					Bundle bundle = new Bundle();
-					bundle.putInt("edit alarm", alarmPosition);
+					//bundle.putInt("edit alarm", alarmPosition);
+					bundle.putInt("edit alarm", alarmID);
 					editAlarm.setArguments(bundle);
 					if (getActivity() instanceof MenuMainActivity) {
 						MenuMainActivity mma = (MenuMainActivity) getActivity();

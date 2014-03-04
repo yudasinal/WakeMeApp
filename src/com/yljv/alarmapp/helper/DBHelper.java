@@ -3,7 +3,9 @@ package com.yljv.alarmapp.helper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.yljv.alarmapp.parse.database.Alarm.AlarmEntry;
+import com.yljv.alarmapp.parse.database.Alarm.PartnerAlarmEntry;
 
 public class DBHelper extends SQLiteOpenHelper{
 
@@ -16,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	
 	
 	
-	public static final String SQL_CREATE_ENTRIES = 
+	public static final String SQL_CREATE_ALARM_ENTRIES = 
 			"CREATE TABLE " + AlarmEntry.TABLE_NAME + " (" + 
 			AlarmEntry.COLUMN_ID + " INTEGER PRIMARY KEY" + COMMA +
 			AlarmEntry.COLUMN_NAME + TEXT_TYPE + COMMA + 
@@ -29,7 +31,20 @@ public class DBHelper extends SQLiteOpenHelper{
 			AlarmEntry.COLUMN_PICTURE + TEXT_TYPE + COMMA + 
 			AlarmEntry.COLUMN_WEEKDAYS + TEXT_TYPE + 
 			" );";
-	public static final String SQL_DELETE_ENTRIES = 
+	
+	public static final String SQL_CREATE_PARTNER_ALARM_ENTRIES = 
+			"CREATE TABLE " + PartnerAlarmEntry.TABLE_NAME + " (" + 
+			PartnerAlarmEntry.COLUMN_ID + " INTEGER PRIMARY KEY" + COMMA +
+			PartnerAlarmEntry.COLUMN_NAME + TEXT_TYPE + COMMA + 
+			PartnerAlarmEntry.COLUMN_TIME + INT_TYPE + COMMA + 
+			PartnerAlarmEntry.COLUMN_MSG + TEXT_TYPE + COMMA + 
+			PartnerAlarmEntry.COLUMN_PICTURE + TEXT_TYPE + 
+			" );";
+	
+	
+	public static final String SQL_DELETE_ALARM_ENTRIES = 
+			"DROP TABLE IF EXISTS " + AlarmEntry.TABLE_NAME;
+	public static final String SQL_DELETE_PARTNER_ALARM_ENTRIES = 
 			"DROP TABLE IF EXISTS " + AlarmEntry.TABLE_NAME;
 	
 	public DBHelper(Context context){
@@ -38,12 +53,14 @@ public class DBHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(SQL_CREATE_ENTRIES);
+		db.execSQL(SQL_CREATE_ALARM_ENTRIES);
+		db.execSQL(SQL_CREATE_PARTNER_ALARM_ENTRIES);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL(SQL_DELETE_ENTRIES);
+		db.execSQL(SQL_DELETE_ALARM_ENTRIES);
+		db.execSQL(SQL_DELETE_PARTNER_ALARM_ENTRIES);
 		onCreate(db);
 	}
 	

@@ -50,4 +50,8 @@ public class AlarmInstance extends ParseObject{
 	public void setPicture(){
 		
 	}
+	
+	public void setValues(ContentValues values){
+		this.values = values;
+	}
 }

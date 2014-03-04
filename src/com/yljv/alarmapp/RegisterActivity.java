@@ -29,7 +29,6 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_layout);
 		btnRegister = (Button) findViewById(R.id.btnRegister);
@@ -47,7 +46,6 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 
 	@Override
 	public void onClick(View register) {
-		// TODO Auto-generated method stub
 		//TODO create User here
 		switch (register.getId()) {
 			case R.id.btnRegister:

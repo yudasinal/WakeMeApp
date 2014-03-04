@@ -16,24 +16,25 @@ public class PartnerAlarmManager {
 	public static ArrayList<Alarm> partnerAlarms = new ArrayList<Alarm>();
 	
 	//TODO create Items for each day alarm gets repeated
-	public static void findAllPartnerAlarms(
-			final ParsePartnerAlarmListener listener) {
+		public static void findAllPartnerAlarms(
+				final ParsePartnerAlarmListener listener) {
+			String partner = ApplicationSettings.getPartnerEmail();
 		
-		ParseQuery<Alarm> query = ParseQuery.getQuery("AlarmInstance");
-		query.whereEqualTo("user", ApplicationSettings.getPartnerEmail());
-		query.orderByAscending("time");
-		query.findInBackground(new FindCallback<Alarm>() {
-			public void done(List<Alarm> list, ParseException e) {
-				if (e == null) {
-					// query worked
-					listener.partnerAlarmsFound(list);
-				} else {
-					// query failed
-					listener.partnerAlarmsSearchFailed(e);
+			ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+			query.whereEqualTo("user", partner);
+			query.orderByAscending("time");
+			query.findInBackground(new FindCallback<AlarmInstance>() {
+				public void done(List<AlarmInstance> list, ParseException e) {
+					if (e == null) {
+						// query worked
+						partnerAlarms = (ArrayList) list;
+					} else {
+						// query failed
+						listener.partnerAlarmsSearchFailed(e);
+					}
 				}
-			}
-		});
-	}
+			});
+		}
 		
 		public static ArrayList<Alarm> getPartnerAlarms() {
 			//TODO get a list of partner alarms 
