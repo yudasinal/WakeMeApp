@@ -26,8 +26,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		super("Alarm");
 		values = new ContentValues();
 		values.put(AlarmEntry.COLUMN_NAME, "Alarm");
-		values.put(AlarmEntry.COLUMN_ACTIVATED, "1");
-		values.put(AlarmEntry.COLUMN_VISIBILITY, "1");
+		values.put(AlarmEntry.COLUMN_ACTIVATED, 1);
+		values.put(AlarmEntry.COLUMN_VISIBILITY, 1);
 		values.put(AlarmEntry.COLUMN_MUSIC_URI, "");
 		values.put(AlarmEntry.COLUMN_ID, ApplicationSettings.getAlarmId() * 10);
 		values.put(AlarmEntry.COLUMN_VOLUME, 5);
@@ -142,8 +142,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 	
 	public boolean isActivated() {
-		String res =  (String) values.get(AlarmEntry.COLUMN_ACTIVATED);
-		return (res.equals("1")) ? true : false;
+		int res =  (Integer) values.get(AlarmEntry.COLUMN_ACTIVATED);
+		return (res == 1) ? true : false;
 	}
 
 	public boolean isAM() {
@@ -152,8 +152,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public boolean isVisible() {
-		String res = (String) values.get(AlarmEntry.COLUMN_VISIBILITY);
-		return (res.equals("1")) ? true : false;
+		int res = (Integer) values.get(AlarmEntry.COLUMN_VISIBILITY);
+		return (res == 1) ? true : false;
 	}
 
 	public void setActivated(boolean activated) {

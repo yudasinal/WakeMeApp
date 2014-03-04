@@ -17,7 +17,6 @@ public class ChoiceActivity extends Activity implements OnClickListener  {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_layout);
@@ -30,7 +29,6 @@ public class ChoiceActivity extends Activity implements OnClickListener  {
 	
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 			case R.id.btnRegister:
 				toRegister();

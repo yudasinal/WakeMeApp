@@ -130,8 +130,8 @@ public class MyAlarmManager {
 		}
 		
 		//TODO remove alarms from server (with same objectid)
-		//TODO remove alarms from local database
-		//TODO cancelAlarm(alarm)
+		//remove alarms from local database
+		// cancelAlarm(alarm)
 	}
 
 	//TODO create Items for each day alarm gets repeated

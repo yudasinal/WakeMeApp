@@ -73,7 +73,6 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.add_for_partner, container, false);
 		previewButton = (Button) view.findViewById(R.id.preview);
 		addPicture = (ImageView) view.findViewById(R.id.add_picture);
@@ -118,7 +117,6 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		// TODO Auto-generated method stub
 		if (position == 0) {
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
