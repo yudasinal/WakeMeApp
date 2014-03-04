@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.content.ContentValues;
+import android.provider.BaseColumns;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -16,18 +17,62 @@ public class AlarmInstance extends ParseObject{
 	final static int AM = Calendar.AM;
 	final static int PM = Calendar.PM;
 
-	final static String COLUMN_NAME = "name";
-	final static String COLUMN_ID = "id";
-	final static String COLUMN_TIME = "time";
-	final static String COLUMN_MSG = "msg";
-	final static String COLUMN_PICTURE = "picture";
-	final static String COLUMN_USER = "user";
+	public final static String COLUMN_NAME = "name";
+	public final static String COLUMN_ID = "id";
+	public final static String COLUMN_TIME = "time";
+	public final static String COLUMN_MSG = "msg";
+	public final static String COLUMN_PICTURE = "picture";
+	public final static String COLUMN_USER = "user";
+	public final static String TABLE_NAME = "partner_alarm_entry";
 	
 	private ContentValues values;
 
 	public AlarmInstance() {
 		super("AlarmInstance");
 		put(COLUMN_USER, ApplicationSettings.getUserEmail());
+	}
+	
+	public String getName(){
+		return values.getAsString(AlarmInstance.COLUMN_NAME);
+	}
+	
+	public int getID(){
+		return values.getAsInteger(AlarmInstance.COLUMN_ID);
+	}
+	
+	public GregorianCalendar getTimeAsCalendar(){
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(values.getAsInteger(AlarmInstance.COLUMN_TIME));
+		return cal;
+	}
+	
+	public int getHour(){
+		return getTimeAsCalendar().get(Calendar.HOUR);
+	}
+	
+	public int getMinute(){
+		return getTimeAsCalendar().get(Calendar.MINUTE);
+	}
+	
+	public boolean isAM(){
+		return getTimeAsCalendar().get(Calendar.AM_PM) == Calendar.AM;
+	}
+	
+	public String getTimeAsString() {
+		int myHour = this.getHour();
+		int myMinute = this.getMinute();
+		boolean am = this.isAM();
+
+		String hourS;
+		String minuteS;
+		String amS;
+
+		hourS = Integer.toString(myHour);
+		minuteS = (myMinute < 10) ? "0" + Integer.toString(myMinute) : Integer
+				.toString(myMinute);
+		amS = am ? "AM" : "PM";
+
+		return hourS + ":" + minuteS + " " + amS;
 	}
 	
 	public void setName(String name){
@@ -54,4 +99,5 @@ public class AlarmInstance extends ParseObject{
 	public void setValues(ContentValues values){
 		this.values = values;
 	}
+	
 }

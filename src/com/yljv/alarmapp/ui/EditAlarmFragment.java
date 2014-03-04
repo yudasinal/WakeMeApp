@@ -42,13 +42,14 @@ public class EditAlarmFragment extends SherlockFragment implements
 	EditText alarmName;
 	SeekBar volume;
 	Button ringtoneButton;
-	TextView monday;
+	TextView[] weekdays = new TextView[7];
+	/*TextView monday;
 	TextView tuesday;
 	TextView wednesday;
 	TextView thursday;
 	TextView friday;
 	TextView saturday;
-	TextView sunday;
+	TextView sunday;*/
 	Button setAlarm;
 	Button cancelAlarm;
 	boolean[] scheduled = new boolean[7];
@@ -63,8 +64,9 @@ public class EditAlarmFragment extends SherlockFragment implements
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
 		Bundle bundle = this.getArguments();
 		int alarmPosition = bundle.getInt("edit alarm");
-		//Alarm myAlarm = MyAlarmManager.getAllAlarms().get(alarmPosition);
 		alarm = MyAlarmManager.findAlarmById(bundle.getInt("edit alarm"));
+		
+		
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 		timePicker.setCurrentHour(alarm.getHour());
 		timePicker.setCurrentMinute(alarm.getMinute());
@@ -74,24 +76,31 @@ public class EditAlarmFragment extends SherlockFragment implements
 		cancelAlarm.setOnClickListener(this);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
 		alarmName.setText(alarm.getName());
-		monday = (TextView) view.findViewById(R.id.mon);
-		monday.setOnTouchListener(this);
-		tuesday = (TextView) view.findViewById(R.id.tue);
-		tuesday.setOnTouchListener(this);
-		wednesday = (TextView) view.findViewById(R.id.wed);
-		wednesday.setOnTouchListener(this);
-		thursday = (TextView) view.findViewById(R.id.thu);
-		thursday.setOnTouchListener(this);
-		friday = (TextView) view.findViewById(R.id.fri);
-		friday.setOnTouchListener(this);
-		saturday = (TextView) view.findViewById(R.id.sat);
-		saturday.setOnTouchListener(this);
-		sunday = (TextView) view.findViewById(R.id.sun);
-		sunday.setOnTouchListener(this);
+		
+		
+		weekdays[0] = (TextView) view.findViewById(R.id.mon);
+		weekdays[0].setOnTouchListener(this);
+		weekdays[1] = (TextView) view.findViewById(R.id.tue);
+		weekdays[1].setOnTouchListener(this);
+		weekdays[2] = (TextView) view.findViewById(R.id.wed);
+		weekdays[2].setOnTouchListener(this);
+		weekdays[3] = (TextView) view.findViewById(R.id.thu);
+		weekdays[3].setOnTouchListener(this);
+		weekdays[4] = (TextView) view.findViewById(R.id.fri);
+		weekdays[4].setOnTouchListener(this);
+		weekdays[5] = (TextView) view.findViewById(R.id.sat);
+		weekdays[5].setOnTouchListener(this);
+		weekdays[6] = (TextView) view.findViewById(R.id.sun);
+		weekdays[6].setOnTouchListener(this);
 		timePicker.setOnTimeChangedListener(this);
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
 		ringtoneButton.setOnClickListener(this);
+		
+		scheduled = alarm.getWeekdaysRepeated();
+		for(int i = 0; i < 7; i++){
+			weekdays[i].setTextColor(red);
+		}
 		return view;
 	}
 
@@ -145,6 +154,9 @@ public class EditAlarmFragment extends SherlockFragment implements
 		alarm.setActivated(true);
 		alarm.setTime(timePicker.getCurrentHour(),
 				timePicker.getCurrentMinute());
+		for(int i = 0; i < 7; i++){
+			alarm.setRepeat(i, scheduled[i]);
+		}
 		
 		
 		MyAlarmManager.editAlarm(this.getActivity(), alarm);
@@ -179,13 +191,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.mon:
 			if(!scheduled[0]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                monday.setTextColor(red);
+					weekdays[0].setTextColor(red);
 	                scheduled[0] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                monday.setTextColor(tintedRed);
+					weekdays[0].setTextColor(tintedRed);
 	                scheduled[0] = false;
 				}
 			}
@@ -193,13 +205,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.tue:
 			if(!scheduled[1]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                tuesday.setTextColor(red);
+					weekdays[1].setTextColor(red);
 	                scheduled[1] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                tuesday.setTextColor(tintedRed);
+					weekdays[1].setTextColor(tintedRed);
 	                scheduled[1] = false;
 				}
 			}
@@ -207,13 +219,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.wed:
 			if(!scheduled[2]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                wednesday.setTextColor(red);
+					weekdays[2].setTextColor(red);
 	                scheduled[2] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                wednesday.setTextColor(tintedRed);
+					weekdays[2].setTextColor(tintedRed);
 	                scheduled[2] = false;
 				}
 			}
@@ -221,13 +233,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.thu:
 			if(!scheduled[3]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                thursday.setTextColor(red);
+					weekdays[3].setTextColor(red);
 	                scheduled[3] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                thursday.setTextColor(tintedRed);
+					weekdays[3].setTextColor(tintedRed);
 	                scheduled[3] = false;
 				}
 			}
@@ -235,13 +247,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.fri:
 			if(!scheduled[4]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                friday.setTextColor(red);
+					weekdays[4].setTextColor(red);
 	                scheduled[4] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                friday.setTextColor(tintedRed);
+					weekdays[4].setTextColor(tintedRed);
 	                scheduled[4] = false;
 				}
 			}
@@ -249,13 +261,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.sat:
 			if(!scheduled[5]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                saturday.setTextColor(red);
+					weekdays[5].setTextColor(red);
 	                scheduled[5] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                saturday.setTextColor(tintedRed);
+					weekdays[5].setTextColor(tintedRed);
 	                scheduled[5] = false;
 				}
 			}
@@ -263,13 +275,13 @@ public class EditAlarmFragment extends SherlockFragment implements
 		case R.id.sun:
 			if(!scheduled[6]){
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                sunday.setTextColor(red);
+					weekdays[6].setTextColor(red);
 	                scheduled[6] = true;
 				}
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                sunday.setTextColor(tintedRed);
+					weekdays[6].setTextColor(tintedRed);
 	                scheduled[6] = false;
 				}
 			}

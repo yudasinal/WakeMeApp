@@ -24,7 +24,6 @@ import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.helper.DBHelper;
 import com.yljv.alarmapp.helper.MyBootReceiver;
-import com.yljv.alarmapp.parse.database.Alarm.AlarmEntry;
 
 /*
  * THIS IS THE RIGHT ALARM MANAGER
@@ -119,7 +118,7 @@ public class MyAlarmManager {
 		
 		myAlarms.remove(alarm);				
 		
-		db.delete(AlarmEntry.TABLE_NAME, AlarmEntry.COLUMN_ID +"="+alarm.getAlarmId(), null);		
+		db.delete(Alarm.TABLE_NAME, Alarm.COLUMN_ID +"="+alarm.getAlarmId(), null);		
 		
 		AlarmManager alarmMgr = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
@@ -155,11 +154,11 @@ public class MyAlarmManager {
 				AlarmInstance.COLUMN_PICTURE
 		};
 		
-		String sortOrder = AlarmEntry.COLUMN_TIME;
+		String sortOrder = AlarmInstance.COLUMN_TIME;
 		//TODO do order!!!
 		
 		Cursor c = db.query(
-				AlarmEntry.TABLE_NAME, 
+				AlarmInstance.TABLE_NAME, 
 				projection, 
 				null, 
 				null, 
@@ -188,8 +187,7 @@ public class MyAlarmManager {
 		return partnerAlarms;
 	}
 
-	public static void updatePartnerAlarms(
-			final ParsePartnerAlarmListener listener) {
+	public static void updatePartnerAlarms() {
 		
 		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 		query.whereEqualTo("user", ApplicationSettings.getPartnerEmail());
@@ -200,7 +198,6 @@ public class MyAlarmManager {
 					MyAlarmManager.putPartnerAlarmsToDB(list);
 					partnerAlarms = (ArrayList<AlarmInstance>) list;
 				} else {
-					listener.partnerAlarmsSearchFailed(e);
 				}
 			}
 		});
@@ -236,22 +233,22 @@ public class MyAlarmManager {
 	
 	private static void retrieveAllMyAlarms() {
 		String[] projection = {
-				AlarmEntry.COLUMN_NAME,
-				AlarmEntry.COLUMN_ID,
-				AlarmEntry.COLUMN_TIME,
-				AlarmEntry.COLUMN_ACTIVATED,
-				AlarmEntry.COLUMN_WEEKDAYS,
-				AlarmEntry.COLUMN_VISIBILITY,
-				AlarmEntry.COLUMN_MUSIC_URI,
-				AlarmEntry.COLUMN_VOLUME,
-				AlarmEntry.COLUMN_MSG,
-				AlarmEntry.COLUMN_PICTURE
+				Alarm.COLUMN_NAME,
+				Alarm.COLUMN_ID,
+				Alarm.COLUMN_TIME,
+				Alarm.COLUMN_ACTIVATED,
+				Alarm.COLUMN_WEEKDAYS,
+				Alarm.COLUMN_VISIBILITY,
+				Alarm.COLUMN_MUSIC_URI,
+				Alarm.COLUMN_VOLUME,
+				Alarm.COLUMN_MSG,
+				Alarm.COLUMN_PICTURE
 		};
 		
-		String sortOrder = AlarmEntry.COLUMN_TIME;
+		String sortOrder = Alarm.COLUMN_TIME;
 		//TODO do order!!!
 		Cursor c = db.query(
-				AlarmEntry.TABLE_NAME, 
+				Alarm.TABLE_NAME, 
 				projection, 
 				null, 
 				null, 
@@ -265,16 +262,16 @@ public class MyAlarmManager {
 			a = new Alarm();
 			ContentValues cv = new ContentValues();
 			
-			cv.put(AlarmEntry.COLUMN_ID, c.getInt(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_ID)));
-			cv.put(AlarmEntry.COLUMN_TIME, c.getInt(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_TIME)));
-			cv.put(AlarmEntry.COLUMN_ACTIVATED, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_ACTIVATED)));
-			cv.put(AlarmEntry.COLUMN_WEEKDAYS, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_WEEKDAYS)));
-			cv.put(AlarmEntry.COLUMN_VISIBILITY, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_VISIBILITY)));
-			cv.put(AlarmEntry.COLUMN_MUSIC_URI, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_MUSIC_URI)));
-			cv.put(AlarmEntry.COLUMN_VOLUME, c.getInt(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_VOLUME)));
-			cv.put(AlarmEntry.COLUMN_MSG, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_MSG)));
-			cv.put(AlarmEntry.COLUMN_PICTURE, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_PICTURE)));
-			cv.put(AlarmEntry.COLUMN_NAME, c.getString(c.getColumnIndexOrThrow(AlarmEntry.COLUMN_NAME)));
+			cv.put(Alarm.COLUMN_ID, c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_ID)));
+			cv.put(Alarm.COLUMN_TIME, c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_TIME)));
+			cv.put(Alarm.COLUMN_ACTIVATED, c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_ACTIVATED)));
+			cv.put(Alarm.COLUMN_WEEKDAYS, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_WEEKDAYS)));
+			cv.put(Alarm.COLUMN_VISIBILITY, c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_VISIBILITY)));
+			cv.put(Alarm.COLUMN_MUSIC_URI, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_MUSIC_URI)));
+			cv.put(Alarm.COLUMN_VOLUME, c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_VOLUME)));
+			cv.put(Alarm.COLUMN_MSG, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_MSG)));
+			cv.put(Alarm.COLUMN_PICTURE, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_PICTURE)));
+			cv.put(Alarm.COLUMN_NAME, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_NAME)));
 			
 			a.setValues(cv);
 			
@@ -339,7 +336,7 @@ public class MyAlarmManager {
 		alarm.put(AlarmEntry.COLUMN_USER, ApplicationSettings.getUserEmail());
 		*/
 		
-		db.insert(AlarmEntry.TABLE_NAME, "null", alarm.getValues());
+		db.insert(Alarm.TABLE_NAME, "null", alarm.getValues());
 		myAlarms.add(alarm);
 		
 		//TODO make sure that really saved in background -> check

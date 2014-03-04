@@ -16,26 +16,29 @@ import android.widget.TextView;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.PartnerAlarmManager;
 import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 
-	public class ClockAdapterPartner extends ArrayAdapter<Alarm> {
+	public class PartnerClockAdapter extends ArrayAdapter<AlarmInstance> {
+		
 		boolean pictureSet;
 		public ImageView setPicture;
-		private Alarm partnerAlarm;
+		private AlarmInstance partnerAlarm;
 		public int alarmPosition;
 		
 		
-		public ClockAdapterPartner(Context context) {
-			super(context, R.layout.partner_alarm_item, new ArrayList<Alarm>());
-			this.addAll(PartnerAlarmManager.getPartnerAlarms());
+		public PartnerClockAdapter(Context context) {
+			super(context, R.layout.partner_alarm_item, new ArrayList<AlarmInstance>());
+			this.addAll(MyAlarmManager.getPartnerAlarms());
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View rowView = convertView;
 			ViewHolder holder;
-			ArrayList<Alarm> partnerAlarms;
+			ArrayList<AlarmInstance> partnerAlarms;
 			
 			if(rowView == null) {
 				LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -45,8 +48,9 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 				holder.timeView = (TextView) rowView.findViewById(R.id.partner_time);
 				holder.dayView = (TextView) rowView.findViewById(R.id.partner_day);
 				holder.dateView = (TextView) rowView.findViewById(R.id.partner_date);
-				partnerAlarms = PartnerAlarmManager.getPartnerAlarms();
-				Collections.sort(partnerAlarms);
+				
+				partnerAlarms = MyAlarmManager.getPartnerAlarms();
+				
 				rowView.setTag(holder);
 				setPicture = (ImageView) rowView.findViewById(R.id.set_picture);
 				setPicture.setOnClickListener(new OnClickListener() {

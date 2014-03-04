@@ -63,6 +63,7 @@ public class SplashActivity extends Activity {
 		
 		//Initialize MyAlarmManager
 		MyAlarmManager.setContext(this);
+		MyAlarmManager.updatePartnerAlarms();
 		
 		ArrayList<Alarm> list = MyAlarmManager.getAllAlarms();
 		
