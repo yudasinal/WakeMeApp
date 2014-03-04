@@ -1,6 +1,5 @@
 package com.yljv.alarmapp.ui;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -15,9 +14,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,16 +24,13 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class EditAlarmFragment extends SherlockFragment implements
-		OnTimeChangedListener, OnClickListener {
+		OnTimeChangedListener, OnClickListener, OnTouchListener {
 
 	public final static String ALARM_NAME = "com.yljv.alarmapp.ALARM_NAME";
 	private String chosenRingtone;
@@ -49,8 +45,15 @@ public class EditAlarmFragment extends SherlockFragment implements
 	TextView monday;
 	TextView tuesday;
 	TextView wednesday;
+	TextView thursday;
+	TextView friday;
+	TextView saturday;
+	TextView sunday;
 	Button setAlarm;
 	Button cancelAlarm;
+	boolean[] scheduled = new boolean[7];
+	int red = Color.parseColor("#ff0404");
+	int tintedRed = Color.parseColor("#ffc4a4");
 	
 	Alarm alarm;
 
@@ -72,59 +75,19 @@ public class EditAlarmFragment extends SherlockFragment implements
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
 		alarmName.setText(alarm.getName());
 		monday = (TextView) view.findViewById(R.id.mon);
-		monday.setOnTouchListener(new View.OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				boolean scheduled = false;
-				if (!scheduled) {
-					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						monday.setTextColor(Color.BLUE);
-						scheduled = true;
-						break;
-					}
-				} else {
-					switch (event.getAction()) {
-					case MotionEvent.ACTION_UP:
-						monday.setTextColor(Color.BLACK);
-						scheduled = true;
-						break;
-					}
-				}
-				return false;
-			}
-		});
+		monday.setOnTouchListener(this);
 		tuesday = (TextView) view.findViewById(R.id.tue);
-		tuesday.setOnTouchListener(new View.OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				boolean scheduled = false;
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					tuesday.setTextColor(Color.BLUE);
-					scheduled = true;
-					break;
-				}
-				return false;
-			}
-		});
+		tuesday.setOnTouchListener(this);
 		wednesday = (TextView) view.findViewById(R.id.wed);
-		wednesday.setOnTouchListener(new View.OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				boolean scheduled = true;
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					wednesday.setTextColor(Color.BLUE);
-					scheduled = true;
-					break;
-				}
-				return false;
-			}
-		});
+		wednesday.setOnTouchListener(this);
+		thursday = (TextView) view.findViewById(R.id.thu);
+		thursday.setOnTouchListener(this);
+		friday = (TextView) view.findViewById(R.id.fri);
+		friday.setOnTouchListener(this);
+		saturday = (TextView) view.findViewById(R.id.sat);
+		saturday.setOnTouchListener(this);
+		sunday = (TextView) view.findViewById(R.id.sun);
+		sunday.setOnTouchListener(this);
 		timePicker.setOnTimeChangedListener(this);
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
@@ -209,6 +172,111 @@ public class EditAlarmFragment extends SherlockFragment implements
 				this.chosenRingtone = null;
 			}
 		}
+	}
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch(v.getId()) {
+		case R.id.mon:
+			if(!scheduled[0]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                monday.setTextColor(red);
+	                scheduled[0] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                monday.setTextColor(tintedRed);
+	                scheduled[0] = false;
+				}
+			}
+			break;
+		case R.id.tue:
+			if(!scheduled[1]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                tuesday.setTextColor(red);
+	                scheduled[1] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                tuesday.setTextColor(tintedRed);
+	                scheduled[1] = false;
+				}
+			}
+			break;
+		case R.id.wed:
+			if(!scheduled[2]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                wednesday.setTextColor(red);
+	                scheduled[2] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                wednesday.setTextColor(tintedRed);
+	                scheduled[2] = false;
+				}
+			}
+			break;
+		case R.id.thu:
+			if(!scheduled[3]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                thursday.setTextColor(red);
+	                scheduled[3] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                thursday.setTextColor(tintedRed);
+	                scheduled[3] = false;
+				}
+			}
+			break;
+		case R.id.fri:
+			if(!scheduled[4]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                friday.setTextColor(red);
+	                scheduled[4] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                friday.setTextColor(tintedRed);
+	                scheduled[4] = false;
+				}
+			}
+			break;
+		case R.id.sat:
+			if(!scheduled[5]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                saturday.setTextColor(red);
+	                scheduled[5] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                saturday.setTextColor(tintedRed);
+	                scheduled[5] = false;
+				}
+			}
+			break;
+		case R.id.sun:
+			if(!scheduled[6]){
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                sunday.setTextColor(red);
+	                scheduled[6] = true;
+				}
+			}
+			else{
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+	                sunday.setTextColor(tintedRed);
+	                scheduled[6] = false;
+				}
+			}
+			break;
+		}
+		return false;
 	}
 
 	/*
