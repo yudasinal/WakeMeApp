@@ -1,20 +1,21 @@
 package com.yljv.alarmapp.ui;
 
+import android.app.ActionBar;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.R;
 
 /*
  * shows Settings: 
  * change partner
  */
-public class SettingsFragment extends Fragment implements OnClickListener {
+public class SettingsFragment extends SherlockFragment implements OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +40,13 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ActionBar myBar = getActivity().getActionBar();
+		myBar.setTitle("Settings");
+		setHasOptionsMenu(true);
+	}
 
 	@Override
 	public void onClick(View v) {

@@ -60,6 +60,7 @@ public class EditAlarmFragment extends SherlockFragment implements OnTimeChanged
 		Bundle bundle = this.getArguments();
 		int alarmPosition = bundle.getInt("edit alarm");
 		Alarm myAlarm = MyAlarmManager.getAllAlarms().get(alarmPosition);
+		MyAlarmManager.editAlarm(getActivity(), myAlarm);
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 		timePicker.setCurrentHour(myAlarm.getHour());
 		timePicker.setCurrentMinute(myAlarm.getMinute());

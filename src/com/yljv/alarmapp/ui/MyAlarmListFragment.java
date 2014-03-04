@@ -50,13 +50,13 @@ public class MyAlarmListFragment extends SherlockFragment {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
+				count++;
 				deleteAlarm.setVisible(true);
 				addAlarm.setVisible(false);
 				cancelAlarm.setVisible(true);
 				selectedPosition = position;
 				listView.setItemChecked(position, true);
 				selectedItems[position] = true;
-				count++;
 				
 				return true;
 			}
@@ -84,10 +84,10 @@ public class MyAlarmListFragment extends SherlockFragment {
 						count++;
 					}
 					else {
-					Log.e("AlarmApp", "count != 0 item checked");
-					listView.setItemChecked(position, false);
-					selectedItems[position] = false;
-					count--;
+						Log.e("AlarmApp", "count != 0 item checked");
+						listView.setItemChecked(position, false);
+						selectedItems[position] = false;
+						count--;
 					}	
 				}
 				else{
@@ -145,7 +145,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 			} 
 			break;
 		case R.id.cancel_alarm:
-			for(int i = 0; i < selectedItems.length -1; i++) {
+			for(int i = 0; i < selectedItems.length; i++) {
 				if(selectedItems[i] == true) {
 					selectedItems[i] = false;
 					listView.setItemChecked(i, false);
