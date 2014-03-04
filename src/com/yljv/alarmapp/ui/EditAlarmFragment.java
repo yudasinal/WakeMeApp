@@ -141,7 +141,6 @@ public class EditAlarmFragment extends SherlockFragment implements
 		newContent.setArguments(data);
 
 		// TODO set volume, repeated, etc..
-		Alarm alarm = new Alarm();
 		alarm.setName(nameAlarm);
 		alarm.setActivated(true);
 		alarm.setTime(timePicker.getCurrentHour(),
