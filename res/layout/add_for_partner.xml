@@ -2,20 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#90C5A9" >
 
     <ImageView
         android:id="@+id/add_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="350dp"
         android:src = "@drawable/ic_launcher"
-        android:clickable = "true" />
+        android:clickable = "true"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true" />
 
     <EditText
         android:id="@+id/add_message"
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
+        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:hint="Add a Message"
+        android:ems="10"
+        android:background="@drawable/my_edit_text"
+        android:maxLength="140" >
         
         <requestFocus />
     </EditText>

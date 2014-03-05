@@ -1,309 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginLeft="10dp" 
-    android:layout_marginRight="10dp">
-    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="20sp"/>
-    
-    <View
-    	android:layout_width="fill_parent"
-    	android:layout_height="2dp"
-    	android:background="@android:color/darker_gray"/>
-    
-    <TableRow
-        android:id="@+id/row1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <RelativeLayout
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+	<TableLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:layout_marginLeft="10dp" 
+	    android:layout_marginRight="10dp">
+	    
+	    <TextView
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
-		    <TextView
-		        android:id="@+id/name"
-		        android:paddingTop="10dp"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Name"
-		        android:textSize="16sp"/>
-		    
-		    <TextView
-		        android:id="@+id/my_name"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="someName"
-		        android:textSize="16sp"
-		        android:layout_below="@id/name"/>
+	        android:layout_height="wrap_content"
+	        android:text="Profile"
+	        android:textSize="20sp"/>
 	    
-	    </RelativeLayout>
-	</TableRow>
-	
-    
-    <TableRow
-        android:id="@+id/row2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-	    <RelativeLayout
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="2dp"
+	    	android:background="@android:color/darker_gray"/>
+	    
+	    <TableRow
+	        android:id="@+id/row1"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-		    <TextView
-		        android:id="@+id/email"
-		        android:paddingTop="10dp"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        
+	        <RelativeLayout
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Email"
-		        android:textSize="16sp"/>
+		        android:layout_height="wrap_content">
+			    <TextView
+			        android:id="@+id/name"
+			        android:paddingTop="10dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Name"
+			        android:textSize="16sp"/>
+			    
+			    <TextView
+			        android:id="@+id/my_name"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="someName"
+			        android:textSize="16sp"
+			        android:layout_below="@id/name"/>
 		    
-		    <TextView
-		        android:id="@+id/my_email"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="someEmail"
-		        android:textSize="16sp"
-		        android:layout_below="@id/email"/>
-    	</RelativeLayout>
-    </TableRow>
-    
-    <TableRow
-        android:id="@+id/row3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <RelativeLayout 
-            android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
-		    <TextView
-		        android:id="@+id/name1"
-		        android:paddingTop="10dp"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Partner's Name"
-		        android:textSize="16sp"/>
-		    
-		    <TextView
-		        android:id="@+id/partner_name"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="someName"
-		        android:textSize="16sp"
-		        android:layout_below="@id/name1"/>
+		    </RelativeLayout>
+		</TableRow>
+		
 	    
-	    </RelativeLayout>
-	</TableRow>
+	    <TableRow
+	        android:id="@+id/row2"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+		    <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+			    <TextView
+			        android:id="@+id/email"
+			        android:paddingTop="10dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Email"
+			        android:textSize="16sp"/>
+			    
+			    <TextView
+			        android:id="@+id/my_email"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="someEmail"
+			        android:textSize="16sp"
+			        android:layout_below="@id/email"/>
+	    	</RelativeLayout>
+	    </TableRow>
+	    
+	    <TableRow
+	        android:id="@+id/row3"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        
+	        <RelativeLayout 
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+			    <TextView
+			        android:id="@+id/name1"
+			        android:paddingTop="10dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Partner's Name"
+			        android:textSize="16sp"/>
+			    
+			    <TextView
+			        android:id="@+id/partner_name"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="someName"
+			        android:textSize="16sp"
+			        android:layout_below="@id/name1"/>
+		    
+		    </RelativeLayout>
+		</TableRow>
+		
+	    
+	    <TableRow
+	        android:id="@+id/row4"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+			    <TextView
+			        android:id="@+id/email1"
+			        android:paddingTop="10dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Partner's Email"
+			        android:textSize="16sp"/>
+			    
+			    <TextView
+			        android:id="@+id/partner_email"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="someEmail"
+			        android:textSize="16sp"
+			        android:layout_below="@id/email1"/>
+		    
+		    </RelativeLayout>
+		</TableRow>
+		
+	    <TableRow
+	        android:id="@+id/row5"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        <TextView 
+	            android:id="@+id/unlink"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Unlink"
+	            android:textSize="16sp"
+	            android:paddingTop="10dp"/>
+	        
+	    </TableRow>
+	    
+	     <TableRow
+	        android:id="@+id/row6"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        <TextView 
+	            android:id="@+id/sign_out"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Sign Out"
+	            android:textSize="16sp"
+	            android:paddingTop="10dp"/>
+	        
+	    </TableRow>
+	    
+	    <TableRow
+	        android:id="@+id/row7"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        <TextView 
+	            android:id="@+id/delete_account"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Delete Account"
+	            android:textSize="16sp"
+	            android:paddingTop="10dp"/>
+	    </TableRow>
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Notifications"
+	        android:textSize="20sp"
+	        android:layout_marginTop="10dp"/>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="2dp"
+	    	android:background="@android:color/darker_gray"/>
+	    
+	    <TableRow 
+	        android:id="@+id/row8"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+			   
+	             <TextView
+	                android:id="@+id/vibrate"
+			        android:paddingTop="10dp"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Vibrate"
+			        android:textSize="16sp"
+			        android:layout_alignParentLeft="true"/>
+	             
+	            <CheckBox 
+	                android:text=""
+	                android:id="@+id/vibration"
+	                android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentRight ="true"/>	   
+			    
+		    
+		    </RelativeLayout>
+	        
+	    </TableRow>
+	    
+	    <TableRow 
+	        android:id="@+id/row9"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+			   
+	             <TextView
+	                android:id="@+id/vibrate"
+			        android:paddingTop="10dp"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Notifications"
+			        android:textSize="16sp"
+			        android:layout_alignParentLeft="true"/>
+	             
+	            <CheckBox 
+	                android:text=""
+	                android:id="@+id/notifications"
+	                android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentRight ="true"/>	   
+			    
+		    </RelativeLayout>
+	        
+	    </TableRow>
+	    
+	    <TableRow 
+	        android:id="@+id/row10"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        
+	        <RelativeLayout
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+			   
+	             <TextView
+	                android:id="@+id/vibrate"
+			        android:paddingTop="10dp"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Alert Sound"
+			        android:textSize="16sp"
+			        android:layout_alignParentLeft="true"/>
+	             
+	            <CheckBox 
+	                android:text=""
+	                android:id="@+id/sound"
+	                android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentRight ="true"/>	   
+			    
+		    
+		    </RelativeLayout>
+	        
+	    </TableRow>
+	    
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="About"
+	        android:textSize="20sp"
+	        android:layout_marginTop="10dp"/>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="2dp"
+	    	android:background="@android:color/darker_gray"/>
+	    
+	    <TableRow
+	        android:id="@+id/row11"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Like us on Facebook"
+	            android:textSize="16sp"
+	            android:paddingTop="10dp"/>
+	        
+	    </TableRow>
+	    
+	    <TableRow
+	        android:id="@+id/row12"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/list_selector_background">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Credits"
+	            android:textSize="16sp"
+	            android:paddingTop="10dp"/>
+	        
+	    </TableRow>
+	    
 	
-    
-    <TableRow
-        android:id="@+id/row4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
-		    <TextView
-		        android:id="@+id/email1"
-		        android:paddingTop="10dp"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Partner's Email"
-		        android:textSize="16sp"/>
-		    
-		    <TextView
-		        android:id="@+id/partner_email"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="someEmail"
-		        android:textSize="16sp"
-		        android:layout_below="@id/email1"/>
-	    
-	    </RelativeLayout>
-	</TableRow>
-	
-    <TableRow
-        android:id="@+id/row5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/unlink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Unlink"
-            android:textSize="16sp"
-            android:paddingTop="10dp"/>
-        
-    </TableRow>
-    
-     <TableRow
-        android:id="@+id/row6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/sign_out"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Out"
-            android:textSize="16sp"
-            android:paddingTop="10dp"/>
-        
-    </TableRow>
-    
-    <TableRow
-        android:id="@+id/row7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/delete_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Account"
-            android:textSize="16sp"
-            android:paddingTop="10dp"/>
-    </TableRow>
-    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Notifications"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"/>
-    
-    <View
-    	android:layout_width="fill_parent"
-    	android:layout_height="2dp"
-    	android:background="@android:color/darker_gray"/>
-    
-    <TableRow 
-        android:id="@+id/row8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
-		   
-             <TextView
-                android:id="@+id/vibrate"
-		        android:paddingTop="10dp"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Vibrate"
-		        android:textSize="16sp"
-		        android:layout_alignParentLeft="true"/>
-             
-            <CheckBox 
-                android:text=""
-                android:id="@+id/vibration"
-                android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:layout_alignParentRight ="true"/>	   
-		    
-	    
-	    </RelativeLayout>
-        
-    </TableRow>
-    
-    <TableRow 
-        android:id="@+id/row9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
-		   
-             <TextView
-                android:id="@+id/vibrate"
-		        android:paddingTop="10dp"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Notifications"
-		        android:textSize="16sp"
-		        android:layout_alignParentLeft="true"/>
-             
-            <CheckBox 
-                android:text=""
-                android:id="@+id/notifications"
-                android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:layout_alignParentRight ="true"/>	   
-		    
-	    </RelativeLayout>
-        
-    </TableRow>
-    
-    <TableRow 
-        android:id="@+id/row10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
-		   
-             <TextView
-                android:id="@+id/vibrate"
-		        android:paddingTop="10dp"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Alert Sound"
-		        android:textSize="16sp"
-		        android:layout_alignParentLeft="true"/>
-             
-            <CheckBox 
-                android:text=""
-                android:id="@+id/sound"
-                android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:layout_alignParentRight ="true"/>	   
-		    
-	    
-	    </RelativeLayout>
-        
-    </TableRow>
-    
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="About"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"/>
-    
-    <View
-    	android:layout_width="fill_parent"
-    	android:layout_height="2dp"
-    	android:background="@android:color/darker_gray"/>
-    
-    <TableRow
-        android:id="@+id/row11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Like us on Facebook"
-            android:textSize="16sp"
-            android:paddingTop="10dp"/>
-        
-    </TableRow>
-    
-    <TableRow
-        android:id="@+id/row12"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Credits"
-            android:textSize="16sp"
-            android:paddingTop="10dp"/>
-        
-    </TableRow>
-    
+	</TableLayout>
 
-</TableLayout>
+</ScrollView>

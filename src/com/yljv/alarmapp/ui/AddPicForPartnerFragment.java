@@ -1,5 +1,7 @@
 package com.yljv.alarmapp.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,13 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListPopupWindow;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -28,7 +26,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 
-public class AddPicForPartnerFragment extends SherlockFragment implements OnClickListener, OnItemClickListener {
+public class AddPicForPartnerFragment extends SherlockFragment implements OnClickListener {
 	
 	public static final String MESSAGE_FOR_ALARM = "com.yljv.alarmapp.MESSAGE_FOR_ALARM";
 	public static String picturePath;
@@ -36,21 +34,22 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	Button previewButton;
 	ImageView addPicture;
 	EditText addMessage;
-	ListPopupWindow listPopupWindow;
-	String[] picOption = {"Take a picture", "Choose from gallery"};
+	String[] picOption = {"Take Photo", "Choose from gallery"};
 	static final int REQUEST_TAKE_PHOTO = 1;
 	private static final int RESULT_LOAD_IMAGE = 1;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActivity().getActionBar().setTitle("Customize alarm");
+		getActivity().getActionBar().setTitle("Customize");
 		setHasOptionsMenu(true);
 	}
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main, menu);
-		menu.findItem(R.id.cancel_alarm).setEnabled(true);		
+		menu.findItem(R.id.cancel_alarm).setEnabled(true);	
+		menu.findItem(R.id.delete_alarm).setVisible(false);
+		menu.findItem(R.id.add_alarm).setVisible(false);
 	}
 
 	@Override
@@ -60,12 +59,6 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			getFragmentManager().popBackStackImmediate();
 			break;
 		//Save button has to be a preview button
-		case R.id.delete_alarm: 
-			Fragment newFragment = new PreviewPictureFragment();
-			if(getActivity() instanceof MenuMainActivity) {
-				MenuMainActivity mma = new MenuMainActivity();
-				mma.switchContent(newFragment);
-			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -80,16 +73,8 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		addPicture.isClickable();
 		addPicture.setOnClickListener(this);
 		previewButton.setOnClickListener(this);
-		listPopupWindow = new ListPopupWindow(this.getActivity());
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.popup_layout, picOption);
-		listPopupWindow.setAdapter(arrayAdapter);
-		listPopupWindow.setAnchorView(addPicture);
-		listPopupWindow.setWidth(500);
-		listPopupWindow.setHeight(250);
-		listPopupWindow.setHorizontalOffset(300);
-		listPopupWindow.setVerticalOffset(200);
-		listPopupWindow.setModal(true);
-		listPopupWindow.setOnItemClickListener(this);
+		
+		
 		return view;
 	}
 	
@@ -98,8 +83,28 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.add_picture:
-			listPopupWindow.show();
+			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			builder.setTitle("Add photo");
+			builder.setItems(picOption, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int item) {
+					// TODO Auto-generated method stub
+					if(picOption[item].equals("Take Photo")) {
+						Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+						startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+					}
+					else {
+						Intent i = new Intent(
+								Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+								startActivityForResult(i, RESULT_LOAD_IMAGE);
+					}
+					
+				}
+			});
+			builder.show();
 			break;
+			
 		case R.id.preview:
 			String myMessage = addMessage.getText().toString();
 			Bundle data = new Bundle();
@@ -115,6 +120,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	}
 
 
+	/*
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position == 0) {
@@ -142,13 +148,14 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		// TODO Auto-generated method stub
 		return null;
 	}
-	*/
+	
 		if (position == 1) {
 			Intent i = new Intent(
 					Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 					startActivityForResult(i, RESULT_LOAD_IMAGE);
 		}
 	}
+	*/
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
