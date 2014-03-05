@@ -19,7 +19,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class ClockAdapter extends ArrayAdapter<Alarm> {
 	boolean alarmSet;
-	int red = Color.parseColor("#ff0404");
+	int red = Color.parseColor("#fa8b60");
 	
 	
 	public ClockAdapter(Context context) {
