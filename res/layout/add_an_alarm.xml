@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#3f2860">
+    android:background="#90c5a9">
 
 	<TableLayout 
 	    android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 		        android:drawablePadding="10dp"
 		        android:drawableLeft="@drawable/clock"
 		        android:textSize="20sp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:paddingLeft="10dp"
 		        android:textCursorDrawable="@null"/>
 		</TableRow>
@@ -53,7 +53,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_marginRight="20dp"
 		        android:textSize="20sp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:text="M "/>
 		    <TextView
 		        android:id = "@+id/tue"
@@ -61,7 +61,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/wed"
@@ -69,7 +69,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:text="W "/>
 		    <TextView
 		        android:id = "@+id/thu"
@@ -77,7 +77,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/fri"
@@ -85,7 +85,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:text="F "/>
 		    <TextView
 		        android:id = "@+id/sat"
@@ -93,13 +93,13 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:text="S "/>
 		    <TextView
 		        android:id = "@+id/sun"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:textColor="#90c5a9"
+		        android:textColor="#3f2860"
 		        android:textSize="20sp"
 		        android:text="S "/>
 		</LinearLayout>
@@ -133,7 +133,7 @@
 			    android:layout_height = "28dp"
 			    android:layout_marginBottom="10dp"
 			    android:text="Alarm tone"
-			    android:textColor="#90c5a9"
+			    android:textColor="#3f2860"
 			    android:drawableRight="@drawable/select_alarmtone">
 			</Button>
 		
@@ -150,7 +150,7 @@
 	            android:layout_height="40dp"
 	            android:background="@drawable/my_cancel_button"
 	            android:layout_marginRight="3dp"
-	            android:textColor="#90c5a9"
+	            android:textColor="#3f2860"
 	            android:text="Cancel" />
 	
 	        <Button
@@ -159,7 +159,7 @@
 	            android:layout_height="40dp"
 			    android:background="@drawable/my_cancel_button"
 			    android:layout_marginLeft="3dp"
-	            android:textColor="#90c5a9"
+	            android:textColor="#3f2860"
 	            android:text="Save" />
 
     </LinearLayout>
