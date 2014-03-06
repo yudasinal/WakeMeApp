@@ -102,6 +102,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 					bundle.putInt("edit alarm", alarmID);
 					editAlarm.setArguments(bundle);
 					if (getActivity() instanceof MenuMainActivity) {
+						listView.setItemChecked(position, false);
 						MenuMainActivity mma = (MenuMainActivity) getActivity();
 						mma.switchContent(editAlarm);
 					} 

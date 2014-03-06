@@ -189,10 +189,17 @@ public class MyAlarmManager {
 
 	public static void updatePartnerAlarms() {
 		
+		ArrayList<AlarmInstance> list;
 		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
-		query.whereEqualTo("user", ApplicationSettings.getPartnerEmail());
-		query.orderByAscending("time");
-		query.findInBackground(new FindCallback<AlarmInstance>() {
+		String email = ApplicationSettings.getPartnerEmail();
+		//query.whereEqualTo(AlarmInstance.COLUMN_USER, ApplicationSettings.getPartnerEmail());
+		query.orderByAscending(AlarmInstance.COLUMN_TIME);
+		try{
+			list = (ArrayList<AlarmInstance>) query.find();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		/*query.findInBackground(new FindCallback<AlarmInstance>() {
 			public void done(List<AlarmInstance> list, ParseException e) {
 				if (e == null) {
 					MyAlarmManager.putPartnerAlarmsToDB(list);
@@ -200,7 +207,7 @@ public class MyAlarmManager {
 				} else {
 				}
 			}
-		});
+		});*/
 	}
 	
 	private static void putPartnerAlarmsToDB(List<AlarmInstance> list){

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#d0f0ff" >
+    android:background = "#3f2860">
+    <!-- android:background="#d0f0ff"  -->
+    
 
     <TextView
         android:layout_width="fill_parent"
@@ -22,9 +24,9 @@
     <TextView
         android:id="@+id/name_id"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content" 
         android:layout_gravity="center_horizontal"
-        android:textColor="#eb622d"
+        android:textColor="#90c5a9"
         android:textSize="40dp"
         android:text="test" />
     

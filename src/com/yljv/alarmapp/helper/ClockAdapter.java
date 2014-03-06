@@ -99,17 +99,10 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		return rowView;
 	}
 	
-	static class ViewHolder {
+	private static class ViewHolder {
 		TextView textView;
 		TextView timeView;
 		TextView[] weekdays = new TextView[7];
-		/*TextView monday;
-		TextView tuesday;
-		TextView wednesday;
-		TextView thursday;
-		TextView friday;
-		TextView saturday;
-		TextView sunday;*/
 	}
 
 }

@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
 
