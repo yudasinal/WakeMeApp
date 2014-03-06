@@ -33,40 +33,34 @@ public class EditAlarmFragment extends SherlockFragment implements
 		OnTimeChangedListener, OnClickListener, OnTouchListener {
 
 	public final static String ALARM_NAME = "com.yljv.alarmapp.ALARM_NAME";
-	private String chosenRingtone;
+	private final static int red = Color.parseColor("#ff0404");
+	private final static int tintedRed = Color.parseColor("#ffc4a4");
+
+	// TODO default ringtone
+	private Uri ringtone;
 	public int changedHour;
 	public int changedMinute;
 	public int currentDay;
+	boolean[] scheduled = new boolean[7];
 
 	TimePicker timePicker;
 	EditText alarmName;
 	SeekBar volume;
 	Button ringtoneButton;
 	TextView[] weekdays = new TextView[7];
-	/*TextView monday;
-	TextView tuesday;
-	TextView wednesday;
-	TextView thursday;
-	TextView friday;
-	TextView saturday;
-	TextView sunday;*/
 	Button setAlarm;
 	Button cancelAlarm;
-	boolean[] scheduled = new boolean[7];
-	int red = Color.parseColor("#ff0404");
-	int tintedRed = Color.parseColor("#ffc4a4");
-	
+
 	Alarm alarm;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.add_an_alarm, container, false);
+
 		Bundle bundle = this.getArguments();
-		int alarmPosition = bundle.getInt("edit alarm");
 		alarm = MyAlarmManager.findAlarmById(bundle.getInt("edit alarm"));
-		
-		
+
 		timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 		timePicker.setCurrentHour(alarm.getHour());
 		timePicker.setCurrentMinute(alarm.getMinute());
@@ -76,8 +70,7 @@ public class EditAlarmFragment extends SherlockFragment implements
 		cancelAlarm.setOnClickListener(this);
 		alarmName = (EditText) view.findViewById(R.id.alarm_name);
 		alarmName.setText(alarm.getName());
-		
-		
+
 		weekdays[0] = (TextView) view.findViewById(R.id.mon);
 		weekdays[0].setOnTouchListener(this);
 		weekdays[1] = (TextView) view.findViewById(R.id.tue);
@@ -96,10 +89,10 @@ public class EditAlarmFragment extends SherlockFragment implements
 		ringtoneButton = (Button) view.findViewById(R.id.ringtone_button);
 		ringtoneButton.setText("Ringtone");
 		ringtoneButton.setOnClickListener(this);
-		
+
 		scheduled = alarm.getWeekdaysRepeated();
-		for(int i = 0; i < 7; i++){
-			weekdays[i].setTextColor(red);
+		for (int i = 0; i < 7; i++) {
+			if(scheduled[i]) weekdays[i].setTextColor(red);
 		}
 		return view;
 	}
@@ -107,8 +100,7 @@ public class EditAlarmFragment extends SherlockFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActivity().getActionBar().setTitle("Set an alarm");
-
+		getActivity().getActionBar().setTitle("Edit alarm");
 	}
 
 	@Override
@@ -145,21 +137,27 @@ public class EditAlarmFragment extends SherlockFragment implements
 	private void saveAlarm() {
 		String nameAlarm = alarmName.getText().toString();
 		Fragment newContent = new MyAlarmListFragment();
-		Bundle data = new Bundle();
-		data.putString(ALARM_NAME, nameAlarm);
-		newContent.setArguments(data);
+
+		// TODO what do I need this for?
+		/*
+		 * Bundle data = new Bundle(); data.putString(ALARM_NAME, nameAlarm);
+		 * newContent.setArguments(data);
+		 */
 
 		// TODO set volume, repeated, etc..
 		alarm.setName(nameAlarm);
 		alarm.setActivated(true);
 		alarm.setTime(timePicker.getCurrentHour(),
 				timePicker.getCurrentMinute());
-		for(int i = 0; i < 7; i++){
+		if (ringtone != null) {
+			alarm.setMusicURI(ringtone);
+		}
+		for (int i = 0; i < 7; i++) {
 			alarm.setRepeat(i, scheduled[i]);
 		}
-		
-		
+
 		MyAlarmManager.editAlarm(this.getActivity(), alarm);
+
 		if (getActivity() instanceof MenuMainActivity) {
 			MenuMainActivity mma = (MenuMainActivity) getActivity();
 			mma.switchContent(newContent);
@@ -175,118 +173,86 @@ public class EditAlarmFragment extends SherlockFragment implements
 					.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
 			if (uri != null) {
-				this.chosenRingtone = uri.toString();
+				ringtone = uri;
 				Ringtone ringtone = RingtoneManager.getRingtone(getActivity(),
 						uri);
 				ringtoneButton.setText(ringtone.getTitle(getActivity()));
 			} else {
-				this.chosenRingtone = null;
+				ringtone = null;
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		switch(v.getId()) {
-		case R.id.mon:
-			if(!scheduled[0]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			switch (v.getId()) {
+			case R.id.mon:
+				if (!scheduled[0]) {
 					weekdays[0].setTextColor(red);
-	                scheduled[0] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[0] = true;
+				} else {
 					weekdays[0].setTextColor(tintedRed);
-	                scheduled[0] = false;
+					scheduled[0] = false;
 				}
-			}
-			break;
-		case R.id.tue:
-			if(!scheduled[1]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				break;
+			case R.id.tue:
+				if (!scheduled[1]) {
 					weekdays[1].setTextColor(red);
-	                scheduled[1] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[1] = true;
+				} else {
 					weekdays[1].setTextColor(tintedRed);
-	                scheduled[1] = false;
+					scheduled[1] = false;
 				}
-			}
-			break;
-		case R.id.wed:
-			if(!scheduled[2]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				break;
+			case R.id.wed:
+				if (!scheduled[2]) {
 					weekdays[2].setTextColor(red);
-	                scheduled[2] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[2] = true;
+				} else {
 					weekdays[2].setTextColor(tintedRed);
-	                scheduled[2] = false;
+					scheduled[2] = false;
 				}
-			}
-			break;
-		case R.id.thu:
-			if(!scheduled[3]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				break;
+			case R.id.thu:
+				if (!scheduled[3]) {
 					weekdays[3].setTextColor(red);
-	                scheduled[3] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[3] = true;
+				} else {
 					weekdays[3].setTextColor(tintedRed);
-	                scheduled[3] = false;
+					scheduled[3] = false;
 				}
-			}
-			break;
-		case R.id.fri:
-			if(!scheduled[4]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				break;
+			case R.id.fri:
+				if (!scheduled[4]) {
 					weekdays[4].setTextColor(red);
-	                scheduled[4] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[4] = true;
+				} else {
 					weekdays[4].setTextColor(tintedRed);
-	                scheduled[4] = false;
+					scheduled[4] = false;
 				}
-			}
-			break;
-		case R.id.sat:
-			if(!scheduled[5]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				break;
+			case R.id.sat:
+				if (!scheduled[5]) {
 					weekdays[5].setTextColor(red);
-	                scheduled[5] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[5] = true;
+				} else {
 					weekdays[5].setTextColor(tintedRed);
-	                scheduled[5] = false;
+					scheduled[5] = false;
 				}
-			}
-			break;
-		case R.id.sun:
-			if(!scheduled[6]){
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				break;
+			case R.id.sun:
+				if (!scheduled[6]) {
 					weekdays[6].setTextColor(red);
-	                scheduled[6] = true;
-				}
-			}
-			else{
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					scheduled[6] = true;
+				} else {
 					weekdays[6].setTextColor(tintedRed);
-	                scheduled[6] = false;
+					scheduled[6] = false;
 				}
+				break;
 			}
-			break;
 		}
+
 		return false;
 	}
 

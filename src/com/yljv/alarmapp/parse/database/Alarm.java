@@ -1,12 +1,11 @@
 package com.yljv.alarmapp.parse.database;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.content.ContentValues;
-import android.provider.BaseColumns;
+import android.net.Uri;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -191,7 +190,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		put(Alarm.COLUMN_MSG, msg);
 	}
 
-	public void setMusicURI(URI uri) {
+	public void setMusicURI(Uri uri) {
 		values.put(Alarm.COLUMN_MUSIC_URI, uri.getPath());
 		put(Alarm.COLUMN_MUSIC_URI, uri.getPath());
 	}

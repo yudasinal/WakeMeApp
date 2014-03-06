@@ -20,7 +20,7 @@
 		        android:layout_width="280dp"
 		        android:layout_height="48dp"
 		        android:layout_marginTop="30dp"
-		        android:maxLength="10"
+		        android:maxLength="25"
 		        android:background="@drawable/my_edit_text"
 		        android:hint="alarm name"
 		        android:drawablePadding="10dp"

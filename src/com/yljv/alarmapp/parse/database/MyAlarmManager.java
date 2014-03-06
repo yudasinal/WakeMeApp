@@ -323,18 +323,6 @@ public class MyAlarmManager {
 			push.setExpirationTime(timeMillis);
 			push.sendInBackground();
 		}
-		/*
-		ContentValues cv = alarm.getValues();
-		alarm.put(AlarmEntry.COLUMN_NAME, cv.get(AlarmEntry.COLUMN_NAME));
-		alarm.put(AlarmEntry.COLUMN_ID, cv.get(AlarmEntry.COLUMN_ID));
-		alarm.put(AlarmEntry.COLUMN_TIME, cv.get(AlarmEntry.COLUMN_TIME));
-		alarm.put(AlarmEntry.COLUMN_ACTIVATED, cv.get(AlarmEntry.COLUMN_ACTIVATED));
-		alarm.put(AlarmEntry.COLUMN_WEEKDAYS, cv.get(AlarmEntry.COLUMN_WEEKDAYS));
-		alarm.put(AlarmEntry.COLUMN_VISIBILITY, cv.get(AlarmEntry.COLUMN_VISIBILITY));
-		alarm.put(AlarmEntry.COLUMN_MUSIC_URI, cv.get(AlarmEntry.COLUMN_MUSIC_URI));
-		alarm.put(AlarmEntry.COLUMN_VOLUME, cv.get(AlarmEntry.COLUMN_VOLUME));
-		alarm.put(AlarmEntry.COLUMN_USER, ApplicationSettings.getUserEmail());
-		*/
 		
 		db.insert(Alarm.TABLE_NAME, "null", alarm.getValues());
 		myAlarms.add(alarm);
@@ -342,13 +330,5 @@ public class MyAlarmManager {
 		//TODO make sure that really saved in background -> check
 		alarm.saveInBackground();
 	}
-
-	/*
-	 * private static void addAlarmToFile(Alarm alarm){ FileOutputStream
-	 * outStream;
-	 * 
-	 * try{ outStream = mContext.openFileOutput(mFile, Context.MODE_APPEND |
-	 * Context.MODE_PRIVATE); outStream.write(); } }
-	 */
 
 }
