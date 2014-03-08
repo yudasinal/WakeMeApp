@@ -86,6 +86,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 		ringtoneButton.setOnClickListener(this);
 		
 		alarm = new Alarm();
+		alarm.initialize();
 		return view;
 	}
 	

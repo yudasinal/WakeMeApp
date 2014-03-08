@@ -34,10 +34,16 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	final static int PM = Calendar.PM;
 
 	private ContentValues values;
+	
 
 	public Alarm() {
-		super("Alarm");
-		values = new ContentValues();
+	}
+
+	public Alarm(ContentValues cv) {
+		this.values = cv;
+	}
+	
+	public void initialize(){
 		values.put(Alarm.COLUMN_WEEKDAYS, "0000000");
 		this.setName("Alarm");
 		this.setID(ApplicationSettings.getAlarmId() * 10);
@@ -48,10 +54,6 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		}
 		this.setActivated(true);
 		this.setVisible(true);
-	}
-
-	public Alarm(ContentValues cv) {
-		this.values = cv;
 	}
 
 	@Override
