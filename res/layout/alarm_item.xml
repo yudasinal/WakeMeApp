@@ -23,7 +23,6 @@
 	  android:textStyle="bold"
 	  android:layout_width="110dp"
 	  android:layout_height="wrap_content"
-	  android:paddingBottom="5dp"
 	  android:paddingTop="5dp"
 	  android:text = "Time"
 	  android:textColor="#fa8b60"
