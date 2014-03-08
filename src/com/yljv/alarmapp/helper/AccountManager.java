@@ -99,7 +99,7 @@ public class AccountManager{
 	}*/
 	
 	public static String getName(){
-		return ApplicationSettings.getUserEmail();
+		return ApplicationSettings.getUserName();
 		//return (String) ParseUser.getCurrentUser().get("name");
 	}
 	

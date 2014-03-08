@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#90c5a9">
+    android:background="#fff6ea">
 
 	<TableLayout 
 	    android:layout_width="match_parent"
@@ -20,6 +20,7 @@
 		        android:layout_width="280dp"
 		        android:layout_height="48dp"
 		        android:layout_marginTop="30dp"
+		        android:maxLines="1"
 		        android:maxLength="25"
 		        android:background="@drawable/my_edit_text"
 		        android:hint="alarm name"
@@ -53,7 +54,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_marginRight="20dp"
 		        android:textSize="20sp"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:text="M "/>
 		    <TextView
 		        android:id = "@+id/tue"
@@ -61,7 +62,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/wed"
@@ -69,7 +70,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:text="W "/>
 		    <TextView
 		        android:id = "@+id/thu"
@@ -77,7 +78,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:text="T "/>
 		    <TextView
 		        android:id = "@+id/fri"
@@ -85,7 +86,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:text="F "/>
 		    <TextView
 		        android:id = "@+id/sat"
@@ -93,13 +94,13 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:layout_marginRight="20dp"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:text="S "/>
 		    <TextView
 		        android:id = "@+id/sun"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:textColor="#3f2860"
+		        android:textColor="#90c5a9"
 		        android:textSize="20sp"
 		        android:text="S "/>
 		</LinearLayout>
