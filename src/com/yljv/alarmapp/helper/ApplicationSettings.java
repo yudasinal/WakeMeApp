@@ -12,12 +12,20 @@ public class ApplicationSettings {
 	private final static String ALARM_ID_COUNTER_KEY = "counter";
 	private final static String USER_EMAIL_KEY = "user_email";
 	private final static String USER_NAME_KEY = "user_name";
+	private final static String HAS_PARTNER = "has_partner";
 	
 	public int alarmIdCounter = 0;
 	
 	private static SharedPreferences preferences;
 	
 	
+	public static boolean hasPartner(String userEmail){
+		return preferences.getBoolean(HAS_PARTNER, false);
+	}
+	
+	public static void setPartner(boolean hasPartner) {
+		preferences.edit().putBoolean(HAS_PARTNER, hasPartner).commit();
+	}
 
 	public static void setSharedPreferences(Context context) {
 		// TODO do this at beginning!!!

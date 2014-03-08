@@ -195,7 +195,7 @@ public class MyAlarmManager {
 		
 		partnerAlarms.clear();
 		
-		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance"); 
 		String email = ApplicationSettings.getPartnerEmail();
 		query.whereEqualTo(AlarmInstance.COLUMN_USER, ApplicationSettings.getPartnerEmail());
 		query.orderByAscending(AlarmInstance.COLUMN_TIME);
