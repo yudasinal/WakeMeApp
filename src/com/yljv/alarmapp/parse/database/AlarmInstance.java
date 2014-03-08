@@ -78,14 +78,17 @@ public class AlarmInstance extends ParseObject{
 	}
 	
 	public void setName(String name){
+		values.put(COLUMN_NAME, name);
 		put(COLUMN_NAME, name);
 	}
 	
 	public void setID(int id){
+		values.put(AlarmInstance.COLUMN_ID, id);
 		put(COLUMN_ID, id);
 	}
 	
 	public void setTime(GregorianCalendar cal){
+		values.put(COLUMN_TIME, cal.getTimeInMillis());
 		put(COLUMN_TIME, cal.getTimeInMillis());
 	}
 	
@@ -94,6 +97,7 @@ public class AlarmInstance extends ParseObject{
 	}
 	
 	public void setMsg(String msg){
+		values.put(COLUMN_MSG, msg);
 		put(COLUMN_MSG, msg);
 	}
 	

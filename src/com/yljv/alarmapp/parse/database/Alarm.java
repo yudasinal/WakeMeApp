@@ -44,6 +44,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 	
 	public void initialize(){
+		values = new ContentValues();
 		values.put(Alarm.COLUMN_WEEKDAYS, "0000000");
 		this.setName("Alarm");
 		this.setID(ApplicationSettings.getAlarmId() * 10);
