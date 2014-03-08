@@ -191,7 +191,7 @@ public class MyAlarmManager {
 		return partnerAlarms;*/
 	}
 
-	public static void updatePartnerAlarms(ParsePartnerAlarmListener listener) {
+	public static void updatePartnerAlarms(final ParsePartnerAlarmListener listener) {
 		
 		partnerAlarms.clear();
 		
@@ -200,31 +200,19 @@ public class MyAlarmManager {
 		query.whereEqualTo(AlarmInstance.COLUMN_USER, ApplicationSettings.getPartnerEmail());
 		query.orderByAscending(AlarmInstance.COLUMN_TIME);
 
-		/*query.findInBackground(new FindCallback<AlarmInstance>() {
+		query.findInBackground(new FindCallback<AlarmInstance>() {
 			public void done(List<AlarmInstance> list, ParseException e) {
 				if (e == null) {
 					for(AlarmInstance ai : list){
 						partnerAlarms.add(ai);
 					}
 					MyAlarmManager.putPartnerAlarmsToDB();
+					listener.partnerAlarmsFound(list);
 				} else {
-					
+					listener.partnerAlarmsSearchFailed(e);
 				}
 			}
-		});*/
-		
-		List<AlarmInstance> list;
-		try {
-			list = query.find();
-			for(AlarmInstance ai : list){
-				partnerAlarms.add(ai);
-			}
-			listener.partnerAlarmsFound(partnerAlarms);
-			MyAlarmManager.putPartnerAlarmsToDB();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		});
 		
 		
 	}

@@ -14,20 +14,17 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.ParsePartnerAlarmListener;
 
-
-
 /*
  * very first screen to see after opening the app
  * disappears after a few seconds
  */
-public class SplashActivity extends Activity implements ParsePartnerAlarmListener{
+public class SplashActivity extends Activity implements
+		ParsePartnerAlarmListener {
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
 		setContentView(R.layout.splash);
@@ -35,17 +32,17 @@ public class SplashActivity extends Activity implements ParsePartnerAlarmListene
 		TextView name = (TextView) findViewById(R.id.name_id);
 		name.setText(Html.fromHtml("<b>wakeme</b>app"));
 
-		ParseAnalytics.trackAppOpened(getIntent());		
-		
-		try{
-			Thread.sleep(1500);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		ParseAnalytics.trackAppOpened(getIntent());
 
 		// Initialize MyAlarmManager
 		MyAlarmManager.setContext(this);
 		MyAlarmManager.updatePartnerAlarms(this);
+
+		long start = System.currentTimeMillis();
+		long end = start + 2 * 1000;
+		while (System.currentTimeMillis() < end) {
+		}
+		cont();
 
 	}
 
