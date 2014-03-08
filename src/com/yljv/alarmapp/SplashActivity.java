@@ -38,11 +38,18 @@ public class SplashActivity extends Activity implements
 		MyAlarmManager.setContext(this);
 		MyAlarmManager.updatePartnerAlarms(this);
 
-		long start = System.currentTimeMillis();
-		long end = start + 2 * 1000;
-		while (System.currentTimeMillis() < end) {
-		}
-		cont();
+		Thread t = new Thread(){
+			@Override
+			public void run(){
+				try{
+					Thread.sleep(2000);
+					cont();
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		};
+		t.start();
 
 	}
 

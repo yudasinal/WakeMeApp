@@ -135,7 +135,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main, menu);
-		getActivity().invalidateOptionsMenu();
+		//getActivity().invalidateOptionsMenu();
 	}
 	
 	@Override
