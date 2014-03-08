@@ -10,7 +10,8 @@ public class ApplicationSettings {
 	private final static String PARTNER_EMAIL_KEY = "parter_email";
 	private final static String PARTNER_NAME_KEY = "partner_name";
 	private final static String ALARM_ID_COUNTER_KEY = "counter";
-	private final static String USER_EMAIL_KEY = "user";
+	private final static String USER_EMAIL_KEY = "user_email";
+	private final static String USER_NAME_KEY = "user_name";
 	
 	public int alarmIdCounter = 0;
 	
@@ -43,24 +44,35 @@ public class ApplicationSettings {
 
 		return preferences.getString(USER_EMAIL_KEY, "jane@gmail.com");
 	}
+	
+	public static String getUserName(){
+		
+		String res = preferences.getString(USER_NAME_KEY, "Jane");
+		return res;
+	}
 
 	public static boolean isNotificationActivated(){
 		return preferences.getBoolean(NOTIFICATION_ON_KEY, true);
 	}
 	
 	public static void setNotificationActivated(boolean activated){
-		preferences.edit().putBoolean(NOTIFICATION_ON_KEY, activated);
+		preferences.edit().putBoolean(NOTIFICATION_ON_KEY, activated).commit();
 	}
 	public static void setPartnerEmail(String partnerEmail){
-		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail);
+		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail).commit();
 	}
 	
 	public static void setPartnerName(String partnerName){
-		preferences.edit().putString(PARTNER_NAME_KEY, partnerName);
+		preferences.edit().putString(PARTNER_NAME_KEY, partnerName).commit();
 	}
 	
 	public static void setUserEmail(String userEmail){
-		preferences.edit().putString(USER_EMAIL_KEY, userEmail);
+		preferences.edit().putString(USER_EMAIL_KEY, userEmail).commit();
+		
+	}
+	
+	public static void setUserName(String userName){
+		preferences.edit().putString(USER_NAME_KEY, userName).commit();
 	}
 	
 

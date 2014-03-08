@@ -51,7 +51,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 	Button cancelAlarm;
 	boolean[] scheduled = new boolean[7];
 	int red = Color.parseColor("#ff0404");
-	int tintedRed = Color.parseColor("#ffc4a4");
+	int turquoise = Color.parseColor("#90c5a9");
 	
 	Alarm alarm;
 	
@@ -178,7 +178,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                monday.setTextColor(tintedRed);
+	                monday.setTextColor(turquoise);
 	                scheduled[0] = false;
 				}
 			}
@@ -192,7 +192,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                tuesday.setTextColor(tintedRed);
+	                tuesday.setTextColor(turquoise);
 	                scheduled[1] = false;
 				}
 			}
@@ -206,7 +206,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                wednesday.setTextColor(tintedRed);
+	                wednesday.setTextColor(turquoise);
 	                scheduled[2] = false;
 				}
 			}
@@ -220,7 +220,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                thursday.setTextColor(tintedRed);
+	                thursday.setTextColor(turquoise);
 	                scheduled[3] = false;
 				}
 			}
@@ -234,7 +234,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                friday.setTextColor(tintedRed);
+	                friday.setTextColor(turquoise);
 	                scheduled[4] = false;
 				}
 			}
@@ -248,7 +248,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                saturday.setTextColor(tintedRed);
+	                saturday.setTextColor(turquoise);
 	                scheduled[5] = false;
 				}
 			}
@@ -262,7 +262,7 @@ public class AddAlarmFragment extends SherlockFragment implements OnTimeChangedL
 			}
 			else{
 				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-	                sunday.setTextColor(tintedRed);
+	                sunday.setTextColor(turquoise);
 	                scheduled[6] = false;
 				}
 			}

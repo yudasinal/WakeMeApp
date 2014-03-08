@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.helper.AccountManager;
+import com.yljv.alarmapp.helper.ApplicationSettings;
 
 /*
  * shows Settings: 
@@ -26,6 +29,10 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 	private static final int TEXT_ID2 = 0;
 	private static final int TEXT_ID3 = 0;
 	private static final int TEXT_ID4 = 0;
+	TextView myName;
+	TextView myEmail;
+	TextView partnerName;
+	TextView partnerEmail;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,15 +47,15 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 		TableRow deleteAccount = (TableRow) view.findViewById(R.id.row7);
 		TableRow likeUs = (TableRow) view.findViewById(R.id.row11);
 		TableRow credits = (TableRow) view.findViewById(R.id.row12);
-		TextView myName = (TextView) view.findViewById(R.id.my_name);
-		TextView myEmail = (TextView) view.findViewById(R.id.my_email);
-		TextView partnerName = (TextView) view.findViewById(R.id.partner_name);
-		TextView partnerEmail = (TextView) view.findViewById(R.id.partner_email);
-		//TODO get user name, email, partner name, email 
-		
-		
-		
-		
+		myName = (TextView) view.findViewById(R.id.my_name);
+		myEmail = (TextView) view.findViewById(R.id.my_email);
+		partnerName = (TextView) view.findViewById(R.id.partner_name);
+		partnerEmail = (TextView) view.findViewById(R.id.partner_email);
+		myName.setText(ApplicationSettings.getUserName());
+		myEmail.setText(ApplicationSettings.getUserEmail());
+		partnerName.setText(ApplicationSettings.getPartnerName());
+		partnerEmail.setText(ApplicationSettings.getPartnerEmail());
+
 		changeMyName.setOnClickListener(this);
 		changeMyEmail.setOnClickListener(this);
 		changePartnerName.setOnClickListener(this);
@@ -79,12 +86,14 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			final EditText newName = new EditText(this.getActivity());
 			newName.setId(TEXT_ID);
 			changeName.setView(newName);
+			newName.setText(ApplicationSettings.getUserName());
 			changeName.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Save changed name
-					
+					String changedName = newName.getText().toString();
+					ApplicationSettings.setUserName(changedName);
+					myName.setText(ApplicationSettings.getUserName());
 				}
 			});
 			
@@ -104,11 +113,14 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			final EditText newEmail = new EditText(this.getActivity());
 			newEmail.setId(TEXT_ID1);
 			changeEmail.setView(newEmail);
+			newEmail.setText(ApplicationSettings.getUserEmail());
 			changeEmail.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Save changed name
+					String changedEmail = newEmail.getText().toString();
+					ApplicationSettings.setUserEmail(changedEmail);
+					myEmail.setText(ApplicationSettings.getUserEmail());
 					
 				}
 			});
@@ -130,12 +142,14 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			final EditText newPartnerName = new EditText(this.getActivity());
 			newPartnerName.setId(TEXT_ID2);
 			changePartnerName.setView(newPartnerName);
+			newPartnerName.setText(ApplicationSettings.getPartnerName());
 			changePartnerName.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Save changed name
-					
+					String changedPartnerName = newPartnerName.getText().toString();
+					ApplicationSettings.setPartnerName(changedPartnerName);
+					partnerName.setText(ApplicationSettings.getPartnerName());
 				}
 			});
 			
@@ -160,7 +174,6 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Save changed name
 					
 				}
 			});

@@ -1,7 +1,7 @@
 package com.yljv.alarmapp;
 
-import com.yljv.alarmapp.R;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
@@ -23,6 +23,8 @@ public class BaseActivity extends SlidingFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
+
 		
 		setTitle(appTitle);
 		setBehindContentView(R.layout.menu_frame);
