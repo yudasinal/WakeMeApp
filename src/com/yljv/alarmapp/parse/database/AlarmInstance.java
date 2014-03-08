@@ -24,12 +24,14 @@ public class AlarmInstance extends ParseObject{
 	public final static String COLUMN_PICTURE = "picture";
 	public final static String COLUMN_USER = "user";
 	public final static String TABLE_NAME = "partner_alarm_entry";
+	public final static String  COLUMN_OBJECT_ID = "object_id";
 	
-	private ContentValues values;
+	private ContentValues values = new ContentValues();
+	
 
 	public AlarmInstance() {
-		super("AlarmInstance");
-		put(COLUMN_USER, ApplicationSettings.getUserEmail());
+		/*super("AlarmInstance");
+		put(COLUMN_USER, ApplicationSettings.getUserEmail());*/
 	}
 	
 	public String getName(){
@@ -85,6 +87,10 @@ public class AlarmInstance extends ParseObject{
 	
 	public void setTime(GregorianCalendar cal){
 		put(COLUMN_TIME, cal.getTimeInMillis());
+	}
+	
+	public void setUser(){
+		put(COLUMN_USER, ApplicationSettings.getUserEmail());
 	}
 	
 	public void setMsg(String msg){

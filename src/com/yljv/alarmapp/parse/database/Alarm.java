@@ -1,12 +1,11 @@
 package com.yljv.alarmapp.parse.database;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.content.ContentValues;
-import android.provider.BaseColumns;
+import android.net.Uri;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -35,10 +34,16 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	final static int PM = Calendar.PM;
 
 	private ContentValues values;
+	
 
 	public Alarm() {
-		super("Alarm");
-		values = new ContentValues();
+	}
+
+	public Alarm(ContentValues cv) {
+		this.values = cv;
+	}
+	
+	public void initialize(){
 		values.put(Alarm.COLUMN_WEEKDAYS, "0000000");
 		this.setName("Alarm");
 		this.setID(ApplicationSettings.getAlarmId() * 10);
@@ -49,10 +54,6 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		}
 		this.setActivated(true);
 		this.setVisible(true);
-	}
-
-	public Alarm(ContentValues cv) {
-		this.values = cv;
 	}
 
 	@Override
@@ -191,7 +192,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		put(Alarm.COLUMN_MSG, msg);
 	}
 
-	public void setMusicURI(URI uri) {
+	public void setMusicURI(Uri uri) {
 		values.put(Alarm.COLUMN_MUSIC_URI, uri.getPath());
 		put(Alarm.COLUMN_MUSIC_URI, uri.getPath());
 	}

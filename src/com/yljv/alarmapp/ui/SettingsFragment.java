@@ -37,8 +37,9 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.settings_layout, container, false);
-		TableRow changeMyName = (TableRow) view.findViewById(R.id.row1); 
+		View view = inflater
+				.inflate(R.layout.settings_layout, container, false);
+		TableRow changeMyName = (TableRow) view.findViewById(R.id.row1);
 		TableRow changeMyEmail = (TableRow) view.findViewById(R.id.row2);
 		TableRow changePartnerName = (TableRow) view.findViewById(R.id.row3);
 		TableRow changePartnerEmail = (TableRow) view.findViewById(R.id.row4);
@@ -63,10 +64,9 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 		unlink.setOnClickListener(this);
 		signOut.setOnClickListener(this);
 		deleteAccount.setOnClickListener(this);
-		likeUs.setOnClickListener(this);
-		credits.setOnClickListener(this);
-		
+
 		return view;
+
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 
 	@Override
 	public void onClick(View v) {
-		switch(v.getId()) {
+		switch (v.getId()) {
 		case R.id.row1:
 			AlertDialog.Builder changeName = new AlertDialog.Builder(this.getActivity());
 			changeName.setTitle("Change name");
@@ -257,13 +257,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			
 			
 		}
-		
-		
-		
 			
-		
 	}
-	
-	
 
 }

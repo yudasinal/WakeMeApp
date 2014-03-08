@@ -19,7 +19,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class ClockAdapter extends ArrayAdapter<Alarm> {
 	boolean alarmSet;
-	int red = Color.parseColor("#fa8b60");
+	int red = Color.parseColor("#ff0404");
 	
 	
 	public ClockAdapter(Context context) {
@@ -41,13 +41,13 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			holder = new ViewHolder();
 			holder.textView = (TextView) rowView.findViewById(R.id.my_text);
 			holder.timeView = (TextView) rowView.findViewById(R.id.my_time);
-			holder.monday = (TextView) rowView.findViewById(R.id.mon);
-			holder.tuesday = (TextView) rowView.findViewById(R.id.tue);
-			holder.wednesday = (TextView) rowView.findViewById(R.id.wed);
-			holder.thursday = (TextView) rowView.findViewById(R.id.thu);
-			holder.friday = (TextView) rowView.findViewById(R.id.fri);
-			holder.saturday = (TextView) rowView.findViewById(R.id.sat);
-			holder.sunday = (TextView) rowView.findViewById(R.id.sun);
+			holder.weekdays[0] = (TextView) rowView.findViewById(R.id.mon);
+			holder.weekdays[1] = (TextView) rowView.findViewById(R.id.tue);
+			holder.weekdays[2] = (TextView) rowView.findViewById(R.id.wed);
+			holder.weekdays[3] = (TextView) rowView.findViewById(R.id.thu);
+			holder.weekdays[4] = (TextView) rowView.findViewById(R.id.fri);
+			holder.weekdays[5] = (TextView) rowView.findViewById(R.id.sat);
+			holder.weekdays[6] = (TextView) rowView.findViewById(R.id.sun);
 			myAlarms = MyAlarmManager.getAllAlarms();
 			Collections.sort(myAlarms);
 			rowView.setTag(holder);
@@ -85,31 +85,9 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 				myHolder.timeView.setText(time);
 				myHolder.textView.setText(text);
 				boolean[] repeatedDays = myAlarm.getWeekdaysRepeated();
-				for(int i = 0; i < repeatedDays.length - 1; i++) {
+				for(int i = 0; i < repeatedDays.length; i++) {
 					if(repeatedDays[i] == true) {
-						switch(i) {
-						case 0:
-							holder.monday.setTextColor(red);
-							break;
-						case 1:
-							holder.tuesday.setTextColor(red);
-							break;
-						case 2:
-							holder.wednesday.setTextColor(red);
-							break;
-						case 3: 
-							holder.thursday.setTextColor(red);
-							break;
-						case 4: 
-							holder.friday.setTextColor(red);
-							break;
-						case 5:
-							holder.saturday.setTextColor(red);
-							break;
-						case 6:
-							holder.sunday.setTextColor(red);
-							break;
-						}
+						holder.weekdays[i].setTextColor(red);
 					}
 				}
 			}
@@ -121,16 +99,10 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		return rowView;
 	}
 	
-	static class ViewHolder {
+	private static class ViewHolder {
 		TextView textView;
 		TextView timeView;
-		TextView monday;
-		TextView tuesday;
-		TextView wednesday;
-		TextView thursday;
-		TextView friday;
-		TextView saturday;
-		TextView sunday;
+		TextView[] weekdays = new TextView[7];
 	}
 
 }

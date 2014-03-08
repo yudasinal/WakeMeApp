@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ParsePartnerAlarmListener {
 	
-	public void partnerAlarmsFound(List<Alarm> alarms);
+	public void partnerAlarmsFound(List<AlarmInstance> alarms);
 	public void partnerAlarmsSearchFailed(Exception e);
 }
