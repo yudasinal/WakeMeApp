@@ -54,8 +54,9 @@ public class SplashActivity extends Activity implements
 	}
 
 	public void cont() {
-		Intent intent = new Intent(this, MenuMainActivity.class);
+		Intent intent = new Intent(this, ChoiceActivity.class);
 		this.startActivity(intent);
+		finish();
 	}
 
 	@Override

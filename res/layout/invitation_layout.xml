@@ -11,39 +11,15 @@
         android:background="@android:color/transparent"
         android:layout_weight="0.20"/>
     
-	<LinearLayout
-	    android:layout_height = "wrap_content"
-	    android:layout_width = "match_parent"
-	    android:background = "@drawable/register_box"
-	    android:orientation="vertical"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
-	    android:layout_marginBottom="20dp"
-	    android:layout_gravity="center"
-	    android:layout_weight="0.10">
-	    
-	    <EditText
-	        android:layout_marginTop="20dp"
-	        android:layout_marginLeft = "20dp"
-	        android:layout_marginRight="20dp"
-	        android:id="@+id/partner_name"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:inputType="textPersonName"
-	        android:hint = "Name" />
-	    
-	    <EditText
-	        android:id="@+id/partner_email"
-	        android:layout_marginLeft = "20dp"
-	        android:layout_marginRight="20dp"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:inputType="textEmailAddress"
-	        android:hint = "Email" />
-	    
-	</LinearLayout>
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:textSize = "24sp"
+	    android:layout_weight="0.2"
+	    android:id="@+id/invite"
+	    android:text="Awesome! Jasmin (jasmin@gmail.com) wants to be alarm buddies with you!"
+	    android:textColor = "#fff6ea"/>
     
     <LinearLayout
         android:layout_width="fill_parent"
@@ -52,7 +28,7 @@
     	android:layout_weight="0.2"
     	android:layout_gravity="center">
 	    <Button
-	        android:id="@+id/btnSkip"
+	        android:id="@+id/btnDecline"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
@@ -60,10 +36,10 @@
 	        android:layout_marginTop="-10dp"
 	        android:textColor="#3f2860"
 	        android:background="@drawable/sign_up"
-	        android:text="Skip"/>
+	        android:text="Decline"/>
 	
 	    <Button
-	        android:id="@+id/btnInvite"
+	        android:id="@+id/btnAccept"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="0.2"
@@ -71,7 +47,7 @@
 	        android:textColor="#3f2860"
 	        android:layout_gravity="center"
 	        android:background="@drawable/sign_in"
-	        android:text="Invite"/>
+	        android:text="Accept"/>
     
     </LinearLayout>
     

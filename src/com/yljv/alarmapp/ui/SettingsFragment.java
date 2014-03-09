@@ -4,18 +4,18 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 /*
@@ -43,6 +43,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 		TableRow changeMyEmail = (TableRow) view.findViewById(R.id.row2);
 		
 		if(ApplicationSettings.hasPartner(ApplicationSettings.getUserEmail()) == true) {
+			
 			TableRow changePartnerName = (TableRow) view.findViewById(R.id.row3);
 			TableRow changePartnerEmail = (TableRow) view.findViewById(R.id.row4);
 			TableRow unlink = (TableRow) view.findViewById(R.id.row5);
@@ -58,6 +59,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 		}
 		
 		else{
+			
 			TableRow addPartner = (TableRow) view.findViewById(R.id.row13);
 			TableRow changePartnerName = (TableRow) view.findViewById(R.id.row3);
 			changePartnerName.setVisibility(View.GONE);
@@ -278,16 +280,22 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 
 			AlertDialog.Builder addPartner = new AlertDialog.Builder(this.getActivity());
 			addPartner.setTitle("Add an Alarm Buddy");
+			LinearLayout layout = new LinearLayout(getActivity());
+			layout.setOrientation(LinearLayout.VERTICAL);
 			final EditText addPartnerName = new EditText(this.getActivity());
 			addPartnerName.setHint("name");
+			layout.addView(addPartnerName);
 			final EditText addPartnerEmail = new EditText(this.getActivity());
 			addPartnerEmail.setHint("email");
-			addPartner.setView(addPartnerName);
-			addPartner.setView(addPartnerEmail);
+			layout.addView(addPartnerEmail);
+			addPartner.setView(layout);
 			addPartner.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					//TODO register partner (what if slow internet?)
+					
+					Toast.makeText(getActivity(), "Invitation to John is sent", Toast.LENGTH_LONG).show();
 				}
 			});
 			

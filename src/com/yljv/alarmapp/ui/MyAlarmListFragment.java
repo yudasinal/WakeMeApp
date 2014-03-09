@@ -4,6 +4,7 @@ package com.yljv.alarmapp.ui;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,7 +20,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.yljv.alarmapp.MenuMainActivity;
+import com.yljv.alarmapp.AddAlarmActivity;
+import com.yljv.alarmapp.EditAlarmActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
@@ -94,11 +96,13 @@ public class MyAlarmListFragment extends SherlockFragment {
 					Log.e("AlarmApp", "count == 0");
 					Alarm alarm = (Alarm) listView.getAdapter().getItem(position);
 					int alarmID = alarm.getAlarmId();
-					
-					//int alarmPosition = parent.getSelectedItemPosition();
+					Intent intent = new Intent(getActivity(), EditAlarmActivity.class);
+					intent.putExtra("edit alarm", alarmID);
+					listView.setItemChecked(position, false);
+					startActivity(intent);
+					/*
 					EditAlarmFragment editAlarm = new EditAlarmFragment();
 					Bundle bundle = new Bundle();
-					//bundle.putInt("edit alarm", alarmPosition);
 					bundle.putInt("edit alarm", alarmID);
 					editAlarm.setArguments(bundle);
 					if (getActivity() instanceof MenuMainActivity) {
@@ -106,6 +110,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 						MenuMainActivity mma = (MenuMainActivity) getActivity();
 						mma.switchContent(editAlarm);
 					} 
+					*/
 				}
 			}
 		});
@@ -128,6 +133,8 @@ public class MyAlarmListFragment extends SherlockFragment {
 		deleteAlarm = (MenuItem) menu.findItem(R.id.delete_alarm);
 		addAlarm = (MenuItem) menu.findItem(R.id.add_alarm);
 		cancelAlarm = (MenuItem) menu.findItem(R.id.cancel_alarm);
+		MenuItem saveAlarm = (MenuItem) menu.findItem(R.id.save_alarm);
+		saveAlarm.setVisible(false);
 		deleteAlarm.setVisible(false);
 		cancelAlarm.setVisible(false);
 	}
@@ -144,10 +151,14 @@ public class MyAlarmListFragment extends SherlockFragment {
 		switch(item.getItemId()) {
 		case R.id.add_alarm:
 			newContent = new AddAlarmFragment();
+			Intent intent = new Intent(this.getActivity(), AddAlarmActivity.class);
+			getActivity().startActivity(intent);
+			/*
 			if (getActivity() instanceof MenuMainActivity) {
 				MenuMainActivity mma = (MenuMainActivity) getActivity();
 				mma.switchContent(newContent);
 			} 
+			*/
 			break;
 		case R.id.cancel_alarm:
 			for(int i = 0; i < selectedItems.length; i++) {
