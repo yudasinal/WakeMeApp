@@ -15,19 +15,20 @@
 	    <TextView
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:layout_marginTop = "10dp"
 	        android:text="Profile"
-	        android:textSize="20sp"/>
+	        android:textSize="24sp"/>
 	    
 	    <View
 	    	android:layout_width="fill_parent"
-	    	android:layout_height="2dp"
-	    	android:background="@android:color/darker_gray"/>
+	    	android:layout_height="3dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row1"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        
 	        <RelativeLayout
 		        android:layout_width="match_parent"
@@ -56,7 +57,7 @@
 	        android:id="@+id/row2"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 		    <RelativeLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content" >
@@ -82,7 +83,7 @@
 	        android:id="@+id/row13"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        <TextView 
 	            android:id="@+id/add_partner"
 	            android:layout_width="match_parent"
@@ -97,7 +98,7 @@
 	        android:id="@+id/row3"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        
 	        <RelativeLayout 
 	            android:layout_width="match_parent"
@@ -126,7 +127,7 @@
 	        android:id="@+id/row4"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        
 	        <RelativeLayout
 	            android:layout_width="match_parent"
@@ -154,7 +155,7 @@
 	        android:id="@+id/row5"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        <RelativeLayout
 	            android:layout_width="match_parent"
 		        android:layout_height="wrap_content">
@@ -182,7 +183,7 @@
 	        android:id="@+id/row6"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        <TextView 
 	            android:id="@+id/sign_out"
 	            android:layout_width="match_parent"
@@ -197,7 +198,7 @@
 	        android:id="@+id/row7"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        <TextView 
 	            android:id="@+id/delete_account"
 	            android:layout_width="match_parent"
@@ -211,19 +212,19 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Notifications"
-	        android:textSize="20sp"
+	        android:textSize="24sp"
 	        android:layout_marginTop="10dp"/>
 	    
 	    <View
 	    	android:layout_width="fill_parent"
-	    	android:layout_height="2dp"
-	    	android:background="@android:color/darker_gray"/>
+	    	android:layout_height="3dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow 
 	        android:id="@+id/row8"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        
 	        <RelativeLayout
 	            android:layout_width="match_parent"
@@ -254,7 +255,7 @@
 	        android:id="@+id/row9"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        
 	        <RelativeLayout
 	            android:layout_width="match_parent"
@@ -284,7 +285,7 @@
 	        android:id="@+id/row10"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        
 	        <RelativeLayout
 	            android:layout_width="match_parent"
@@ -315,19 +316,19 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="About"
-	        android:textSize="20sp"
+	        android:textSize="24sp"
 	        android:layout_marginTop="10dp"/>
 	    
 	    <View
 	    	android:layout_width="fill_parent"
-	    	android:layout_height="2dp"
-	    	android:background="@android:color/darker_gray"/>
+	    	android:layout_height="3dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row11"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row">
 	        <TextView 
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
@@ -341,7 +342,8 @@
 	        android:id="@+id/row12"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:background="@android:drawable/list_selector_background">
+	        android:background="@drawable/background_table_row"
+	        android:layout_marginBottom = "10dp">
 	        <TextView 
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"

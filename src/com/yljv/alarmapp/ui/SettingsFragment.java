@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.R;
@@ -48,27 +50,47 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 				.inflate(R.layout.settings_layout, container, false);
 		TableRow changeMyName = (TableRow) view.findViewById(R.id.row1);
 		TableRow changeMyEmail = (TableRow) view.findViewById(R.id.row2);
-		TableRow changePartnerName = (TableRow) view.findViewById(R.id.row3);
-		TableRow changePartnerEmail = (TableRow) view.findViewById(R.id.row4);
-		TableRow unlink = (TableRow) view.findViewById(R.id.row5);
+		
+		if(ApplicationSettings.hasPartner(ApplicationSettings.getUserEmail()) == true) {
+			
+			TableRow changePartnerName = (TableRow) view.findViewById(R.id.row3);
+			TableRow changePartnerEmail = (TableRow) view.findViewById(R.id.row4);
+			TableRow unlink = (TableRow) view.findViewById(R.id.row5);
+			TableRow addPartner = (TableRow) view.findViewById(R.id.row13);
+			addPartner.setVisibility(View.GONE);
+			partnerName = (TextView) view.findViewById(R.id.partner_name);
+			partnerEmail = (TextView) view.findViewById(R.id.partner_email);
+			partnerName.setText(ApplicationSettings.getPartnerName());
+			partnerEmail.setText(ApplicationSettings.getPartnerEmail());
+			changePartnerName.setOnClickListener(this);
+			changePartnerEmail.setOnClickListener(this);
+			unlink.setOnClickListener(this);
+		}
+		
+		else{
+			
+			TableRow addPartner = (TableRow) view.findViewById(R.id.row13);
+			TableRow changePartnerName = (TableRow) view.findViewById(R.id.row3);
+			changePartnerName.setVisibility(View.GONE);
+			TableRow changePartnerEmail = (TableRow) view.findViewById(R.id.row4);
+			changePartnerEmail.setVisibility(View.GONE);
+			TableRow unlink = (TableRow) view.findViewById(R.id.row5);
+			unlink.setVisibility(View.GONE);
+			addPartner.setOnClickListener(this);
+		}
+		
 		TableRow signOut = (TableRow) view.findViewById(R.id.row6);
 		TableRow deleteAccount = (TableRow) view.findViewById(R.id.row7);
 		TableRow likeUs = (TableRow) view.findViewById(R.id.row11);
 		TableRow credits = (TableRow) view.findViewById(R.id.row12);
 		myName = (TextView) view.findViewById(R.id.my_name);
 		myEmail = (TextView) view.findViewById(R.id.my_email);
-		partnerName = (TextView) view.findViewById(R.id.partner_name);
-		partnerEmail = (TextView) view.findViewById(R.id.partner_email);
+		
 		myName.setText(ApplicationSettings.getUserName());
 		myEmail.setText(ApplicationSettings.getUserEmail());
-		partnerName.setText(ApplicationSettings.getPartnerName());
-		partnerEmail.setText(ApplicationSettings.getPartnerEmail());
 
 		changeMyName.setOnClickListener(this);
 		changeMyEmail.setOnClickListener(this);
-		changePartnerName.setOnClickListener(this);
-		changePartnerEmail.setOnClickListener(this);
-		unlink.setOnClickListener(this);
 		signOut.setOnClickListener(this);
 		deleteAccount.setOnClickListener(this);
 
@@ -264,6 +286,39 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 			deleteAccount.show();
 			break;
 			
+		case R.id.row13:
+			
+
+			AlertDialog.Builder addPartner = new AlertDialog.Builder(this.getActivity());
+			addPartner.setTitle("Add an Alarm Buddy");
+			LinearLayout layout = new LinearLayout(getActivity());
+			layout.setOrientation(LinearLayout.VERTICAL);
+			final EditText addPartnerName = new EditText(this.getActivity());
+			addPartnerName.setHint("name");
+			layout.addView(addPartnerName);
+			final EditText addPartnerEmail = new EditText(this.getActivity());
+			addPartnerEmail.setHint("email");
+			layout.addView(addPartnerEmail);
+			addPartner.setView(layout);
+			addPartner.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//TODO register partner (what if slow internet?)
+					
+					Toast.makeText(getActivity(), "Invitation to John is sent", Toast.LENGTH_LONG).show();
+				}
+			});
+			
+			addPartner.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			addPartner.show();
+			break;
 			
 		}
 			

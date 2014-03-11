@@ -60,5 +60,6 @@ public class SplashActivity extends Activity {
 			intent = new Intent(this, MenuMainActivity.class);
 		}
 		startActivity(intent);
+		finish();
 	}
 }

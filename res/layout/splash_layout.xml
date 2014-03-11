@@ -2,23 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_weight="2" >
+    android:orientation="vertical"
+    android:background = "#3f2860">
+    <!-- android:background="#d0f0ff"  -->
+    
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight = "1"
-        android:layout_gravity="center"
-        android:text="Sign up"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:layout_weight="0.02"/>
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:src="@drawable/sign_in_sign_up"
+        android:layout_weight="0.06" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" 
-        android:layout_gravity="center"
-        android:text="Sign in"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_weight="0.05"
+    	android:layout_gravity="center">
+	    <Button
+	        android:id="@+id/btnRegister"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginTop="-40dp"
+	        android:layout_weight="0.05"
+	        android:textColor="#3f2860"
+	        android:background="@drawable/sign_up"
+	        android:text="Sign up"/>
+	
+	    <Button
+	        android:id="@+id/btnLogin"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.05"
+	        android:textColor="#3f2860"
+	        android:layout_marginTop="-40dp"
+	        android:layout_gravity="center"
+	        android:background="@drawable/sign_in"
+	        android:text="Sign in"/>
+    
+    </LinearLayout>
 
 </LinearLayout>
+

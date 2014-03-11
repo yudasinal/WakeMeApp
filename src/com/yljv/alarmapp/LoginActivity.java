@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,38 +27,54 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	EditText editPassword;
 	EditText editEmail;
 	Button loginBtn;
+<<<<<<< HEAD
 	Button btnBack;
 	
 	boolean visible;
+=======
+	Button regBtn;
+>>>>>>> 1f9a2a72f7bd940416caf4ae68237776497fb635
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
-		loginBtn = (Button) findViewById(R.id.loginBtn);
-		btnBack = (Button) findViewById(R.id.btnBack);
+		loginBtn = (Button) findViewById(R.id.btnLogin);
+		regBtn = (Button) findViewById(R.id.btnRegister);
 		loginBtn.setOnClickListener(this);
-		btnBack.setOnClickListener(this);
 		
 		visible = true;
+		
+		regBtn.setOnClickListener(this);
+		getActionBar().setTitle("Login");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == android.R.id.home) {
+			super.onBackPressed();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.loginBtn:
-			login();
-			break;
-		case R.id.btnBack:
-			backSplash();
-			break;
+		switch(v.getId()){
+			case  R.id.btnLogin: 
+				login();
+				break;
+			case R.id.btnRegister:
+				Intent intent = new Intent(this, RegisterActivity.class);
+				startActivity(intent);
+				break;
 		}
 	}
 
 	public void login() {
-		editEmail = (EditText) findViewById(R.id.editEmail);
-		editPassword = (EditText) findViewById(R.id.editPassword);
+		editEmail = (EditText) findViewById(R.id.email);
+		editPassword = (EditText) findViewById(R.id.password);
 		String email = editEmail.getText().toString();
 		String password = editPassword.getText().toString();
 		boolean cancel = false;
@@ -64,7 +82,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		// TODO Error fields (user does not exist, etc)
 		// Check for a valid password.
 		if (TextUtils.isEmpty(password)) {
-			editPassword.setError("This field is required");
+			editPassword.setError("Field is required");
 			focusView = editPassword;
 			cancel = true;
 		} else if (password.length() < 4) {
@@ -73,7 +91,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 			cancel = true;
 		}
 		if (TextUtils.isEmpty(email)) {
-			editEmail.setError("This field is required");
+			editEmail.setError("Field is required");
 			focusView = editEmail;
 			cancel = true;
 
@@ -96,17 +114,18 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	@Override
 	public void onLoginSuccessful() {
-
-		PushService.subscribe(this, AccountManager.getPartnerChannel(),
-				MenuMainActivity.class);
-		//PushService.subscribe(this, AccountManager.getEmail(), MenuMainActivity.class);
-		//TODO invalid channel name
+		
 
 		MyAlarmManager.getPartnerAlarmsFromServer(this);
 		MyAlarmManager.getMyAlarmsFromServer();
 
 		cont();
-
+		
+		PushService.subscribe(this, AccountManager.getPartnerChannel(), MenuMainActivity.class);
+		Intent intent = new Intent (this, MenuMainActivity.class);
+		startActivity(intent);
+		finish();
+		
 	}
 
 	@Override
