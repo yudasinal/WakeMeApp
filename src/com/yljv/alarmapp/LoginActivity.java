@@ -27,13 +27,9 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	EditText editPassword;
 	EditText editEmail;
 	Button loginBtn;
-<<<<<<< HEAD
-	Button btnBack;
 	
 	boolean visible;
-=======
 	Button regBtn;
->>>>>>> 1f9a2a72f7bd940416caf4ae68237776497fb635
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

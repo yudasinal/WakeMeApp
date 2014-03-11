@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.yljv.alarmapp.helper.DBHelper;
-import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.ui.MenuList;
 import com.yljv.alarmapp.ui.MyAlarmListFragment;
 

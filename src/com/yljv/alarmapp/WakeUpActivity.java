@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.yljv.alarmapp.ui.WakeUpFragment;
 
+
 public class WakeUpActivity extends FragmentActivity {
 	
 	private Fragment mainView;

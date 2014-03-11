@@ -66,7 +66,7 @@ public class AccountManager{
 			public void done(ParseUser user, ParseException e){
 				if(user!=null){
 					ApplicationSettings.setUserEmail(user.getEmail());
-					ApplicationSettings.setUserName(user.getString(User.NAME_COLUMN));
+					ApplicationSettings.setUserName(user.getUsername());
 					ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
 					ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
 					

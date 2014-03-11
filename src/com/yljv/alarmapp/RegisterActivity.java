@@ -9,14 +9,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.PushService;
 import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
-import com.yljv.alarmapp.helper.AccountManager.User;
 import com.yljv.alarmapp.parse.database.ParseRegisterListener;
 
 public class RegisterActivity extends Activity implements OnClickListener,
