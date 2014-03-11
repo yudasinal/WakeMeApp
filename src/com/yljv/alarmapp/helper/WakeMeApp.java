@@ -6,6 +6,7 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.PushService;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.parse.database.Alarm;
@@ -31,7 +32,12 @@ public class WakeMeApp extends Application {
 
 		// initialize Settings
 		ApplicationSettings.setSharedPreferences(this);
-		
+
+		// getAlarms from Database
+		if (ParseUser.getCurrentUser() != null) {
+			MyAlarmManager.getPartnerAlarmsFromDatabase();
+			MyAlarmManager.getMyAlarmsFromDatabase();
+		}
 		super.onCreate();
 	}
 

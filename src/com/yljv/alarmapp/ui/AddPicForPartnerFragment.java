@@ -25,11 +25,15 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class AddPicForPartnerFragment extends SherlockFragment implements OnClickListener {
 	
 	public static final String MESSAGE_FOR_ALARM = "com.yljv.alarmapp.MESSAGE_FOR_ALARM";
 	public static String picturePath;
+	
+	private AlarmInstance alarm;
 	
 	Button previewButton;
 	ImageView addPicture;
@@ -43,6 +47,8 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		super.onCreate(savedInstanceState);
 		getActivity().getActionBar().setTitle("Customize");
 		setHasOptionsMenu(true);
+		Bundle bundle = this.getArguments();
+		alarm = MyAlarmManager.findPartnerAlarmById(bundle.getInt(AlarmInstance.COLUMN_ID));	
 	}
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -174,7 +180,10 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			picturePath = cursor.getString(columnIndex);
 			cursor.close();
 			
-			addPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+			addPicture.setImageBitmap(bitmap);
+			
+			MyAlarmManager.addPictureToPartnerAlarm(alarm, bitmap);
 		}
 	}
 

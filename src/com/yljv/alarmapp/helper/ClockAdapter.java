@@ -24,7 +24,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 	
 	public ClockAdapter(Context context) {
 		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
-		this.addAll(MyAlarmManager.getAllAlarms());
+		this.addAll(MyAlarmManager.getMyAlarms());
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			holder.weekdays[4] = (TextView) rowView.findViewById(R.id.fri);
 			holder.weekdays[5] = (TextView) rowView.findViewById(R.id.sat);
 			holder.weekdays[6] = (TextView) rowView.findViewById(R.id.sun);
-			myAlarms = MyAlarmManager.getAllAlarms();
+			myAlarms = MyAlarmManager.getMyAlarms();
 			Collections.sort(myAlarms);
 			rowView.setTag(holder);
 			setAlarm = (ImageView) rowView.findViewById(R.id.set_alarm);

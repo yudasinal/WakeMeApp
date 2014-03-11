@@ -11,22 +11,27 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.PushService;
 import com.yljv.alarmapp.helper.AccountManager;
+import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.helper.AccountManager.User;
 import com.yljv.alarmapp.parse.database.ParseRegisterListener;
 
-public class RegisterActivity extends Activity implements OnClickListener, ParseRegisterListener {
-	
-public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
-	
-	EditText editFirstName; 
+public class RegisterActivity extends Activity implements OnClickListener,
+		ParseRegisterListener {
+
+	public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
+
+	EditText editFirstName;
 	Button btnRegister;
 	Button btnBack;
-	EditText editLastName; 
+	EditText editLastName;
 	EditText editEmail;
 	EditText editPassword;
 	RadioButton checkFemale;
 	EditText editPassword2;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,22 +47,20 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 		btnRegister.setOnClickListener(this);
 		btnBack.setOnClickListener(this);
 	}
-	
 
 	@Override
 	public void onClick(View register) {
-		//TODO create User here
+		// TODO create User here
 		switch (register.getId()) {
-			case R.id.btnRegister:
-				registerAttempt();
-				break;
-			case R.id.btnBack: 
-				back();
-				break;
+		case R.id.btnRegister:
+			registerAttempt();
+			break;
+		case R.id.btnBack:
+			back();
+			break;
 		}
 	}
-	
-	
+
 	public void registerAttempt() {
 		String firstName = editFirstName.getText().toString();
 		String lastName = editLastName.getText().toString();
@@ -68,7 +71,7 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 		boolean cancel = false;
 		View focusView = null;
 		// TODO Error fields (user does not exist, etc)
-		//Check for a valid password.
+		// Check for a valid password.
 		if (TextUtils.isEmpty(password)) {
 			editPassword.setError("This field is required");
 			focusView = editPassword;
@@ -81,7 +84,7 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 			editPassword.setError("Passwords do not match");
 			focusView = editPassword;
 			cancel = true;
-		} 
+		}
 		if (TextUtils.isEmpty(password2)) {
 			editPassword2.setError("This field is required");
 			focusView = editPassword;
@@ -91,43 +94,42 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 			editEmail.setError("This field is required");
 			focusView = editEmail;
 			cancel = true;
-			
-		//TODO check if the email is valid(in the form of ""@"" and has a dot) 
+
+			// TODO check if the email is valid(in the form of ""@"" and has a
+			// dot)
 		} else if (!email.contains("@")) {
 			editEmail.setError("Invalid email address");
 			focusView = editEmail;
-			cancel = true; 
+			cancel = true;
 		}
 		/*
-		if (TextUtils.isEmpty(firstName)) {
-			editFirstName.setError("This field is required");
-			focusView = editFirstName;
-			cancel = true;
-		}
-		if (TextUtils.isEmpty(lastName)) {
-			editLastName.setError("This field is required");
-			focusView = editLastName;
-			cancel = true;
-		} 
-		if (!checkFemale.isChecked()) {
-			checkFemale.setError("The box has to be checked");
-			focusView = checkFemale;
-			cancel = true;
-		} */
+		 * if (TextUtils.isEmpty(firstName)) {
+		 * editFirstName.setError("This field is required"); focusView =
+		 * editFirstName; cancel = true; } if (TextUtils.isEmpty(lastName)) {
+		 * editLastName.setError("This field is required"); focusView =
+		 * editLastName; cancel = true; } if (!checkFemale.isChecked()) {
+		 * checkFemale.setError("The box has to be checked"); focusView =
+		 * checkFemale; cancel = true; }
+		 */
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
-		}
-		else {
+		} else {
 			AccountManager.register(this, email, password);
 		}
 	}
-	
+
 	@Override
 	public void onRegisterSuccess() {
-		// TODO Auto-generated method stub
-		String name = AccountManager.getName();
+
+		PushService.subscribe(this, AccountManager.getPartnerChannel(),
+				MenuMainActivity.class);
+		
+		//PushService.subscribe(this, AccountManager.getEmail(), MenuMainActivity.class);
+		//TODO invalid username
+
+		String name = ApplicationSettings.getUserName();
 		Intent intent = new Intent(this, RegisterPartnerActivity.class);
 		intent.putExtra(FIRST_NAME, name);
 
@@ -137,14 +139,14 @@ public final static String FIRST_NAME = "com.yljv.alarmapp.FIRST_NAME";
 	@Override
 	public void onRegisterFail(ParseException e) {
 		// TODO Auto-generated method stub
-		//TODO error messages (passwords do not match, etc
-		
+		// TODO error messages (passwords do not match, etc
+
 	}
 
 	private void back() {
 		Intent intent = new Intent(this, ChoiceActivity.class);
 		startActivity(intent);
-		
+
 	}
 
 }

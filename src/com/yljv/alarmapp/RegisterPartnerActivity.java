@@ -1,6 +1,5 @@
 package com.yljv.alarmapp;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,22 +10,42 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class RegisterPartnerActivity extends Activity implements OnClickListener {
-	
-	String firstName; 
+public class RegisterPartnerActivity extends Activity implements
+		OnClickListener {
+
+	String firstName;
 	Button btnLogin;
 	TextView registerSuccess;
 	EditText partnerEmail;
-	
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.register_partner);
+		Intent intent = getIntent();
+		firstName = (String) intent.getStringExtra(RegisterActivity.FIRST_NAME);
+		registerSuccess = (TextView) findViewById(R.id.registerSuccess);
+		registerSuccess.setText("Thank you, " + firstName
+				+ "! You have successfully registered.");
+		btnLogin = (Button) findViewById(R.id.btnLogin);
+		btnLogin.setOnClickListener(this);
+		partnerEmail = (EditText) findViewById(R.id.partnerEmail);
+	}
+
+	@Override
+	public void onClick(View registerPartner) {
+		registerPartner();
+	}
+
 	public void registerPartner() {
 		
-		//TODO click on "Male" radio button does not allow registration
-		//TODO Login the user to the MainActivity
+		// TODO click on "Male" radio button does not allow registration
+		// TODO Login the user to the MainActivity
 		String email = partnerEmail.getText().toString();
 		boolean cancel = false;
 		View focusView = null;
 		// TODO Error fields (user does not exist, etc)
-		//Check for a valid password.
+		// Check for a valid password.
 		if (TextUtils.isEmpty(email)) {
 			partnerEmail.setError("This field is required");
 			focusView = partnerEmail;
@@ -37,35 +56,10 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
-		Intent main = new Intent(this, MenuMainActivity.class);
-	
-		startActivity(main);
+			Intent main = new Intent(this, MenuMainActivity.class);
+
+			startActivity(main);
 		}
 	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.register_partner);
-		Intent intent = getIntent();
-		firstName = (String) intent.getStringExtra(RegisterActivity.FIRST_NAME);
-		registerSuccess = (TextView) findViewById(R.id.registerSuccess);
-		registerSuccess.setText("Thank you, " + firstName + "! You have successfully registered.");
-		btnLogin = (Button) findViewById(R.id.btnLogin);
-		btnLogin.setOnClickListener(this);
-		partnerEmail = (EditText) findViewById(R.id.partnerEmail);
-	}
-
-	@Override
-	public void onClick(View registerPartner) {
-		// TODO Auto-generated method stub
-
-		registerPartner();
-		
-	}
-	
-	
-	
-	
 
 }

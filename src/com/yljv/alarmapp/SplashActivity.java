@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.parse.ParseAnalytics;
+import com.parse.ParseUser;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.ParsePartnerAlarmListener;
@@ -18,8 +19,7 @@ import com.yljv.alarmapp.parse.database.ParsePartnerAlarmListener;
  * very first screen to see after opening the app
  * disappears after a few seconds
  */
-public class SplashActivity extends Activity implements
-		ParsePartnerAlarmListener {
+public class SplashActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class SplashActivity extends Activity implements
 
 		// Initialize MyAlarmManager
 		MyAlarmManager.setContext(this);
-		MyAlarmManager.updatePartnerAlarms(this);
 
 		Thread t = new Thread(){
 			@Override
@@ -54,18 +53,12 @@ public class SplashActivity extends Activity implements
 	}
 
 	public void cont() {
-		Intent intent = new Intent(this, MenuMainActivity.class);
-		this.startActivity(intent);
+		Intent intent;
+		if(ParseUser.getCurrentUser() == null){
+			intent = new Intent(this, ChoiceActivity.class);
+		}else{
+			intent = new Intent(this, MenuMainActivity.class);
+		}
+		startActivity(intent);
 	}
-
-	@Override
-	public void partnerAlarmsFound(List<AlarmInstance> alarms) {
-		cont();
-	}
-
-	@Override
-	public void partnerAlarmsSearchFailed(Exception e) {
-		cont();
-	}
-
 }

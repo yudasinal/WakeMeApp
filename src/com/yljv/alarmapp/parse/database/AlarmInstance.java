@@ -30,8 +30,10 @@ public class AlarmInstance extends ParseObject{
 	
 
 	public AlarmInstance() {
-		/*super("AlarmInstance");
-		put(COLUMN_USER, ApplicationSettings.getUserEmail());*/
+	}
+	
+	public void initialize(){
+		put(COLUMN_USER, ApplicationSettings.getUserEmail());
 	}
 	
 	public String getName(){

@@ -13,6 +13,7 @@ import com.parse.ParseUser;
 import com.parse.PushService;
 import com.parse.SignUpCallback;
 import com.yljv.alarmapp.MenuMainActivity;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.ParseLoginListener;
 import com.yljv.alarmapp.parse.database.ParsePartnerListener;
 import com.yljv.alarmapp.parse.database.ParseRegisterListener;
@@ -50,11 +51,11 @@ public class AccountManager{
 	}
 	
 	public static String getUserChannel(){
-		return ApplicationSettings.getUserEmail();
+		return "user_" + ParseUser.getCurrentUser().getObjectId();
 	}
 	
 	public static String getPartnerChannel(){
-		return ApplicationSettings.getPartnerEmail();
+		return "user_" + ParseUser.getCurrentUser().getString(User.PARTNER_ID_COLUMN);
 	}
 	
 	
@@ -64,6 +65,11 @@ public class AccountManager{
 			@Override
 			public void done(ParseUser user, ParseException e){
 				if(user!=null){
+					ApplicationSettings.setUserEmail(user.getEmail());
+					ApplicationSettings.setUserName(user.getString(User.NAME_COLUMN));
+					ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
+					ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
+					
 					ApplicationSettings.setUserEmail(user.getUsername());
 					listener.onLoginSuccessful();
 				}else{
@@ -75,7 +81,7 @@ public class AccountManager{
 		});
 	}
 	
-	public static void register(final ParseRegisterListener listener, String email, String password){
+	public static void register(final ParseRegisterListener listener, final String email, final String password){
 		ParseUser user = new ParseUser();
 		user.setUsername(email);
 		user.setEmail(email);
@@ -85,6 +91,12 @@ public class AccountManager{
 			@Override
 			public void done(ParseException e){
 				if(e==null){
+					ParseUser user = ParseUser.getCurrentUser();
+					ApplicationSettings.setUserEmail(user.getEmail());
+					ApplicationSettings.setUserName(user.getUsername());
+					ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
+					ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
+					ApplicationSettings.setUserEmail(user.getUsername());
 					listener.onRegisterSuccess();
 				}else{
 					listener.onRegisterFail(e);
@@ -97,11 +109,7 @@ public class AccountManager{
 	/*public static ParseUser getPartner(){
 		return (ParseUser) ParseUser.getCurrentUser().get("partner");
 	}*/
-	
-	public static String getName(){
-		return ApplicationSettings.getUserName();
-		//return (String) ParseUser.getCurrentUser().get("name");
-	}
+
 	
 	public static String getEmail(){
 		return ApplicationSettings.getUserEmail();
@@ -111,6 +119,22 @@ public class AccountManager{
 		
 	}
 	
-
+	public class User{
+		public final static String NAME_COLUMN = "name";
+		public final static String PARTNER_COLUMN = "partner";
+		public final static String ID_COLUMN = "id";
+		public final static String PARTNER_ID_COLUMN = "partner_id";
+	}
 	
+	public static void logout(){
+		MyAlarmManager.removeDataBase();
+		ParseUser.logOut();
+		ApplicationSettings.reset();
+	    DBHelper dbHelper = MyAlarmManager.getDBHelper();
+	    if (dbHelper != null) {
+	        dbHelper.close();
+	    }
+	}
 }
+
+

@@ -13,9 +13,9 @@ import android.widget.ListView;
 
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
 
 public class PartnerAlarmFragment extends Fragment {
 
@@ -36,8 +36,12 @@ public class PartnerAlarmFragment extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View view, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
+				AlarmInstance ai = (AlarmInstance) listView.getAdapter().getItem(position);
 				Fragment newContent = null;
 				newContent = new AddPicForPartnerFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt(AlarmInstance.COLUMN_ID, ai.getID());
+				newContent.setArguments(bundle);
 				if (getActivity() instanceof MenuMainActivity) {
 					MenuMainActivity mma = (MenuMainActivity) getActivity();
 					mma.switchContent(newContent);

@@ -1,10 +1,11 @@
 package com.yljv.alarmapp.ui;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.SplashActivity;
 import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
@@ -34,9 +36,14 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 	TextView partnerName;
 	TextView partnerEmail;
 
+	Activity activity;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		activity = this.getActivity();
+		
 		View view = inflater
 				.inflate(R.layout.settings_layout, container, false);
 		TableRow changeMyName = (TableRow) view.findViewById(R.id.row1);
@@ -218,7 +225,9 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Save changed name
-					
+					AccountManager.logout();
+					Intent intent = new Intent(activity, SplashActivity.class);
+					activity.startActivity(intent);
 				}
 			});
 			

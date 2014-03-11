@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import android.content.ContentValues;
 import android.net.Uri;
 
+import com.parse.ParseACL;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -37,6 +38,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	
 
 	public Alarm() {
+		super("Alarm");
+		
 	}
 
 	public Alarm(ContentValues cv) {
@@ -44,8 +47,10 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 	
 	public void initialize(){
+		setACL(new ParseACL(ParseUser.getCurrentUser()));
 		values = new ContentValues();
 		values.put(Alarm.COLUMN_WEEKDAYS, "0000000");
+		values.put(Alarm.COLUMN_USER, ApplicationSettings.getUserEmail());
 		this.setName("Alarm");
 		this.setID(ApplicationSettings.getAlarmId() * 10);
 		this.setMusicVolume(5);
@@ -251,8 +256,4 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		this.put(Alarm.COLUMN_VISIBILITY, visible);
 
 	}
-
-	private void setUser(ParseUser user) {
-	}
-
 }

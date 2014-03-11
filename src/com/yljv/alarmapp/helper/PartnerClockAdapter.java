@@ -1,7 +1,6 @@
 package com.yljv.alarmapp.helper;
 	
 import java.util.ArrayList;
-import java.util.Collections;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -15,10 +14,8 @@ import android.widget.TextView;
 
 import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
-import com.yljv.alarmapp.parse.database.PartnerAlarmManager;
 import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 
 	public class PartnerClockAdapter extends ArrayAdapter<AlarmInstance> {
