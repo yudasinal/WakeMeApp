@@ -77,14 +77,17 @@ public class MyAlarmManager {
 		if (cn.getTimeInMillis() < now.getTimeInMillis()) {
 			cn.set(Calendar.YEAR, now.get(Calendar.YEAR) + 1);
 		}
-
+		
 		AlarmInstance ai = new AlarmInstance();
 		ai.initialize();
 		ai.setID(alarm.getAlarmId() + day);
 		ai.setName(alarm.getName());
 		ai.setTime(cn);
 		ai.setUser();
-		ai.saveInBackground();
+
+		if(alarm.isVisible()){
+			ai.saveInBackground();
+		}
 
 		Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
 		intent.putExtra("id", ai.getID());
