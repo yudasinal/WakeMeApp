@@ -51,19 +51,22 @@ public class ApplicationSettings {
 	
 	
 	public static String getPartnerEmail(){
-
-		return preferences.getString(PARTNER_EMAIL_KEY, "john@gmail.com");
+		//TODO 
+		return preferences.getString(PARTNER_EMAIL_KEY, "jon@gmail.com");
 	}
 
 	public static String getPartnerName(){
+		//TODO
 		return preferences.getString(PARTNER_NAME_KEY, "Partner");
 	}
 
 	public static String getUserEmail(){
+		//TODO
 		return preferences.getString(USER_EMAIL_KEY, "jane@gmail.com");
 	}
 	
 	public static String getUserName(){
+		//TODO
 		String res = preferences.getString(USER_NAME_KEY, "Jane");
 		return res;
 	}
@@ -78,6 +81,8 @@ public class ApplicationSettings {
 	
 	public static void setPartnerEmail(String partnerEmail){
 		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail).commit();
+		ParseUser user = ParseUser.getCurrentUser();
+		user.put(User.PARTNER_COLUMN, partnerEmail);
 	}
 	
 	public static void setPartnerName(String partnerName){
@@ -89,7 +94,8 @@ public class ApplicationSettings {
 	public static void setUserEmail(String userEmail){
 		preferences.edit().putString(USER_EMAIL_KEY, userEmail).commit();
 		ParseUser user = ParseUser.getCurrentUser();
-		user.put(USER_EMAIL_KEY, userEmail);
+		user.setEmail(userEmail);
+		user.setUsername(userEmail);
 		
 	}
 	

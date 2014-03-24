@@ -147,10 +147,8 @@ public class MyAlarmListFragment extends SherlockFragment {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Fragment newContent = null;
 		switch(item.getItemId()) {
 		case R.id.add_alarm:
-			newContent = new AddAlarmFragment();
 			Intent intent = new Intent(this.getActivity(), AddAlarmActivity.class);
 			getActivity().startActivity(intent);
 			/*

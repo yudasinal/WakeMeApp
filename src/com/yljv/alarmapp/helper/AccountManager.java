@@ -51,11 +51,15 @@ public class AccountManager{
 	}
 	
 	public static String getUserChannel(){
-		return "user_" + ParseUser.getCurrentUser().getObjectId();
+		String email = ParseUser.getCurrentUser().getString(User.PARTNER_COLUMN).replace('.', '_');
+		email = email.replace('@', '_');
+		return "user_" + email;
 	}
 	
 	public static String getPartnerChannel(){
-		return "user_" + ParseUser.getCurrentUser().getString(User.PARTNER_ID_COLUMN);
+		String email = ParseUser.getCurrentUser().getEmail().replace('.', '_');
+		email = email.replace('@', '_');
+		return "user_" + email;
 	}
 	
 	
@@ -67,7 +71,11 @@ public class AccountManager{
 				if(user!=null){
 					ApplicationSettings.setUserEmail(user.getEmail());
 					ApplicationSettings.setUserName(user.getUsername());
-					ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
+					
+					//TODO
+					if(user.getString(User.PARTNER_COLUMN)!=null){
+						ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
+					}
 					ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
 					
 					ApplicationSettings.setUserEmail(user.getUsername());

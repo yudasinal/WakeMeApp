@@ -21,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ " INTEGER PRIMARY KEY" + COMMA + Alarm.COLUMN_NAME + TEXT_TYPE
 			+ COMMA + Alarm.COLUMN_TIME + INT_TYPE + COMMA
 			+ Alarm.COLUMN_ACTIVATED + INT_TYPE + COMMA
+			+ Alarm.COLUMN_USER + TEXT_TYPE + COMMA
 			+ Alarm.COLUMN_VISIBILITY + INT_TYPE + COMMA
 			+ Alarm.COLUMN_MUSIC_URI + TEXT_TYPE + COMMA + Alarm.COLUMN_VOLUME
 			+ INT_TYPE + COMMA + Alarm.COLUMN_MSG + TEXT_TYPE + COMMA
@@ -28,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ TEXT_TYPE + " );";
 
 	public static final String SQL_CREATE_PARTNER_ALARM_ENTRIES = "CREATE TABLE "
-			+ AlarmInstance.TABLE_NAME
+			+ AlarmInstance.PARTNER_TABLE_NAME
 			+ " ("
 			+ AlarmInstance.COLUMN_ID
 			+ " INTEGER PRIMARY KEY"
@@ -43,11 +44,30 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ TEXT_TYPE
 			+ COMMA
 			+ AlarmInstance.COLUMN_PICTURE + TEXT_TYPE + " );";
+	
+	public static final String SQL_CREATE_MY_ALARM_INSTANCES = "CREATE TABLE "
+			+ AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME
+			+ " ("
+			+ AlarmInstance.COLUMN_ID
+			+ " INTEGER PRIMARY KEY"
+			+ COMMA
+			+ AlarmInstance.COLUMN_NAME
+			+ TEXT_TYPE
+			+ COMMA
+			+ AlarmInstance.COLUMN_TIME
+			+ INT_TYPE
+			+ COMMA
+			+ AlarmInstance.COLUMN_MSG
+			+ TEXT_TYPE
+			+ COMMA
+			+ AlarmInstance.COLUMN_PICTURE + TEXT_TYPE + " );";
+	
 
 	public static final String SQL_DELETE_ALARM_ENTRIES = "DROP TABLE IF EXISTS "
 			+ Alarm.TABLE_NAME;
+	
 	public static final String SQL_DELETE_PARTNER_ALARM_ENTRIES = "DROP TABLE IF EXISTS "
-			+ AlarmInstance.TABLE_NAME;
+			+ AlarmInstance.PARTNER_TABLE_NAME;
 
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,6 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQL_CREATE_ALARM_ENTRIES);
 		db.execSQL(SQL_CREATE_PARTNER_ALARM_ENTRIES);
+		db.execSQL(SQL_CREATE_MY_ALARM_INSTANCES);
 	}
 
 	@Override
