@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
+    <!--  
     <com.fima.glowpadview.GlowPadView
         android:id="@+id/glow_pad_view"
         android:layout_width="wrap_content"
@@ -28,4 +29,5 @@
         glowpad:targetDrawables="@array/snooze_dismiss_drawables"
         glowpad:vibrationDuration="20" />
 
+    -->
 </RelativeLayout>

@@ -24,14 +24,15 @@
 			        android:layout_width="280dp"
 			        android:layout_height="48dp"
 			        android:layout_marginTop="30dp"
-			        android:maxLines="1"
+			        android:singleLine="true"
 			        android:maxLength="15"
-			        android:background="@drawable/my_edit_text"
+			        android:background="@drawable/add_box"
 			        android:hint="alarm name"
+			        android:textColorHint="#90c5a9"
 			        android:drawablePadding="10dp"
 			        android:drawableLeft="@drawable/clock"
 			        android:textSize="20sp"
-			        android:textColor="#3f2860"
+			        android:textColor="#fa8b60"
 			        android:paddingLeft="10dp"
 			        android:textCursorDrawable="@null"/>
 			</TableRow>
