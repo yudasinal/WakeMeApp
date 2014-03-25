@@ -57,7 +57,10 @@ public class SplashActivity extends Activity {
 		if(ParseUser.getCurrentUser() == null){
 			intent = new Intent(this, ChoiceActivity.class);
 		}else{
+			
 			intent = new Intent(this, MenuMainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
 		}
 		startActivity(intent);
 		finish();

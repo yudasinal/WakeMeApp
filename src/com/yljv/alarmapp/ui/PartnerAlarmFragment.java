@@ -2,6 +2,7 @@ package com.yljv.alarmapp.ui;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.yljv.alarmapp.MenuMainActivity;
+import com.yljv.alarmapp.AddPicForPartnerActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
@@ -42,10 +43,14 @@ public class PartnerAlarmFragment extends Fragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt(AlarmInstance.COLUMN_ID, ai.getID());
 				newContent.setArguments(bundle);
+				Intent intent = new Intent(getActivity(), AddPicForPartnerActivity.class);
+				startActivity(intent);
+				/*
 				if (getActivity() instanceof MenuMainActivity) {
 					MenuMainActivity mma = (MenuMainActivity) getActivity();
 					mma.switchContent(newContent);
 				} 
+				*/
 			}
 		});
 		

@@ -118,6 +118,10 @@ public class MyAlarmListFragment extends SherlockFragment {
 		return view; 
 	}
 	
+	public boolean[] getSelected() {
+		return this.selectedItems;
+	}
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -187,11 +191,15 @@ public class MyAlarmListFragment extends SherlockFragment {
 				    myAdapter.remove(myAlarm);
 				    myAdapter.notifyDataSetChanged();
 				    deleteAlarm.setVisible(false);*/
-					
 					ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
-				    Alarm myAlarm = myAdapter.getItem(selectedPosition);
-				    MyAlarmManager.deleteAlarm(myAlarm);
-				    myAdapter.notifyDataSetChanged();
+					for(int i = 0; i < getSelected().length; i++) {
+						if(selectedItems[i] == true) {
+							Alarm myAlarm = myAdapter.getItem(i); 
+							myAdapter.remove(myAlarm);
+						    MyAlarmManager.deleteAlarm(myAlarm);
+						    myAdapter.notifyDataSetChanged();
+						}
+					}
 				}
 			});
 			deleteDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -7,20 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.fima.glowpadview.GlowPadView;
-import com.fima.glowpadview.GlowPadView.OnTriggerListener;
+//import com.fima.glowpadview.GlowPadView;
+//import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
 /*
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
  */
 
-public class WakeUpFragment extends Fragment implements OnTriggerListener {
+public class WakeUpFragment extends Fragment { //implements OnTriggerListener {
 
+	/*
 	private GlowPadView mGlowPadView;
 	
 	
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -78,5 +79,6 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		// TODO Auto-generated method stub
 
 	}
+	*/
 
 }

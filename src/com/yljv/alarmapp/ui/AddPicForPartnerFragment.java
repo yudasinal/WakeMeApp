@@ -73,7 +73,6 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.add_for_partner, container, false);
-		previewButton = (Button) view.findViewById(R.id.preview);
 		addPicture = (ImageView) view.findViewById(R.id.add_picture);
 		addMessage = (EditText) view.findViewById(R.id.add_message);
 		addPicture.isClickable();
@@ -110,7 +109,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			});
 			builder.show();
 			break;
-			
+		/*
 		case R.id.preview:
 			String myMessage = addMessage.getText().toString();
 			Bundle data = new Bundle();
@@ -122,6 +121,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 				mma.switchContent(newContent);
 			} 
 			break;
+		*/
 		}
 	}
 

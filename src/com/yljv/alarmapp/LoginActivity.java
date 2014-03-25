@@ -3,15 +3,18 @@ package com.yljv.alarmapp;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.parse.PushService;
@@ -26,7 +29,9 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	EditText editPassword;
 	EditText editEmail;
+	//ProgressButton loginBtn;
 	Button loginBtn;
+	TextView wrongCred;
 	
 	boolean visible;
 	Button regBtn;
@@ -37,8 +42,10 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
 		loginBtn = (Button) findViewById(R.id.btnLogin);
+		//loginBtn = (ProgressButton) findViewById(R.id.btnLogin);
 		regBtn = (Button) findViewById(R.id.btnRegister);
 		loginBtn.setOnClickListener(this);
+		wrongCred = (TextView) findViewById(R.id.wrong_credentials);
 		
 		visible = true;
 		
@@ -57,6 +64,11 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	@Override
 	public void onClick(View v) {
+		InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+		inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
 		switch(v.getId()){
 			case  R.id.btnLogin: 
 				login();
@@ -127,11 +139,14 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	@Override
 	public void onLoginFail(ParseException e) {
 		e.printStackTrace();
+		wrongCred.setTextColor(Color.parseColor("#fff6ea"));
+		/*
 		if (e.getMessage().equals("invalid login credentials")) {
 			loginBtn.setError("Wrong username or password");
 		} else {
 			loginBtn.setError("User is not registered, please register first");
 		}
+		*/
 	}
 
 	public void backSplash() {
