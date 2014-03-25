@@ -50,11 +50,11 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		setACL(new ParseACL(ParseUser.getCurrentUser()));
 		values = new ContentValues();
 		values.put(Alarm.COLUMN_WEEKDAYS, "0000000");
-		values.put(Alarm.COLUMN_USER, ApplicationSettings.getUserEmail());
-		this.setName("Alarm");
-		this.setID(ApplicationSettings.getAlarmId() * 10);
-		this.setMusicVolume(5);
-		this.setMessage("");
+		setUser();
+		setName("Alarm");
+		setID(ApplicationSettings.getAlarmId() * 10);
+		setMusicVolume(5);
+		setMessage("");
 		for (int i = 0; i < 7; i++) {
 			this.setRepeat(i, false);
 		}
@@ -104,7 +104,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public String getName() {
-		return (String) values.get(Alarm.COLUMN_NAME);
+		return this.getString(Alarm.COLUMN_NAME);
 	}
 
 	public GregorianCalendar getTimeAsCalendar() {
@@ -146,8 +146,6 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public ContentValues getValues() {
 		return this.values;
 	}
-
-	// TODO public String getDate
 
 	public boolean[] getWeekdaysRepeated() {
 		boolean[] resA = new boolean[7];
@@ -255,5 +253,11 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		}
 		this.put(Alarm.COLUMN_VISIBILITY, visible);
 
+
+	}
+	
+	private void setUser(){
+		values.put(Alarm.COLUMN_USER, ApplicationSettings.getUserEmail());
+		this.put(Alarm.COLUMN_USER, ApplicationSettings.getUserEmail());
 	}
 }

@@ -39,6 +39,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 	ImageView addPicture;
 	EditText addMessage;
 	String[] picOption = {"Take Photo", "Choose from gallery"};
+	Bitmap bitmap;
 	static final int REQUEST_TAKE_PHOTO = 1;
 	private static final int RESULT_LOAD_IMAGE = 1;
 	
@@ -64,6 +65,9 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		case R.id.cancel_alarm:
 			getFragmentManager().popBackStackImmediate();
 			break;
+		case R.id.save_alarm:
+			MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm, bitmap, addMessage.getText().toString());
+			getFragmentManager().popBackStackImmediate();
 		//Save button has to be a preview button
 		}
 		return super.onOptionsItemSelected(item);
@@ -101,7 +105,8 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 					}
 					else {
 						Intent i = new Intent(
-								Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+								Intent.ACTION_PICK);//, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+						i.setType("image/*");
 								startActivityForResult(i, RESULT_LOAD_IMAGE);
 					}
 					
@@ -180,10 +185,8 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			picturePath = cursor.getString(columnIndex);
 			cursor.close();
 			
-			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+			bitmap = BitmapFactory.decodeFile(picturePath);
 			addPicture.setImageBitmap(bitmap);
-			
-			MyAlarmManager.addPictureToPartnerAlarm(alarm, bitmap);
 		}
 	}
 

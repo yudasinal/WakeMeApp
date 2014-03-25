@@ -166,9 +166,14 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 		}
 		MyAlarmManager.setNewAlarm(this, alarm);
 		
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+		Intent intent = new Intent(this, MenuMainActivity.class);
+		startActivity(intent);
+		finish();
+		/*FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        fragmentTransaction.commit();*/
+		
+		
 	}
 	
 	@Override

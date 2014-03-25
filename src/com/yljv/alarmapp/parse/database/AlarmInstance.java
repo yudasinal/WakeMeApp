@@ -23,7 +23,8 @@ public class AlarmInstance extends ParseObject{
 	public final static String COLUMN_MSG = "msg";
 	public final static String COLUMN_PICTURE = "picture";
 	public final static String COLUMN_USER = "user";
-	public final static String TABLE_NAME = "partner_alarm_entry";
+	public final static String PARTNER_TABLE_NAME = "partner_alarm_entry";
+	public final static String MY_ALARMINSTANCE_TABLE_NAME="my_alarm_instance_entry";
 	public final static String  COLUMN_OBJECT_ID = "object_id";
 	
 	private ContentValues values = new ContentValues();
@@ -110,6 +111,10 @@ public class AlarmInstance extends ParseObject{
 	
 	public void setValues(ContentValues values){
 		this.values = values;
+	}
+	
+	public ContentValues getValues(){
+		return values;
 	}
 	
 }
