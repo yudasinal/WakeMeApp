@@ -1,39 +1,23 @@
-package com.yljv.alarmapp.ui;
+package com.example.glowpadexample;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
-//import com.fima.glowpadview.GlowPadView;
-//import com.fima.glowpadview.GlowPadView.OnTriggerListener;
-import com.yljv.alarmapp.R;
-/*
- * Window you see when you wake up
- * Should show you Picture/Message from your boyfriend/girlfriend
- */
 
-public class WakeUpFragment extends Fragment implements OnTriggerListener {
+public class MainActivity extends Activity implements OnTriggerListener {
 
-	
 	private GlowPadView mGlowPadView;
-	private TextView myTime;
-	private TextView mornEv;
-	
-	
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.wake_up_layout, container, false);
-		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
-		myTime = (TextView) view.findViewById(R.id.my_time);
-		mornEv = (TextView) view.findViewById(R.id.morningEvening);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
 
 		mGlowPadView.setOnTriggerListener(this);
 		
@@ -42,7 +26,6 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
-		return view;
 	}
 
 	@Override
@@ -62,11 +45,11 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		final int resId = mGlowPadView.getResourceIdForTarget(target);
 		switch (resId) {
 		case R.drawable.ic_item_camera:
-			Toast.makeText(this.getActivity(), "Camera selected", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Camera selected", Toast.LENGTH_SHORT).show();
 			break;
 
 		case R.drawable.ic_item_google:
-			Toast.makeText(this.getActivity(), "Google selected", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Google selected", Toast.LENGTH_SHORT).show();
 
 			break;
 		default:
@@ -86,6 +69,5 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		// TODO Auto-generated method stub
 
 	}
-	
 
 }

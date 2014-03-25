@@ -3,6 +3,7 @@ package com.yljv.alarmapp;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Window;
 
 import com.yljv.alarmapp.ui.WakeUpFragment;
 
@@ -15,6 +16,9 @@ public class WakeUpActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		getActionBar().hide();
 
 
 		if (savedInstanceState != null) {

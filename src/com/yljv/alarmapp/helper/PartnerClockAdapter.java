@@ -1,6 +1,7 @@
 package com.yljv.alarmapp.helper;
 	
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,8 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 				holder.dayView = (TextView) rowView.findViewById(R.id.partner_day);
 				holder.dateView = (TextView) rowView.findViewById(R.id.partner_date);
 				holder.morEv = (TextView) rowView.findViewById(R.id.morning_evening);
+				holder.monthView = (TextView) rowView.findViewById(R.id.partner_month);
+				holder.yearView = (TextView) rowView.findViewById(R.id.partner_year);
 				
 				partnerAlarms = MyAlarmManager.getPartnerAlarms();
 				
@@ -83,16 +86,40 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 				else if (partnerAlarms != null) {
 					ViewHolder myHolder = (ViewHolder)rowView.getTag();
 					partnerAlarm = partnerAlarms.get(position);
-					String text = partnerAlarm.getName();
+					Calendar cal = partnerAlarm.getTimeAsCalendar();
+					int day = cal.DAY_OF_WEEK;
+					String dayString = null;
+					switch(day) {
+					case 1:
+						dayString = "Sunday";
+						break;
+					case 2:
+						dayString = "Monday";
+						break;
+					case 3:
+						dayString = "Tuesday";
+						break;
+					case 4:
+						dayString = "Wednesday";
+						break;
+					case 5:
+						dayString = "Thursday";
+						break;
+					case 6:
+						dayString = "Friday";
+						break;
+					case 7: 
+						dayString = "Saturday";
+						break;
+					}
 					String time = partnerAlarm.getTimeAsString();
 					String morEv = partnerAlarm.getMorningEveningAsString();
-					//String date = partnerAlarm.getDate();
-					//String day = partnerAlarm.getDay();
 					myHolder.timeView.setText(time);
 					myHolder.morEv.setText(morEv);
-					//myHolder.textView.setText(text);
-					//myHolder.dateView.setText(date);
-					//myHolder.dayView.setText(day);
+					myHolder.dayView.setText(dayString);
+					myHolder.dateView.setText(Integer.toString(cal.DAY_OF_MONTH) + ".");
+					myHolder.monthView.setText(Integer.toString(cal.MONTH) + ".");
+					myHolder.yearView.setText(Integer.toString(cal.YEAR));
 				}
 			}
 			else {
@@ -107,6 +134,8 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 			TextView timeView;
 			TextView dayView;
 			TextView dateView;
+			TextView monthView;
+			TextView yearView;
 			TextView morEv;
 		}
 

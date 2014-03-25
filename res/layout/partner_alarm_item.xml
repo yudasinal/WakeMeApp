@@ -25,29 +25,40 @@
 	        android:paddingRight="15dp"
 	        android:src="@drawable/ic_action_new_picture" />
 
-	    <TextView
-	        android:id="@+id/partner_date"
+	    <RelativeLayout
+	        android:id="@+id/relativeLayout1"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/partner_day"
 	        android:layout_toLeftOf="@+id/set_picture"
-	        android:gravity="center"
-	        android:text="03.04.2014"
-	        android:textColor="#ffc4a4"
-	        android:textSize="16sp" />
+	        android:gravity="center" >
 
-	    <TextView
-	        android:id="@+id/partner_time"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBaseline="@+id/partner_date"
-	        android:layout_alignBottom="@+id/partner_date"
-	        android:layout_alignParentLeft="true"
-	        android:paddingBottom="5dp"
-	        android:text="12:00"
-	        android:textColor="#fa8b60"
-	        android:textSize="32sp"
-	        android:textStyle="bold" />
+	        <TextView
+	            android:id="@+id/partner_date"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="03."
+	            android:textColor="#ffc4a4"
+	            android:textSize="16sp" />
+
+	        <TextView
+	            android:id="@+id/partner_month"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@+id/partner_date"
+	            android:text="04."
+	            android:textColor="#ffc4a4"
+	            android:textSize="16sp" />
+
+	        <TextView
+	            android:id="@+id/partner_year"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@+id/partner_month"
+	            android:text="2014"
+	            android:textColor="#ffc4a4"
+	            android:textSize="16sp" />
+	    </RelativeLayout>
 
 	    <TextView
 	        android:id="@+id/morning_evening"
@@ -61,17 +72,29 @@
 	        android:textColor="#fa8b60"
 	        android:textSize="14sp" />
 
-	    <android.widget.TextView
+	    <TextView
 	        android:id="@+id/partner_day"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/partner_date"
+	        android:layout_alignLeft="@+id/relativeLayout1"
 	        android:layout_alignParentTop="true"
 	        android:gravity="center"
 	        android:paddingTop="15dp"
 	        android:text="Monday"
 	        android:textColor="#ffc4a4"
 	        android:textSize="16sp" />
+
+	    <TextView
+	        android:id="@+id/partner_time"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignTop="@+id/set_picture"
+	        android:paddingBottom="5dp"
+	        android:text="12:00"
+	        android:textColor="#fa8b60"
+	        android:textSize="32sp"
+	        android:textStyle="bold" />
 
 	</RelativeLayout>
 
