@@ -27,7 +27,7 @@ import android.widget.EditText;
 import com.yljv.alarmapp.helper.SquareImageView;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 
-	public class AddPicForPartnerActivity extends Activity implements OnClickListener, OnTouchListener {
+	public class AddPicForPartnerActivity extends Activity implements OnClickListener {
 		
 		public static final String MESSAGE_FOR_ALARM = "com.yljv.alarmapp.MESSAGE_FOR_ALARM";
 		public static String picturePath;
@@ -78,7 +78,7 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 			addMessage = (EditText) findViewById(R.id.add_message);
 			addPicture.isClickable();
 			addPicture.setOnClickListener(this);
-			addPicture.setOnTouchListener(this);
+			//addPicture.setOnTouchListener(this);
 			/*
 			Bundle bundle = this.getArguments();
 			alarm = MyAlarmManager.findPartnerAlarmById(bundle.getInt(AlarmInstance.COLUMN_ID));	
@@ -218,7 +218,7 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 			}
 		}
 
-		
+		/*
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -269,31 +269,36 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 			addPicture.setImageMatrix(matrix);
 			return true;
 			}
+			
 			 
 			/**
 			* Determine the space between the first two fingers
-			*/
+			
+			
 			private float spacing(MotionEvent event) {
 				float x = event.getX(0) - event.getX(1);
 				float y = event.getY(0) - event.getY(1);
 				return FloatMath.sqrt(x * x + y * y);
 			}
+			*/
 
 			/**
 			* Calculate the mid point of the first two fingers
-			*/
+			
 			private void midPoint(PointF point, MotionEvent event) {
 				float x = event.getX(0) + event.getX(1);
 				float y = event.getY(0) + event.getY(1);
 				point.set(x / 2, y / 2);
 			}
+			*/
+			
 			 
 			/**
 			* Calculate the degree to be rotated by.
 			*
 			* @param event
 			* @return Degrees
-			*/
+			
 			private float rotation(MotionEvent event) {
 				double delta_x = (event.getX(0) - event.getX(1));
 				double delta_y = (event.getY(0) - event.getY(1));
@@ -301,6 +306,9 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 				return (float) Math.toDegrees(radians);
 			  
 		}
+		*/
+		
+		
 	
 }
 	

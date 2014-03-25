@@ -44,6 +44,7 @@ public class PartnerAlarmFragment extends Fragment {
 				bundle.putInt(AlarmInstance.COLUMN_ID, ai.getID());
 				newContent.setArguments(bundle);
 				Intent intent = new Intent(getActivity(), AddPicForPartnerActivity.class);
+				listView.setItemChecked(position, false);
 				startActivity(intent);
 				/*
 				if (getActivity() instanceof MenuMainActivity) {

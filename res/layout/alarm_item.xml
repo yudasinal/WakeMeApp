@@ -1,141 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/buyPortfolioLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<RelativeLayout
-    android:id="@+id/layout"
-    android:layout_width="match_parent"
-    android:layout_height="69dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="20dp"
-    android:background="@drawable/background_list_item"
-    android:minHeight="70dp"
-    android:orientation="horizontal"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp" >
-       
-    <TextView android:id="@+id/my_time"
-	  android:textSize="32sp"
-	  android:textStyle="bold"
-	  android:layout_width="110dp"
-	  android:layout_height="wrap_content"
-	  android:layout_alignParentBottom="true"
-	  android:paddingBottom="10dp"
-	  android:text = "8:00"
-	  android:textColor="#fa8b60"/>
+    <RelativeLayout 
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_list_item"
+        android:minHeight="70dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp" >
 
-  	
-  	<ImageView android:id="@+id/set_alarm"
-  	    android:contentDescription="image"
-  	    android:layout_height="wrap_content"
-  	    android:layout_width="wrap_content"
-  	    android:layout_alignParentRight = "true"
-  	    android:layout_centerVertical = "true"
-  	    android:paddingRight="20dp"
-  	    android:src = "@drawable/alarm_deactivated"
-  	    />
+        <ImageView
+            android:id="@+id/set_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="image"
+            android:paddingLeft="15dp"
+            android:paddingRight="25dp"
+            android:src="@drawable/alarm_deactivated" />
 
-  	<TextView
-  	    android:id="@+id/morning_evening"
-  	    android:layout_width="110dp"
-  	    android:layout_height="wrap_content"
-  	    android:layout_alignBaseline="@+id/my_time"
-  	    android:layout_alignBottom="@+id/my_time"
-  	    android:layout_alignLeft="@+id/my_time"
-  	    android:layout_alignRight="@+id/my_time"
-  	    android:layout_marginLeft="58dp"
-  	    android:paddingLeft="10dp"
-  	    android:text="AM"
-  	    android:textColor="#fa8b60"
-  	    android:textSize="14sp" />
+        <TextView
+            android:id="@+id/morning_evening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/relativeLayout2"
+            android:layout_toRightOf="@+id/my_time"
+            android:text="AM"
+            android:paddingBottom="5dp"
+            android:textColor="#fa8b60"
+            android:textSize="14sp" />
 
-  	<RelativeLayout
-  	    android:layout_width="wrap_content"
-  	    android:layout_height="wrap_content"
-  	    android:layout_alignBottom="@+id/morning_evening"
-  	    android:layout_toRightOf="@+id/my_time"
-  	    android:layout_alignParentTop="true"
-  	    android:layout_toLeftOf="@+id/set_alarm"
-  	    android:paddingTop="3dp" >
+        <TextView
+            android:id="@+id/my_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/morning_evening"
+            android:layout_alignBottom="@+id/morning_evening"
+            android:layout_alignParentLeft="true"
+            android:text="12:00"
+            android:paddingBottom="5dp"
+            android:textColor="#fa8b60"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-  	    <LinearLayout
-  	        android:id="@+id/days"
-  	        android:layout_width="wrap_content"
-  	        android:layout_height="wrap_content"
-  	        android:paddingTop="10dp" >
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:layout_toRightOf="@+id/morning_evening" >
 
-  	        <TextView
-  	            android:id="@+id/mon"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="M "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
+            <LinearLayout
+                android:id="@+id/days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp" >
 
-  	        <TextView
-  	            android:id="@+id/tue"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="T "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/mon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="M "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
 
-  	        <TextView
-  	            android:id="@+id/wed"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="W "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/tue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="T "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
 
-  	        <TextView
-  	            android:id="@+id/thu"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="T "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/wed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="W "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
 
-  	        <TextView
-  	            android:id="@+id/fri"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="F "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/thu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="T "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
 
-  	        <TextView
-  	            android:id="@+id/sat"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="S "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/fri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="F "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
 
-  	        <TextView
-  	            android:id="@+id/sun"
-  	            android:layout_width="wrap_content"
-  	            android:layout_height="wrap_content"
-  	            android:text="S "
-  	            android:textColor="#90C5A9"
-  	            android:textSize="16sp" />
-  	    </LinearLayout>
+                <TextView
+                    android:id="@+id/sat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
 
-  	    <TextView
-  	        android:id="@+id/my_text"
-  	        android:layout_width="wrap_content"
-  	        android:layout_height="wrap_content"
-  	        android:layout_below="@id/days"
-  	        android:text="Alarm"
-  	        android:textColor="#fa8b60" />
+                <TextView
+                    android:id="@+id/sun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S "
+                    android:textColor="#90C5A9"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-  	</RelativeLayout>
-  	
-</RelativeLayout>
+            <TextView
+                android:id="@+id/my_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/days"
+                android:text="Alarm"
+                android:textColor="#fa8b60" />
+        </RelativeLayout>
+    </RelativeLayout>
+
 </LinearLayout>
 
 

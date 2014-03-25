@@ -41,10 +41,11 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 				LayoutInflater inflater = LayoutInflater.from(getContext());
 				rowView = inflater.inflate(R.layout.partner_alarm_item, null);
 				holder = new ViewHolder();
-				holder.textView = (TextView) rowView.findViewById(R.id.partner_text);
+				//holder.textView = (TextView) rowView.findViewById(R.id.partner_text);
 				holder.timeView = (TextView) rowView.findViewById(R.id.partner_time);
 				holder.dayView = (TextView) rowView.findViewById(R.id.partner_day);
 				holder.dateView = (TextView) rowView.findViewById(R.id.partner_date);
+				holder.morEv = (TextView) rowView.findViewById(R.id.morning_evening);
 				
 				partnerAlarms = MyAlarmManager.getPartnerAlarms();
 				
@@ -84,10 +85,12 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 					partnerAlarm = partnerAlarms.get(position);
 					String text = partnerAlarm.getName();
 					String time = partnerAlarm.getTimeAsString();
+					String morEv = partnerAlarm.getMorningEveningAsString();
 					//String date = partnerAlarm.getDate();
 					//String day = partnerAlarm.getDay();
 					myHolder.timeView.setText(time);
-					myHolder.textView.setText(text);
+					myHolder.morEv.setText(morEv);
+					//myHolder.textView.setText(text);
 					//myHolder.dateView.setText(date);
 					//myHolder.dayView.setText(day);
 				}
@@ -100,10 +103,11 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 		}
 		
 		static class ViewHolder {
-			TextView textView;
+			//TextView textView;
 			TextView timeView;
 			TextView dayView;
 			TextView dateView;
+			TextView morEv;
 		}
 
 	}

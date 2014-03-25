@@ -18,7 +18,6 @@ import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class ClockAdapter extends ArrayAdapter<Alarm> {
-	boolean alarmSet;
 	int red = Color.parseColor("#ff0404");
 	
 	
@@ -32,7 +31,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		View rowView = convertView;
 		ViewHolder holder;
 		ArrayList<Alarm> myAlarms;
-		Alarm myAlarm;
+		final Alarm myAlarm;
 		final ImageView setAlarm;
 		
 		if(rowView == null) {
@@ -41,6 +40,8 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			holder = new ViewHolder();
 			holder.textView = (TextView) rowView.findViewById(R.id.my_text);
 			holder.timeView = (TextView) rowView.findViewById(R.id.my_time);
+			holder.morEvView = (TextView) rowView.findViewById(R.id.morning_evening);
+			holder.activated = (ImageView) rowView.findViewById(R.id.set_alarm);
 			holder.weekdays[0] = (TextView) rowView.findViewById(R.id.mon);
 			holder.weekdays[1] = (TextView) rowView.findViewById(R.id.tue);
 			holder.weekdays[2] = (TextView) rowView.findViewById(R.id.wed);
@@ -52,21 +53,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			Collections.sort(myAlarms);
 			rowView.setTag(holder);
 			setAlarm = (ImageView) rowView.findViewById(R.id.set_alarm);
-			setAlarm.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					if(!alarmSet) {
-						setAlarm.setImageResource(R.drawable.alarm_activated);
-						alarmSet = true;
-					}
-					else {
-						setAlarm.setImageResource(R.drawable.alarm_deactivated);
-						alarmSet = false;
-					}
-				}
-
-			});
+			
 			
 			if (myAlarms == null) {
 				LayoutInflater inflater1 = LayoutInflater.from(getContext());
@@ -82,14 +69,36 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 				myAlarm = myAlarms.get(position);
 				String text = myAlarm.getName();
 				String time = myAlarm.getTimeAsString();
+				String morningEvening = myAlarm.getMorningEveningAsString();
 				myHolder.timeView.setText(time);
 				myHolder.textView.setText(text);
+				myHolder.morEvView.setText(morningEvening);
 				boolean[] repeatedDays = myAlarm.getWeekdaysRepeated();
 				for(int i = 0; i < repeatedDays.length; i++) {
 					if(repeatedDays[i] == true) {
 						holder.weekdays[i].setTextColor(red);
 					}
 				}
+				if(myAlarm.isActivated()) {
+					myHolder.activated.setImageResource(R.drawable.alarm_activated);
+				}
+
+				myHolder.activated.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if(!myAlarm.isActivated()) {
+							setAlarm.setImageResource(R.drawable.alarm_activated);
+							myAlarm.setActivated(true);
+							
+						}
+						else {
+							setAlarm.setImageResource(R.drawable.alarm_deactivated);
+							myAlarm.setActivated(false);
+						}
+					}
+	
+				});
 			}
 		}
 		else {
@@ -102,7 +111,9 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 	private static class ViewHolder {
 		TextView textView;
 		TextView timeView;
+		TextView morEvView;
 		TextView[] weekdays = new TextView[7];
+		ImageView activated;
 	}
 
 }

@@ -198,6 +198,9 @@ public class MyAlarmListFragment extends SherlockFragment {
 						    myAdapter.notifyDataSetChanged();
 						}
 					}
+					deleteAlarm.setVisible(false);
+					cancelAlarm.setVisible(false);
+					addAlarm.setVisible(true);
 				}
 			});
 			deleteDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

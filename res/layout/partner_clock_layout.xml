@@ -3,11 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffffff" >
+    android:background="#fff6ea">
     
     <ListView
         android:id="@+id/partner_clock_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice" 
+        android:longClickable="true"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+		android:dividerHeight="0dp"/>
 
 </LinearLayout>

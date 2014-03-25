@@ -66,18 +66,32 @@ public class AlarmInstance extends ParseObject{
 	public String getTimeAsString() {
 		int myHour = this.getHour();
 		int myMinute = this.getMinute();
-		boolean am = this.isAM();
 
 		String hourS;
 		String minuteS;
-		String amS;
 
 		hourS = Integer.toString(myHour);
 		minuteS = (myMinute < 10) ? "0" + Integer.toString(myMinute) : Integer
 				.toString(myMinute);
-		amS = am ? "AM" : "PM";
+		
+		if(hourS.length() == 1) {
 
-		return hourS + ":" + minuteS + " " + amS;
+			return "0" + hourS + ":" + minuteS;
+		}
+		else{
+
+			return hourS + ":" + minuteS;
+		}
+	}
+	
+	public String getMorningEveningAsString() {
+
+		boolean am = this.isAM();
+		String amS;
+		
+		amS = am ? "AM" : "PM";
+		
+		return amS;
 	}
 	
 	public void setName(String name){

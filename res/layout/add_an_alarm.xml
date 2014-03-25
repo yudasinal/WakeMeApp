@@ -27,7 +27,7 @@
 			        android:singleLine="true"
 			        android:maxLength="15"
 			        android:background="@drawable/add_box"
-			        android:hint="alarm name"
+			        android:text="Alarm"
 			        android:textColorHint="#90c5a9"
 			        android:drawablePadding="10dp"
 			        android:drawableLeft="@drawable/clock"

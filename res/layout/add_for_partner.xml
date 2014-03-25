@@ -20,8 +20,8 @@
 	        android:src = "@drawable/screenshot_128"
 	        android:background="@drawable/image_border"
 	        android:clickable = "true"
-	        android:scaleType="fitXY"
-	        android:adjustViewBounds="true" />
+	        android:adjustViewBounds="true"
+	        android:scaleType = "centerInside" />
 	
 	    <EditText
 	        android:id="@+id/add_message"
