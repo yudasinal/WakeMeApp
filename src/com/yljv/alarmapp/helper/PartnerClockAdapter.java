@@ -79,11 +79,7 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 
 				});
 				
-				if (partnerAlarms == null) {
-					LayoutInflater inflater1 = LayoutInflater.from(getContext());
-					rowView = inflater1.inflate(R.layout.no_alarms_to_display, null);
-				}
-				else if (partnerAlarms != null) {
+				if (partnerAlarms != null) {
 					ViewHolder myHolder = (ViewHolder)rowView.getTag();
 					partnerAlarm = partnerAlarms.get(position);
 					Calendar cal = partnerAlarm.getTimeAsCalendar();
@@ -117,9 +113,12 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 					myHolder.timeView.setText(time);
 					myHolder.morEv.setText(morEv);
 					myHolder.dayView.setText(dayString);
-					myHolder.dateView.setText(Integer.toString(cal.DAY_OF_MONTH) + ".");
-					myHolder.monthView.setText(Integer.toString(cal.MONTH) + ".");
-					myHolder.yearView.setText(Integer.toString(cal.YEAR));
+					String date = Integer.toString(cal.get(cal.DAY_OF_MONTH)) + ".";
+					myHolder.dateView.setText(date);
+					String month = Integer.toString(cal.get(cal.MONTH)) + ".";
+					myHolder.monthView.setText(month);
+					String year = Integer.toString(cal.get(cal.YEAR));
+					myHolder.yearView.setText(year);
 				}
 			}
 			else {

@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -93,6 +95,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		String password = editPassword.getText().toString();
 		boolean cancel = false;
 		View focusView = null;
+		wrongCred.setText("");
 		// TODO Error fields (user does not exist, etc)
 		// Check for a valid password.
 		if (TextUtils.isEmpty(password)) {
@@ -152,17 +155,26 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	@Override
 	public void onLoginFail(ParseException e) {
-		e.printStackTrace();
-		wrongCred.setTextColor(Color.parseColor("#fff6ea"));
-		loginBtn.setTextColor(Color.parseColor("#3f2860"));
-		progress.setVisibility(View.GONE);
-		/*
-		if (e.getMessage().equals("invalid login credentials")) {
-			loginBtn.setError("Wrong username or password");
-		} else {
-			loginBtn.setError("User is not registered, please register first");
+		boolean isThereInternet = isNetworkAvailable();
+		if(isThereInternet == false) {
+			wrongCred.setText("No or slow internet connection :(");
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 		}
-		*/
+		else {
+			e.printStackTrace();
+			wrongCred.setText("Wrong email or password!");
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
+		}
+	}
+	
+	private boolean isNetworkAvailable(){
+		
+		ConnectivityManager connectivityManager = 
+				(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	public void backSplash() {

@@ -44,6 +44,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 
 		ClockAdapter myAdapter = new ClockAdapter(this.getActivity());
 		listView.setAdapter(myAdapter);	
+		listView.setEmptyView(view.findViewById(R.id.empty_list));
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		selectedItems = new boolean[myAdapter.getCount()];
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {

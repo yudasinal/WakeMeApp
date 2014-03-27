@@ -25,8 +25,7 @@ public class SquareImageView extends ParseImageView {
     }
     
     @Override
-    protected void onDraw(Canvas canvas) {
-        //float radius = 36.0f;  
+    protected void onDraw(Canvas canvas) {  
         Path clipPath = new Path();
         RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
         clipPath.addRoundRect(rect, radius, radius, Path.Direction.CW);

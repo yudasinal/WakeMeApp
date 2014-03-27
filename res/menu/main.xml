@@ -13,21 +13,21 @@
         android:id="@+id/delete_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="Delete alarm"
+        android:title="Delete"
         android:icon="@drawable/ic_action_discard"/>
 	
 	<item
         android:id="@+id/save_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="Save alarm"
+        android:title="Save"
         android:icon="@drawable/ic_action_save"/>
 	
 	<item
         android:id="@+id/cancel_alarm"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="Cancel alarm"
+        android:title="Cancel"
         android:icon="@drawable/ic_action_cancel"/>
 	
 	

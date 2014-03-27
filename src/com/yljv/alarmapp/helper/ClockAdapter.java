@@ -53,18 +53,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			Collections.sort(myAlarms);
 			rowView.setTag(holder);
 			setAlarm = (ImageView) rowView.findViewById(R.id.set_alarm);
-			
-			
-			if (myAlarms == null) {
-				LayoutInflater inflater1 = LayoutInflater.from(getContext());
-				rowView = inflater1.inflate(R.layout.no_alarms_to_display, null);
-				/*
-				*ViewHolder myHolder = (ViewHolder)rowView.getTag();
-				*myHolder.textView.setText("Hello");
-				*myHolder.timeView.setText("Goodbye");
-				*/
-			}
-			else if (myAlarms != null) {
+			if (myAlarms != null) {
 				ViewHolder myHolder = (ViewHolder)rowView.getTag();
 				myAlarm = myAlarms.get(position);
 				String text = myAlarm.getName();

@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
-        android:src="@drawable/splash"
+        android:src="@drawable/splash1"
         android:layout_weight="0.40" />
 
     <TextView

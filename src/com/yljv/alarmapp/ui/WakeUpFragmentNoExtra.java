@@ -10,18 +10,21 @@ import android.widget.TextView;
 
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
+import com.yljv.alarmapp.AddPicForPartnerActivity;
 import com.yljv.alarmapp.ChoiceActivity;
-import com.yljv.alarmapp.MenuMainActivity;
 //import com.fima.glowpadview.GlowPadView;
 //import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.WakeUpActivity;
+/*
+ * Window you see when you wake up
+ * Should show you Picture/Message from your boyfriend/girlfriend
+ */
 /*
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
  */
 
-public class WakeUpFragment extends Fragment implements OnTriggerListener {
+public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener {
 
 	
 	private GlowPadView mGlowPadView;
@@ -33,7 +36,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.wake_up_layout, container, false);
+		View view = inflater.inflate(R.layout.wakeup_layout_no_extra, container, false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
 		myTime = (TextView) view.findViewById(R.id.my_time);
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
@@ -65,18 +68,13 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		final int resId = mGlowPadView.getResourceIdForTarget(target);
 		switch (resId) {
 		case R.drawable.snooze_progress1:
-			//TODO snooze alarm
-			
+			//TODO snooze alarm 
 			Intent intent1 = new Intent(this.getActivity(), ChoiceActivity.class);
-			startActivity(intent1);
-			break;
+			startActivity(intent1);break;
 
-		case R.drawable.pic_msg:
-			Fragment newContent = new PicMsgArrivedFragment();
-			if (getActivity() instanceof WakeUpActivity) {
-				WakeUpActivity mma = (WakeUpActivity) getActivity();
-				mma.switchContent(newContent);
-			} 
+		case R.drawable.checkmark:
+			getActivity().finish();
+
 			break;
 		default:
 			// Code should never reach here.

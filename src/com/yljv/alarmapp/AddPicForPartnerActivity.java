@@ -94,12 +94,15 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
-			if(item.getItemId() == R.id.cancel_alarm) {
+			switch(item.getItemId()) {
+			case R.id.cancel_alarm:
 				super.onBackPressed();
-			}
-			if(item.getItemId() == android.R.id.home){
+			case android.R.id.home:
 				super.onBackPressed();
+			case R.id.save_alarm:
+				//TODO save pic and message
 			}
+			
 			return super.onOptionsItemSelected(item);
 		}
 		

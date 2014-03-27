@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="Wrong email or password!"
-        android:textColor = "#3f2860"
+        android:textColor = "#fff6ea"
         android:background="@android:color/transparent"
         android:layout_weight="0.20"/>
     
