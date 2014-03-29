@@ -55,10 +55,10 @@ public class SplashActivity extends Activity {
 	public void cont() {
 		Intent intent;
 		if(ParseUser.getCurrentUser() == null){
-			intent = new Intent(this, WakeUpActivity.class);
+			intent = new Intent(this, ChoiceActivity.class);
 		}else{
 			
-			intent = new Intent(this, WakeUpActivity.class);
+			intent = new Intent(this, MenuMainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("EXIT", true);
 		}

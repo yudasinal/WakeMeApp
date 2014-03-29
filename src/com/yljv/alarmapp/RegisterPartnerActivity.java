@@ -85,7 +85,8 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 				registerPartner();
 				break;
 			case R.id.btnSkip:
-				//TODO login without a partner
+				Intent intent = new Intent(this, MenuMainActivity.class);
+				startActivity(intent);
 				break;
 				
 		}

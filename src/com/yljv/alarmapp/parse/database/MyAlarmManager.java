@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -72,16 +73,19 @@ public class MyAlarmManager {
 		GregorianCalendar now = new GregorianCalendar();
 		GregorianCalendar cn = null;
 
+		int min = alarm.getMinute();
+		int hour = alarm.getHourOfDay();
 		cn = new GregorianCalendar();
 		cn.set(Calendar.MINUTE, alarm.getMinute());
 		cn.set(Calendar.HOUR_OF_DAY, alarm.getHourOfDay());
-		cn.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + day);
+		cn.set(Calendar.DAY_OF_WEEK, day);
 		if (cn.getTimeInMillis() < now.getTimeInMillis()) {
 			cn.set(Calendar.WEEK_OF_YEAR, now.get(Calendar.WEEK_OF_YEAR) + 1);
 		}
 		if (cn.getTimeInMillis() < now.getTimeInMillis()) {
 			cn.set(Calendar.YEAR, now.get(Calendar.YEAR) + 1);
 		}
+		Log.i("WakMeApp", cn.toString());
 
 		AlarmInstance ai = new AlarmInstance();
 		ai.initialize();
@@ -109,9 +113,6 @@ public class MyAlarmManager {
 
 	public static void addPictureOrMessageToPartnerAlarm(
 			final AlarmInstance alarm, String picturePath, String message) {
-		
-
-		
 
 		if (message != null) {
 			alarm.put(AlarmInstance.COLUMN_MSG, message);
@@ -143,28 +144,42 @@ public class MyAlarmManager {
 
 							if (alarm.getString(Alarm.COLUMN_MSG) != null
 									&& file != null) {
-								try {
-									alarm.save();
-									db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME, null, alarm.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
-									ParsePush push = new ParsePush();
-									push.setChannel(AccountManager
-											.getSendingChannel());
-									JSONObject json = new JSONObject(
+								alarm.saveInBackground(new SaveCallback() {
+
+									@Override
+									public void done(ParseException e) {
+										alarm.setPictureSent();
+										db.insertWithOnConflict(
+												AlarmInstance.PARTNER_TABLE_NAME,
+												null, alarm.getValues(),
+												SQLiteDatabase.CONFLICT_REPLACE);
+										ParsePush push = new ParsePush();
+										push.setChannel(AccountManager
+												.getSendingChannel());
+										try {
+											JSONObject json = new JSONObject(
+
 											"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
 													+ "\"id\": "
 													+ alarm.getObjectId() + "}");
-									push.setData(json);
-									push.setExpirationTime(alarm
-											.getTimeAsCalendar()
-											.getTimeInMillis());
-									push.sendInBackground();
-								} catch (Exception ex) {
-									ex.printStackTrace();
-								}
+
+											push.setData(json);
+											push.setExpirationTime(alarm
+													.getTimeAsCalendar()
+													.getTimeInMillis());
+											push.sendInBackground();
+										} catch (Exception pe) {
+											pe.printStackTrace();
+										}
+									}
+
+								});
+								;
+
 							}
 						}
 
-					}else{
+					} else {
 						e.printStackTrace();
 					}
 				}
@@ -189,8 +204,7 @@ public class MyAlarmManager {
 		db.delete(Alarm.TABLE_NAME, Alarm.COLUMN_ID + "=" + alarm.getAlarmId(),
 				null);
 
-		AlarmManager alarmMgr =
-				(AlarmManager) context
+		AlarmManager alarmMgr = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		for (int i = 0; i < 7; i++) {
 			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
@@ -250,7 +264,8 @@ public class MyAlarmManager {
 
 		String[] projection = { AlarmInstance.COLUMN_NAME,
 				AlarmInstance.COLUMN_ID, AlarmInstance.COLUMN_TIME,
-				AlarmInstance.COLUMN_MSG, AlarmInstance.COLUMN_PICTURE, AlarmInstance.COLUMN_OBJECT_ID };
+				AlarmInstance.COLUMN_MSG, AlarmInstance.COLUMN_PICTURE,
+				AlarmInstance.COLUMN_OBJECT_ID };
 
 		String sortOrder = AlarmInstance.COLUMN_TIME;
 
@@ -263,11 +278,13 @@ public class MyAlarmManager {
 			a = new AlarmInstance();
 			ContentValues cv = new ContentValues();
 
-			a.setObjectId(c.getString(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_OBJECT_ID)));
-			cv.put(AlarmInstance.COLUMN_OBJECT_ID, c.getString(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_OBJECT_ID)));
+			a.setObjectId(c.getString(c
+					.getColumnIndexOrThrow(AlarmInstance.COLUMN_OBJECT_ID)));
+			cv.put(AlarmInstance.COLUMN_OBJECT_ID, c.getString(c
+					.getColumnIndexOrThrow(AlarmInstance.COLUMN_OBJECT_ID)));
 			cv.put(AlarmInstance.COLUMN_ID,
 					c.getInt(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_ID)));
-			cv.put(AlarmInstance.COLUMN_TIME, c.getInt(c
+			cv.put(AlarmInstance.COLUMN_TIME, c.getLong(c
 					.getColumnIndexOrThrow(AlarmInstance.COLUMN_TIME)));
 			cv.put(AlarmInstance.COLUMN_MSG, c.getString(c
 					.getColumnIndexOrThrow(AlarmInstance.COLUMN_MSG)));
@@ -320,7 +337,7 @@ public class MyAlarmManager {
 			cv.put(AlarmInstance.COLUMN_PICTURE,
 					ai.getString(AlarmInstance.COLUMN_PICTURE));
 			cv.put(AlarmInstance.COLUMN_TIME,
-					ai.getInt(AlarmInstance.COLUMN_TIME));
+					ai.getLong(AlarmInstance.COLUMN_TIME));
 
 			ai.setValues(cv);
 			db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME, null, cv,
@@ -340,7 +357,7 @@ public class MyAlarmManager {
 			cv.put(Alarm.COLUMN_OBJECT_ID, alarm.getObjectId());
 			cv.put(Alarm.COLUMN_NAME, alarm.getString(Alarm.COLUMN_NAME));
 			cv.put(Alarm.COLUMN_ID, alarm.getInt(Alarm.COLUMN_ID));
-			cv.put(Alarm.COLUMN_TIME, alarm.getInt(Alarm.COLUMN_TIME));
+			cv.put(Alarm.COLUMN_TIME, alarm.getLong(Alarm.COLUMN_TIME));
 			cv.put(Alarm.COLUMN_ACTIVATED, alarm.getInt(Alarm.COLUMN_ACTIVATED));
 			cv.put(Alarm.COLUMN_WEEKDAYS,
 					alarm.getString(Alarm.COLUMN_WEEKDAYS));
@@ -388,13 +405,14 @@ public class MyAlarmManager {
 		Alarm a;
 		for (int i = 0; i < size; i++) {
 			a = new Alarm();
-			a.setObjectId(c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_OBJECT_ID)));
+			a.setObjectId(c.getString(c
+					.getColumnIndexOrThrow(Alarm.COLUMN_OBJECT_ID)));
 			ContentValues cv = new ContentValues();
 
 			cv.put(Alarm.COLUMN_ID,
 					c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_ID)));
 			cv.put(Alarm.COLUMN_TIME,
-					c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_TIME)));
+					c.getLong(c.getColumnIndexOrThrow(Alarm.COLUMN_TIME)));
 			cv.put(Alarm.COLUMN_ACTIVATED,
 					c.getInt(c.getColumnIndexOrThrow(Alarm.COLUMN_ACTIVATED)));
 			cv.put(Alarm.COLUMN_WEEKDAYS,
@@ -450,6 +468,7 @@ public class MyAlarmManager {
 	public static void removeDataBase() {
 		db.delete(Alarm.TABLE_NAME, null, null);
 		db.delete(AlarmInstance.PARTNER_TABLE_NAME, null, null);
+		db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, null, null);
 	}
 
 	public static void setContext(Context c) {
@@ -468,20 +487,21 @@ public class MyAlarmManager {
 
 	public static void setNewAlarm(Context context, Alarm alarm) {
 
-		long timeMillis = (new GregorianCalendar()).getTimeInMillis();
-
+		GregorianCalendar now = new GregorianCalendar();
+		long timeMillis = now.getTimeInMillis();
+		
 		boolean[] weekdaysR = alarm.getWeekdaysRepeated();
 
 		int counter = 0;
 		for (int i = 0; i < weekdaysR.length; i++) {
 			if (weekdaysR[i]) {
-				timeMillis = addAlarmInstance(context, alarm, i);
+				timeMillis = addAlarmInstance(context, alarm, Calendar.SUNDAY + (i+1)%7);
 				counter++;
 			}
 		}
 
 		if (counter == 0) {
-			timeMillis = addAlarmInstance(context, alarm, 0);
+			timeMillis = addAlarmInstance(context, alarm, now.get(Calendar.DAY_OF_WEEK));
 			counter++;
 		}
 
@@ -521,10 +541,11 @@ public class MyAlarmManager {
 		cv.put(AlarmInstance.COLUMN_NAME,
 				alarm.getString(AlarmInstance.COLUMN_NAME));
 		cv.put(AlarmInstance.COLUMN_TIME,
-				alarm.getInt(AlarmInstance.COLUMN_TIME));
+				alarm.getLong(AlarmInstance.COLUMN_TIME));
 
 		alarm.setValues(cv);
 		db.update(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, cv,
-				AlarmInstance.COLUMN_OBJECT_ID + "=" + alarm.getObjectId(), null);
+				AlarmInstance.COLUMN_OBJECT_ID + "=" + alarm.getObjectId(),
+				null);
 	}
 }

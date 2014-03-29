@@ -28,6 +28,7 @@ public class AlarmInstance extends ParseObject{
 	public final static String  COLUMN_OBJECT_ID = "object_id";
 	
 	private ContentValues values = new ContentValues();
+	private boolean sent = false;
 	
 
 	public AlarmInstance() {
@@ -47,7 +48,7 @@ public class AlarmInstance extends ParseObject{
 	
 	public GregorianCalendar getTimeAsCalendar(){
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(values.getAsInteger(AlarmInstance.COLUMN_TIME));
+		cal.setTimeInMillis(values.getAsLong(AlarmInstance.COLUMN_TIME));
 		return cal;
 	}
 	
@@ -118,9 +119,8 @@ public class AlarmInstance extends ParseObject{
 		put(COLUMN_MSG, msg);
 	}
 	
-	//TODO picture
-	public void setPicture(){
-		
+	public void setPictureSent(){
+		this.sent = true;
 	}
 	
 	public void setValues(ContentValues values){
@@ -131,4 +131,7 @@ public class AlarmInstance extends ParseObject{
 		return values;
 	}
 	
+	public boolean isPictureSent(){
+		return sent;
+	}
 }

@@ -23,6 +23,9 @@ import com.yljv.alarmapp.parse.database.ParseRegisterListener;
 public class AccountManager{
 	
 	 
+	public static boolean hasPartner(){
+		return ParseUser.getCurrentUser().getString(User.PARTNER_COLUMN) != null;
+	}
 	public static void findPartner(final ParsePartnerListener listener, String email){
 		ParseQuery<ParseUser> query = ParseUser.getQuery();
 		query.whereEqualTo("username", email);
@@ -104,8 +107,14 @@ public class AccountManager{
 					ParseUser user = ParseUser.getCurrentUser();
 					ApplicationSettings.setUserEmail(user.getEmail());
 					ApplicationSettings.setUserName(user.getUsername());
-					ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
-					ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
+					if(user.getString(User.PARTNER_COLUMN)!=null){
+						ApplicationSettings.setPartnerEmail(user.getString(User.PARTNER_COLUMN));
+					}
+					if(user.get(User.ID_COLUMN)!=null){
+						ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
+					}else{
+						ApplicationSettings.setAlarmId(0);
+					}
 					ApplicationSettings.setUserEmail(user.getUsername());
 					listener.onRegisterSuccess();
 				}else{

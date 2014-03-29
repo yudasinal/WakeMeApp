@@ -79,7 +79,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	 * eg: 18 returns 6
 	 */
 	public int getHour() {
-		int hour = ((Integer) values.get(Alarm.COLUMN_TIME)) / 60;
+		int hour = (int) (long) (values.getAsLong(Alarm.COLUMN_TIME) / 60);
 		return (hour > 12) ? hour - 12 : hour;
 	}
 
@@ -87,7 +87,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	 * eg: 18:00 returns 18
 	 */
 	public int getHourOfDay() {
-		return ((Integer) values.get(Alarm.COLUMN_TIME)) / 60;
+		return (int) (long) (values.getAsLong(Alarm.COLUMN_TIME) / 60);
 	}
 
 	public String getMessage() {
@@ -95,7 +95,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public int getMinute() {
-		return ((Integer) values.get(Alarm.COLUMN_TIME)) % 60;
+		return (int) (long) (values.getAsLong(Alarm.COLUMN_TIME) % 60);
 	}
 
 	public String getMusicURIPath() {
@@ -113,7 +113,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public GregorianCalendar getTimeAsCalendar() {
 		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar
 				.getInstance();
-		cal.setTimeInMillis((Integer) values.get(Alarm.COLUMN_TIME));
+		cal.setTimeInMillis((int) (long) values.getAsLong(Alarm.COLUMN_TIME));
 		return cal;
 	}
 
@@ -187,7 +187,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public boolean isAM() {
-		int time = (Integer) values.get(Alarm.COLUMN_TIME);
+		int time = (int) (long) values.getAsLong(Alarm.COLUMN_TIME);
 		return (time >= 13 * 60) ? false : true;
 	}
 
@@ -249,13 +249,13 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public void setTime(int hour, int minute) {
-		int time = hour * 60 + minute;
+		long time = hour * 60 + minute;
 		values.put(Alarm.COLUMN_TIME, time);
 		this.put(Alarm.COLUMN_TIME, time);
 	}
 
 	public void setTime(GregorianCalendar cal) {
-		int time = cal.get(Calendar.HOUR_OF_DAY) * 60
+		long time = cal.get(Calendar.HOUR_OF_DAY) * 60
 				+ cal.get(Calendar.MINUTE);
 		values.put(Alarm.COLUMN_TIME, time);
 		this.put(Alarm.COLUMN_TIME, time);

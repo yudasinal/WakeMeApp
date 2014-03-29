@@ -105,13 +105,14 @@ public class RegisterActivity extends Activity implements OnClickListener,
 			focusView = editEmail;
 			cancel = true;
 		//TODO check if the email is valid(in the form of ""@"" and has a dot) 
-		} else if (!email.contains("@")) {
+		} else if (!email.contains("@") || !email.contains(".")) {
 			editEmail.setError("Invalid email address");
 			focusView = editEmail;
 			cancel = true; 
 		}
 		if (!email.equals(emailConfirm)){
 			editEmail.setError("Emails do not match");
+			cancel = true;
 		}
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -130,8 +131,10 @@ public class RegisterActivity extends Activity implements OnClickListener,
 	@Override
 	public void onRegisterSuccess() {
 
-		PushService.subscribe(this, AccountManager.getSubscribedChannel(),
+		if(AccountManager.hasPartner()){
+			PushService.subscribe(this, AccountManager.getSubscribedChannel(),
 				MenuMainActivity.class);
+		}
 		
 		//PushService.subscribe(this, AccountManager.getEmail(), MenuMainActivity.class);
 		//TODO invalid username

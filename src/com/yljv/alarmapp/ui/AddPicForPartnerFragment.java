@@ -79,6 +79,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.add_for_partner, container, false);
 		addPicture = (ImageView) view.findViewById(R.id.add_picture);
+		
 		addMessage = (EditText) view.findViewById(R.id.add_message);
 		addPicture.isClickable();
 		addPicture.setOnClickListener(this);
