@@ -12,6 +12,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		//TODO add alarm to WakeUpActivity to display time and pic/msg if exists
 		Intent i = new Intent(context, WakeUpActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);

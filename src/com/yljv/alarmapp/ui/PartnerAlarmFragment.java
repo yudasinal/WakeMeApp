@@ -2,6 +2,7 @@ package com.yljv.alarmapp.ui;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.yljv.alarmapp.MenuMainActivity;
+import com.yljv.alarmapp.AddPicForPartnerActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
@@ -30,6 +31,7 @@ public class PartnerAlarmFragment extends Fragment {
 		listView = (ListView) view.findViewById(R.id.partner_clock_list);
 		getActivity().getActionBar().setTitle("Partner Alarms");
 		listView.setAdapter(new PartnerClockAdapter(this.getActivity()));
+		listView.setEmptyView(view.findViewById(R.id.empty_list));
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			
 			@Override
@@ -37,15 +39,15 @@ public class PartnerAlarmFragment extends Fragment {
 					long arg3) {
 				// TODO Auto-generated method stub
 				AlarmInstance ai = (AlarmInstance) listView.getAdapter().getItem(position);
-				Fragment newContent = null;
-				newContent = new AddPicForPartnerFragment();
-				Bundle bundle = new Bundle();
-				bundle.putInt(AlarmInstance.COLUMN_ID, ai.getID());
-				newContent.setArguments(bundle);
+				Intent intent = new Intent(getActivity(), AddPicForPartnerActivity.class);
+				listView.setItemChecked(position, false);
+				startActivity(intent);
+				/*
 				if (getActivity() instanceof MenuMainActivity) {
 					MenuMainActivity mma = (MenuMainActivity) getActivity();
 					mma.switchContent(newContent);
 				} 
+				*/
 			}
 		});
 		

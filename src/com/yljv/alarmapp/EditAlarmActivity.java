@@ -95,23 +95,32 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 		ringtoneButton.setText("Ringtone");
 		ringtoneButton.setOnClickListener(this);
 		
-		for(int i = 0; i<scheduled.length - 1; i++) {
-			if(scheduled[i] == true) {
+		boolean[] scheduledDays = new boolean[7];
+		scheduledDays = alarm.getWeekdaysRepeated();
+		for(int i = 0; i<scheduledDays.length - 1; i++) {
+			if(scheduledDays[i] == true) {
 				switch(i) {
 				case 0:
 					monday.setTextColor(red);
+					break;
 				case 1:
 					tuesday.setTextColor(red);
+					break;
 				case 2: 
 					wednesday.setTextColor(red);
+					break;
 				case 3: 
 					thursday.setTextColor(red);
+					break;
 				case 4:
 					friday.setTextColor(red);
+					break;
 				case 5:
 					saturday.setTextColor(red);
+					break;
 				case 6:
 					sunday.setTextColor(red);
+					break;
 				}
 			}
 		}

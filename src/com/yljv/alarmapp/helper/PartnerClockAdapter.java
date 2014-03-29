@@ -1,6 +1,7 @@
 package com.yljv.alarmapp.helper;
 	
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -41,10 +42,13 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 				LayoutInflater inflater = LayoutInflater.from(getContext());
 				rowView = inflater.inflate(R.layout.partner_alarm_item, null);
 				holder = new ViewHolder();
-				holder.textView = (TextView) rowView.findViewById(R.id.partner_text);
+				//holder.textView = (TextView) rowView.findViewById(R.id.partner_text);
 				holder.timeView = (TextView) rowView.findViewById(R.id.partner_time);
 				holder.dayView = (TextView) rowView.findViewById(R.id.partner_day);
 				holder.dateView = (TextView) rowView.findViewById(R.id.partner_date);
+				holder.morEv = (TextView) rowView.findViewById(R.id.morning_evening);
+				holder.monthView = (TextView) rowView.findViewById(R.id.partner_month);
+				holder.yearView = (TextView) rowView.findViewById(R.id.partner_year);
 				
 				partnerAlarms = MyAlarmManager.getPartnerAlarms();
 				
@@ -75,21 +79,46 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 
 				});
 				
-				if (partnerAlarms == null) {
-					LayoutInflater inflater1 = LayoutInflater.from(getContext());
-					rowView = inflater1.inflate(R.layout.no_alarms_to_display, null);
-				}
-				else if (partnerAlarms != null) {
+				if (partnerAlarms != null) {
 					ViewHolder myHolder = (ViewHolder)rowView.getTag();
 					partnerAlarm = partnerAlarms.get(position);
-					String text = partnerAlarm.getName();
+					Calendar cal = partnerAlarm.getTimeAsCalendar();
+					int day = cal.DAY_OF_WEEK;
+					String dayString = null;
+					switch(day) {
+					case 1:
+						dayString = "Sunday";
+						break;
+					case 2:
+						dayString = "Monday";
+						break;
+					case 3:
+						dayString = "Tuesday";
+						break;
+					case 4:
+						dayString = "Wednesday";
+						break;
+					case 5:
+						dayString = "Thursday";
+						break;
+					case 6:
+						dayString = "Friday";
+						break;
+					case 7: 
+						dayString = "Saturday";
+						break;
+					}
 					String time = partnerAlarm.getTimeAsString();
-					//String date = partnerAlarm.getDate();
-					//String day = partnerAlarm.getDay();
+					String morEv = partnerAlarm.getMorningEveningAsString();
 					myHolder.timeView.setText(time);
-					myHolder.textView.setText(text);
-					//myHolder.dateView.setText(date);
-					//myHolder.dayView.setText(day);
+					myHolder.morEv.setText(morEv);
+					myHolder.dayView.setText(dayString);
+					String date = Integer.toString(cal.get(cal.DAY_OF_MONTH)) + ".";
+					myHolder.dateView.setText(date);
+					String month = Integer.toString(cal.get(cal.MONTH)) + ".";
+					myHolder.monthView.setText(month);
+					String year = Integer.toString(cal.get(cal.YEAR));
+					myHolder.yearView.setText(year);
 				}
 			}
 			else {
@@ -100,10 +129,13 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 		}
 		
 		static class ViewHolder {
-			TextView textView;
+			//TextView textView;
 			TextView timeView;
 			TextView dayView;
 			TextView dateView;
+			TextView monthView;
+			TextView yearView;
+			TextView morEv;
 		}
 
 	}

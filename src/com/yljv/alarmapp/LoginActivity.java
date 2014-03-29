@@ -3,15 +3,21 @@ package com.yljv.alarmapp;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.parse.PushService;
@@ -26,7 +32,10 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	EditText editPassword;
 	EditText editEmail;
+	//ProgressButton loginBtn;
 	Button loginBtn;
+	TextView wrongCred;
+	ProgressBar progress;
 	
 	boolean visible;
 	Button regBtn;
@@ -37,8 +46,12 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
 		loginBtn = (Button) findViewById(R.id.btnLogin);
+		//loginBtn = (ProgressButton) findViewById(R.id.btnLogin);
 		regBtn = (Button) findViewById(R.id.btnRegister);
 		loginBtn.setOnClickListener(this);
+		wrongCred = (TextView) findViewById(R.id.wrong_credentials);
+		progress = (ProgressBar) findViewById(R.id.progress);
+		progress.setVisibility(View.GONE);
 		
 		visible = true;
 		
@@ -57,8 +70,15 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	@Override
 	public void onClick(View v) {
+		InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+		inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
 		switch(v.getId()){
-			case  R.id.btnLogin: 
+			case  R.id.btnLogin:
+				loginBtn.setTextColor(Color.parseColor("#fa8b60"));
+				progress.setVisibility(View.VISIBLE);
 				login();
 				break;
 			case R.id.btnRegister:
@@ -75,33 +95,44 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		String password = editPassword.getText().toString();
 		boolean cancel = false;
 		View focusView = null;
+		wrongCred.setText("");
 		// TODO Error fields (user does not exist, etc)
 		// Check for a valid password.
 		if (TextUtils.isEmpty(password)) {
 			editPassword.setError("Field is required");
 			focusView = editPassword;
 			cancel = true;
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 		} else if (password.length() < 4) {
 			editPassword.setError("Short password");
 			focusView = editPassword;
 			cancel = true;
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 		}
 		if (TextUtils.isEmpty(email)) {
 			editEmail.setError("Field is required");
 			focusView = editEmail;
 			cancel = true;
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 
 			// TODO email is not registered in the system
 		} else if (!email.contains("@")) {
 			editEmail.setError("Email is not registered");
 			focusView = editEmail;
 			cancel = true;
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 		}
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
 			focusView.requestFocus();
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 
 		} else {
 			AccountManager.login(this, email, password);
@@ -111,7 +142,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	@Override
 	public void onLoginSuccessful() {
 		
-
+		
 		MyAlarmManager.getPartnerAlarmsFromServer(this);
 		MyAlarmManager.getMyAlarmsFromServer();
 		
@@ -124,12 +155,26 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 	@Override
 	public void onLoginFail(ParseException e) {
-		e.printStackTrace();
-		if (e.getMessage().equals("invalid login credentials")) {
-			loginBtn.setError("Wrong username or password");
-		} else {
-			loginBtn.setError("User is not registered, please register first");
+		boolean isThereInternet = isNetworkAvailable();
+		if(isThereInternet == false) {
+			wrongCred.setText("No or slow internet connection :(");
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
 		}
+		else {
+			e.printStackTrace();
+			wrongCred.setText("Wrong email or password!");
+			loginBtn.setTextColor(Color.parseColor("#3f2860"));
+			progress.setVisibility(View.GONE);
+		}
+	}
+	
+	private boolean isNetworkAvailable(){
+		
+		ConnectivityManager connectivityManager = 
+				(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	public void backSplash() {

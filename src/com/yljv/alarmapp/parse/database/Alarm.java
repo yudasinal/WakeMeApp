@@ -136,14 +136,31 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 		String hourS;
 		String minuteS;
-		String amS;
 
 		hourS = Integer.toString(myHour);
 		minuteS = (myMinute < 10) ? "0" + Integer.toString(myMinute) : Integer
 				.toString(myMinute);
-		amS = am ? "AM" : "PM";
+		
+		if(hourS.length() == 1) {
 
-		return hourS + ":" + minuteS + " " + amS;
+			return "0" + hourS + ":" + minuteS;
+		}
+		
+		else{ 
+
+			return hourS + ":" + minuteS;
+		}
+
+	}
+	
+	public String getMorningEveningAsString() {
+
+		boolean am = this.isAM();
+		String amS;
+		
+		amS = am ? "AM" : "PM";
+		
+		return amS;
 	}
 
 	public ContentValues getValues() {
@@ -171,7 +188,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 	public boolean isAM() {
 		int time = (Integer) values.get(Alarm.COLUMN_TIME);
-		return (time >= 13 * 60) ? true : false;
+		return (time >= 13 * 60) ? false : true;
 	}
 
 	public boolean isVisible() {

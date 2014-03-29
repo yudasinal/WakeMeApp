@@ -23,7 +23,7 @@ public class ApplicationSettings {
 	
 	
 	public static boolean hasPartner(String userEmail){
-		return preferences.getBoolean(HAS_PARTNER, false);
+		return preferences.getBoolean(HAS_PARTNER, true);
 	}
 	
 	public static void setPartner(boolean hasPartner) {

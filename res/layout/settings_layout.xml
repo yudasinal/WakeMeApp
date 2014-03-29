@@ -35,7 +35,7 @@
 		        android:layout_height="wrap_content">
 			    <TextView
 			        android:id="@+id/name"
-			        android:paddingTop="10dp"
+			        android:paddingTop="5dp"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="Name"
@@ -46,11 +46,16 @@
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="someName"
-			        android:textSize="18sp"
+			        android:textSize="16sp"
 			        android:layout_below="@id/name"/>
 		    
 		    </RelativeLayout>
 		</TableRow>
+		
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 		
 	    
 	    <TableRow
@@ -63,7 +68,7 @@
 		        android:layout_height="wrap_content" >
 			    <TextView
 			        android:id="@+id/email"
-			        android:paddingTop="10dp"
+			        android:paddingTop="5dp"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="Email"
@@ -74,25 +79,45 @@
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="someEmail"
-			        android:textSize="18sp"
+			        android:textSize="16sp"
 			        android:layout_below="@id/email"/>
 	    	</RelativeLayout>
 	    </TableRow>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row13"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/background_table_row">
-	        <TextView 
-	            android:id="@+id/add_partner"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Add an alarm buddy"
-	            android:textSize="18sp"
-	            android:paddingTop="10dp"/>
+	        <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+			    <TextView
+			        android:id="@+id/add_partner"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Add an alarm buddy"
+			        android:textSize="18sp"/>
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/add_partner"/>
+	    	</RelativeLayout>
 	        
 	    </TableRow>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row3"
@@ -105,10 +130,10 @@
 		        android:layout_height="wrap_content">
 			    <TextView
 			        android:id="@+id/name1"
-			        android:paddingTop="10dp"
+			        android:paddingTop="5dp"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-			        android:text="Partner's Name"
+			        android:text="Buddy's Name"
 			        android:textSize="18sp"/>
 			    
 			    <TextView
@@ -116,12 +141,16 @@
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="someName"
-			        android:textSize="18sp"
+			        android:textSize="16sp"
 			        android:layout_below="@id/name1"/>
 		    
 		    </RelativeLayout>
 		</TableRow>
 		
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row4"
@@ -134,10 +163,10 @@
 		        android:layout_height="wrap_content">
 			    <TextView
 			        android:id="@+id/email1"
-			        android:paddingTop="10dp"
+			        android:paddingTop="5dp"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-			        android:text="Partner's Email"
+			        android:text="Buddy's Email"
 			        android:textSize="18sp"/>
 			    
 			    <TextView
@@ -145,11 +174,16 @@
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="someEmail"
-			        android:textSize="18sp"
+			        android:textSize="16sp"
 			        android:layout_below="@id/email1"/>
 		    
 		    </RelativeLayout>
 		</TableRow>
+		
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 		
 	    <TableRow
 	        android:id="@+id/row5"
@@ -166,7 +200,7 @@
 		            android:layout_height="wrap_content"
 		            android:text="Become Independent :)"
 		            android:textSize="18sp"
-		            android:paddingTop="10dp"/>
+		            android:paddingTop="5dp"/>
 		        
 		        <TextView
 				        android:id="@+id/unlink"
@@ -179,34 +213,66 @@
 		        
 	    </TableRow>
 	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
+	    
 	     <TableRow
 	        android:id="@+id/row6"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/background_table_row">
-	        <TextView 
-	            android:id="@+id/sign_out"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Sign Out"
-	            android:textSize="18sp"
-	            android:paddingTop="10dp"/>
+	        <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+			    <TextView
+			        android:id="@+id/sign_out"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Sign out"
+			        android:textSize="18sp"/>
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/sign_out"/>
+	    	</RelativeLayout>
 	        
 	    </TableRow>
+	    
+	     <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row7"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/background_table_row">
-	        <TextView 
-	            android:id="@+id/delete_account"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Delete Account"
-	            android:textSize="18sp"
-	            android:paddingTop="10dp"/>
+	        <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+			    <TextView
+			        android:id="@+id/delete_account"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Delete account"
+			        android:textSize="18sp"/>
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/delete_account"/>
+	    	</RelativeLayout>
 	    </TableRow>
+	    
+	    
 	    
 	    <TextView
 	        android:layout_width="match_parent"
@@ -232,24 +298,36 @@
 			   
 	             <TextView
 	                android:id="@+id/vibrate"
-			        android:paddingTop="10dp"
-			        android:layout_width="wrap_content"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="Vibrate"
 			        android:textSize="18sp"
-			        android:layout_alignParentLeft="true"/>
-	             
-	            <CheckBox 
-	                android:text=""
-	                android:id="@+id/vibration"
-	                android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:layout_alignParentRight ="true"/>	   
+			        android:layout_alignParentLeft="true"/>	  
 			    
-		    
-		    </RelativeLayout>
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/vibrate"/>
+
+			    <CheckBox
+			        android:id="@+id/vibration"
+			        android:layout_marginLeft = "50dp"
+			        android:layout_alignRight="@+id/vibrate"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_centerVertical="true" />
+
+	    	</RelativeLayout>
+			    
 	        
 	    </TableRow>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow 
 	        android:id="@+id/row9"
@@ -262,24 +340,36 @@
 		        android:layout_height="wrap_content">
 			   
 	             <TextView
-	                android:id="@+id/vibrate"
-			        android:paddingTop="10dp"
-			        android:layout_width="wrap_content"
+	                android:id="@+id/notify"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:text="Notifications"
 			        android:textSize="18sp"
-			        android:layout_alignParentLeft="true"/>
-	             
-	            <CheckBox 
-	                android:text=""
-	                android:id="@+id/notifications"
-	                android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:layout_alignParentRight ="true"/>	   
+			        android:layout_alignParentLeft="true"/>	  
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/notify"/>
+
+			    <CheckBox
+			        android:id="@+id/notifications"
+			        android:layout_marginLeft = "50dp"
+			        android:layout_alignRight="@+id/notify"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_centerVertical="true" />	   
 			    
 		    </RelativeLayout>
 	        
 	    </TableRow>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow 
 	        android:id="@+id/row10"
@@ -292,20 +382,27 @@
 		        android:layout_height="wrap_content">
 			   
 	             <TextView
-	                android:id="@+id/vibrate"
-			        android:paddingTop="10dp"
+	                android:id="@+id/play"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Alert sound"
+			        android:textSize="18sp"
+			        android:layout_alignParentLeft="true"/>	  
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/play"/>
+
+			    <CheckBox
+			        android:id="@+id/sound"
+			        android:layout_marginLeft = "50dp"
+			        android:layout_alignRight="@+id/play"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="Alert Sound"
-			        android:textSize="18sp"
-			        android:layout_alignParentLeft="true"/>
-	             
-	            <CheckBox 
-	                android:text=""
-	                android:id="@+id/sound"
-	                android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:layout_alignParentRight ="true"/>	   
+			        android:layout_centerVertical="true" />	   
 			    
 		    
 		    </RelativeLayout>
@@ -329,14 +426,30 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/background_table_row">
-	        <TextView 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Like us on Facebook"
-	            android:textSize="18sp"
-	            android:paddingTop="10dp"/>
+	        <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+			    <TextView
+			        android:id="@+id/like"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Like us on Facebook"
+			        android:textSize="18sp"/>
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/like"/>
+	    	</RelativeLayout>
 	        
 	    </TableRow>
+	    
+	    <View
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="0.5dp"
+	    	android:background="#3f2860"/>
 	    
 	    <TableRow
 	        android:id="@+id/row12"
@@ -344,12 +457,23 @@
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/background_table_row"
 	        android:layout_marginBottom = "10dp">
-	        <TextView 
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Credits"
-	            android:textSize="18sp"
-	            android:paddingTop="10dp"/>
+	        <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+			    <TextView
+			        android:id="@+id/credits"
+			        android:paddingTop="15dp"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:text="Credits"
+			        android:textSize="18sp"/>
+			    
+			    <TextView
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textSize="14sp"
+			        android:layout_below="@id/credits"/>
+	    	</RelativeLayout>
 	        
 	    </TableRow>
 	    

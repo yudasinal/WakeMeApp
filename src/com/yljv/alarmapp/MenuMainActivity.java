@@ -62,4 +62,11 @@ public class MenuMainActivity extends BaseActivity {
 		getSlidingMenu().showContent();
 		this.invalidateOptionsMenu();
 	}
+	
+	@Override
+	public void onBackPressed(){
+		if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
+	}
 }

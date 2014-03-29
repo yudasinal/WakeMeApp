@@ -17,7 +17,7 @@ import com.yljv.alarmapp.R;
 public class MenuList extends SherlockListFragment {
 	
 	//TODO make a method that takes partner's name for an item in the menu
-	String[] menu = {"My Alarms", "His Alarms", "Gallery", "Settings"};
+	String[] menu = {"Me", "Buddy", "Gallery", "Settings"};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,6 +25,7 @@ public class MenuList extends SherlockListFragment {
 		View view = inflater.inflate(R.layout.list, container, false);
 		TextView name = (TextView) view.findViewById(R.id.name_id);
 		name.setText(Html.fromHtml("<b>wakeme</b>app"));
+		
 		return view;
 	}
 

@@ -2,9 +2,15 @@
 <resources>
 
     <array name="snooze_dismiss_drawables">
-        <item>@drawable/ic_item_google</item>
+        <item>@drawable/pic_msg</item>
         <item>@null</item>
-        <item>@drawable/ic_item_camera</item>
+        <item>@drawable/snooze_progress1</item>
+        <item>@null</item>
+    </array>
+    <array name="snooze_dismiss_drawables2">
+        <item>@drawable/checkmark</item>
+        <item>@null</item>
+        <item>@drawable/snooze_progress1</item>
         <item>@null</item>
     </array>
     <array name="snooze_dismiss_descriptions">
