@@ -39,16 +39,16 @@ public class AlarmInstance extends ParseObject{
 	}
 	
 	public String getName(){
-		return values.getAsString(AlarmInstance.COLUMN_NAME);
+		return this.getString(AlarmInstance.COLUMN_NAME);
 	}
 	
 	public int getID(){
-		return values.getAsInteger(AlarmInstance.COLUMN_ID);
+		return this.getInt(AlarmInstance.COLUMN_ID);
 	}
 	
 	public GregorianCalendar getTimeAsCalendar(){
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(values.getAsLong(AlarmInstance.COLUMN_TIME));
+		cal.setTimeInMillis(this.getLong(AlarmInstance.COLUMN_TIME));
 		return cal;
 	}
 	
@@ -83,6 +83,10 @@ public class AlarmInstance extends ParseObject{
 
 			return hourS + ":" + minuteS;
 		}
+	}
+	
+	public long getTimeInMillis(){
+		return this.getLong(AlarmInstance.COLUMN_TIME);
 	}
 	
 	public String getMorningEveningAsString() {

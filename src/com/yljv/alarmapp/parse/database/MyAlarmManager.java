@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -55,6 +56,15 @@ public class MyAlarmManager {
 	private static Context context;
 	private static DBHelper dbHelper;
 	private static SQLiteDatabase db;
+
+	public static void cancelAllAlarms() {
+		for (PendingIntent intent : pendingIntents.values()) {
+			AlarmManager alarmMgr = (AlarmManager) context
+					.getSystemService(Context.ALARM_SERVICE);
+			alarmMgr.cancel(intent);
+			pendingIntents.remove(intent);
+		}
+	}
 
 	/*
 	 * creates Alarm on device
@@ -106,6 +116,7 @@ public class MyAlarmManager {
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
 				ai.getID(), intent, 0);
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(), alarmIntent);
+		pendingIntents.put(ai.getID(), alarmIntent);
 
 		return cn.getTimeInMillis();
 
@@ -455,8 +466,62 @@ public class MyAlarmManager {
 				}
 			}
 		});
+		
+		ParseQuery<AlarmInstance> query2 = ParseQuery.getQuery("AlarmInstance");
+		query2.whereEqualTo(Alarm.COLUMN_USER,
+				ApplicationSettings.getUserEmail());
+		query2.orderByAscending(Alarm.COLUMN_TIME);
+
+		query2.findInBackground(new FindCallback<AlarmInstance>() {
+			public void done(List<AlarmInstance> list, ParseException e) {
+				if (e == null) {
+					MyAlarmManager.setMyAlarmsOnDevice(list);
+				} else {
+				}
+			}
+		});
 	}
 
+	public static void setMyAlarmsOnDevice(List<AlarmInstance> list){
+		
+		for(AlarmInstance alarm : list){
+			AlarmManager alarmMgr = (AlarmManager) context
+					.getSystemService(Context.ALARM_SERVICE);
+			ComponentName receiver = new ComponentName(context,
+					AlarmBroadcastReceiver.class);
+			PackageManager pm = context.getPackageManager();
+			pm.setComponentEnabledSetting(receiver,
+					PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+					PackageManager.DONT_KILL_APP);
+
+			GregorianCalendar now = new GregorianCalendar();
+			GregorianCalendar cn = new GregorianCalendar();
+			cn.setTimeInMillis(alarm.getTimeInMillis());
+
+			if (cn.getTimeInMillis() < now.getTimeInMillis()) {
+				alarm.deleteInBackground(new DeleteCallback(){
+
+					@Override
+					public void done(ParseException e) {
+						Log.i("WakeMeApp", "deleted");
+					}
+				});
+			}else{
+				db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+						null, alarm.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
+
+				Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+				intent.putExtra("id", alarm.getID());
+				PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
+						alarm.getID(), intent, 0);
+				alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(), alarmIntent);
+				pendingIntents.put(alarm.getID(), alarmIntent);
+			}
+		}
+		
+	}
+	
+	
 	public static Context getContext() {
 		return context;
 	}
@@ -489,19 +554,21 @@ public class MyAlarmManager {
 
 		GregorianCalendar now = new GregorianCalendar();
 		long timeMillis = now.getTimeInMillis();
-		
+
 		boolean[] weekdaysR = alarm.getWeekdaysRepeated();
 
 		int counter = 0;
 		for (int i = 0; i < weekdaysR.length; i++) {
 			if (weekdaysR[i]) {
-				timeMillis = addAlarmInstance(context, alarm, Calendar.SUNDAY + (i+1)%7);
+				timeMillis = addAlarmInstance(context, alarm, Calendar.SUNDAY
+						+ (i + 1) % 7);
 				counter++;
 			}
 		}
 
 		if (counter == 0) {
-			timeMillis = addAlarmInstance(context, alarm, now.get(Calendar.DAY_OF_WEEK));
+			timeMillis = addAlarmInstance(context, alarm,
+					now.get(Calendar.DAY_OF_WEEK));
 			counter++;
 		}
 

@@ -146,6 +146,7 @@ public class AccountManager{
 	}
 	
 	public static void logout(Context context){
+		MyAlarmManager.cancelAllAlarms();
 		MyAlarmManager.removeDataBase();
 		ParseUser.logOut();
 		Set<String> channels = PushService.getSubscriptions(context);
