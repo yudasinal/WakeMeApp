@@ -23,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ Alarm.COLUMN_ACTIVATED + INT_TYPE + COMMA
 			+ Alarm.COLUMN_USER + TEXT_TYPE + COMMA
 			+ Alarm.COLUMN_VISIBILITY + INT_TYPE + COMMA
+			+ Alarm.COLUMN_OBJECT_ID + TEXT_TYPE + COMMA
 			+ Alarm.COLUMN_MUSIC_URI + TEXT_TYPE + COMMA + Alarm.COLUMN_VOLUME
 			+ INT_TYPE + COMMA + Alarm.COLUMN_MSG + TEXT_TYPE + COMMA
 			+ Alarm.COLUMN_PICTURE + TEXT_TYPE + COMMA + Alarm.COLUMN_WEEKDAYS
@@ -34,6 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ AlarmInstance.COLUMN_ID
 			+ " INTEGER PRIMARY KEY"
 			+ COMMA
+			+ AlarmInstance.COLUMN_OBJECT_ID + TEXT_TYPE + COMMA
 			+ AlarmInstance.COLUMN_NAME
 			+ TEXT_TYPE
 			+ COMMA
@@ -60,6 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ AlarmInstance.COLUMN_MSG
 			+ TEXT_TYPE
 			+ COMMA
+			+ AlarmInstance.COLUMN_OBJECT_ID + TEXT_TYPE + COMMA 
 			+ AlarmInstance.COLUMN_PICTURE + TEXT_TYPE + " );";
 	
 

@@ -31,7 +31,7 @@ public class PictureReceiver extends BroadcastReceiver {
 			ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 			query.whereEqualTo(AlarmInstance.COLUMN_USER,
 					ApplicationSettings.getUserEmail());
-			query.whereEqualTo(AlarmInstance.COLUMN_ID, id);
+			query.whereEqualTo("objectId", id);
 
 			query.findInBackground(new FindCallback<AlarmInstance>() {
 				public void done(List<AlarmInstance> list, ParseException e) {

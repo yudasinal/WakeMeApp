@@ -64,10 +64,11 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		switch(item.getItemId()) {
 		case R.id.cancel_alarm:
 			getFragmentManager().popBackStackImmediate();
-			break;
+			return true;
 		case R.id.save_alarm:
-			MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm, bitmap, addMessage.getText().toString());
+			MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm, picturePath, addMessage.getText().toString());
 			getFragmentManager().popBackStackImmediate();
+			return true;
 		//Save button has to be a preview button
 		}
 		return super.onOptionsItemSelected(item);
@@ -184,9 +185,10 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			picturePath = cursor.getString(columnIndex);
 			cursor.close();
-			
+
 			bitmap = BitmapFactory.decodeFile(picturePath);
 			addPicture.setImageBitmap(bitmap);
+			
 		}
 	}
 

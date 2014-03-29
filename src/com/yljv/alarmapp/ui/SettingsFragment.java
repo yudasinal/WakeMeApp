@@ -247,7 +247,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Save changed name
-					AccountManager.logout();
+					AccountManager.logout(activity);
 					Intent intent = new Intent(activity, SplashActivity.class);
 					activity.startActivity(intent);
 				}

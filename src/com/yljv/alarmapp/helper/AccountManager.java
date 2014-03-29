@@ -1,7 +1,9 @@
 package com.yljv.alarmapp.helper;
 
 import java.util.List;
+import java.util.Set;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -50,14 +52,14 @@ public class AccountManager{
 		ParseUser.getCurrentUser().saveInBackground();
 	}
 	
-	public static String getUserChannel(){
-		String email = ParseUser.getCurrentUser().getString(User.PARTNER_COLUMN).replace('.', '_');
+	public static String getSendingChannel(){
+		String email = ParseUser.getCurrentUser().getEmail().replace('.', '_');
 		email = email.replace('@', '_');
 		return "user_" + email;
 	}
 	
-	public static String getPartnerChannel(){
-		String email = ParseUser.getCurrentUser().getEmail().replace('.', '_');
+	public static String getSubscribedChannel(){
+		String email = ParseUser.getCurrentUser().getString(User.PARTNER_COLUMN).replace('.', '_');
 		email = email.replace('@', '_');
 		return "user_" + email;
 	}
@@ -134,9 +136,13 @@ public class AccountManager{
 		public final static String PARTNER_ID_COLUMN = "partner_id";
 	}
 	
-	public static void logout(){
+	public static void logout(Context context){
 		MyAlarmManager.removeDataBase();
 		ParseUser.logOut();
+		Set<String> channels = PushService.getSubscriptions(context);
+		for(String channel : channels){
+			PushService.unsubscribe(context, channel);
+		}
 		ApplicationSettings.reset();
 	    DBHelper dbHelper = MyAlarmManager.getDBHelper();
 	    if (dbHelper != null) {

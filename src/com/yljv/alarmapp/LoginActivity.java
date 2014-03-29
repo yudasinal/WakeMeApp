@@ -115,7 +115,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		MyAlarmManager.getPartnerAlarmsFromServer(this);
 		MyAlarmManager.getMyAlarmsFromServer();
 		
-		PushService.subscribe(this, AccountManager.getPartnerChannel(), MenuMainActivity.class);
+		PushService.subscribe(this, AccountManager.getSubscribedChannel(), MenuMainActivity.class);
 		Intent intent = new Intent (this, MenuMainActivity.class);
 		startActivity(intent);
 		finish();

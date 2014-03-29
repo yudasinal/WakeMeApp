@@ -9,8 +9,10 @@ import android.net.Uri;
 
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")
@@ -26,6 +28,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public static final String COLUMN_VOLUME = "volume";
 	public static final String COLUMN_MSG = "msg";
 	public static final String COLUMN_PICTURE = "picture";
+	public static final String COLUMN_OBJECT_ID = "objectID";
 
 	public static final String TABLE_NAME = "my_alarm_entry";
 

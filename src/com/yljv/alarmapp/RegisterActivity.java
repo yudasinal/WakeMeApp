@@ -105,7 +105,7 @@ public class RegisterActivity extends Activity implements OnClickListener,
 	@Override
 	public void onRegisterSuccess() {
 
-		PushService.subscribe(this, AccountManager.getPartnerChannel(),
+		PushService.subscribe(this, AccountManager.getSubscribedChannel(),
 				MenuMainActivity.class);
 		
 		//PushService.subscribe(this, AccountManager.getEmail(), MenuMainActivity.class);
