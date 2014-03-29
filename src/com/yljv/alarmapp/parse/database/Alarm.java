@@ -107,7 +107,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public String getName() {
-		return this.getString(Alarm.COLUMN_NAME);
+		return (String) values.getAsString(Alarm.COLUMN_NAME);
 	}
 
 	public GregorianCalendar getTimeAsCalendar() {
