@@ -205,9 +205,9 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 		}
 		MyAlarmManager.editAlarm(this, alarm);
 		
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+		Intent intent = new Intent(this, MenuMainActivity.class);
+		startActivity(intent);
+		finish();
 	}
 	
 	@Override

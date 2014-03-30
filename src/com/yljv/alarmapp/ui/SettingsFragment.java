@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.yljv.alarmapp.ChoiceActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.SplashActivity;
 import com.yljv.alarmapp.helper.AccountManager;
@@ -203,6 +204,9 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					String changedPartnerEmail = newPartnerEmail.getText().toString();
+					ApplicationSettings.setPartnerName(changedPartnerEmail);
+					partnerName.setText(ApplicationSettings.getPartnerEmail());
 					
 				}
 			});
@@ -250,6 +254,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 					AccountManager.logout(activity);
 					Intent intent = new Intent(activity, SplashActivity.class);
 					activity.startActivity(intent);
+					activity.finish();
 				}
 			});
 			

@@ -83,7 +83,8 @@
             android:name="com.yljv.alarmapp.MenuMainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:parentActivityName="com.yljv.alarmapp.SplashActivity"  >
         </activity>
         <activity
             android:name="com.yljv.alarmapp.BaseActivity"
@@ -125,7 +126,7 @@
             android:name="com.yljv.alarmapp.SplashActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+            android:windowSoftInputMode="stateHidden|adjustResize"> >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

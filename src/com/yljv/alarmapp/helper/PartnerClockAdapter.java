@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.yljv.alarmapp.MenuMainActivity;
+import com.yljv.alarmapp.AddPicForPartnerActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
@@ -24,6 +25,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 		public ImageView setPicture;
 		private AlarmInstance partnerAlarm;
 		public int alarmPosition;
+		private Context context;
 		
 		
 		public PartnerClockAdapter(Context context) {
@@ -36,6 +38,8 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 			View rowView = convertView;
 			ViewHolder holder;
 			ArrayList<AlarmInstance> partnerAlarms;
+			boolean hasPicture = false;
+			boolean picLoading = true;
 			
 			if(rowView == null) {
 				LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -48,6 +52,9 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 				holder.morEv = (TextView) rowView.findViewById(R.id.morning_evening);
 				holder.monthView = (TextView) rowView.findViewById(R.id.partner_month);
 				holder.yearView = (TextView) rowView.findViewById(R.id.partner_year);
+				holder.progress = (ProgressBar) rowView.findViewById(R.id.progress);
+				holder.progress.setVisibility(View.GONE);
+				
 				
 				partnerAlarms = MyAlarmManager.getPartnerAlarms();
 				
@@ -56,16 +63,14 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 				
 				//TODO this did not work properly
 				/*setPicture.setOnClickListener(new OnClickListener() {
+				holder.picture = (ImageView) rowView.findViewById(R.id.set_picture);
+				holder.picture.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						if(!pictureSet) {
-							Fragment newContent = null;
-							newContent = new AddPicForPartnerFragment();
-							if (getContext() instanceof MenuMainActivity) {
-								MenuMainActivity mma = (MenuMainActivity) getContext();
-								mma.switchContent(newContent);
-							} 
+							Intent intent = new Intent(getContext(), AddPicForPartnerActivity.class);
+							context.startActivity(intent);
 						}
 						
 						else {
@@ -114,10 +119,32 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 					myHolder.timeView.setText(time);
 					myHolder.morEv.setText(morEv);
 					myHolder.dayView.setText(dayString);
+					if(hasPicture) {
+						
+						//TODO if the picture is already there
+						myHolder.picture.setImageResource(R.drawable.ic_action_picture);
+						myHolder.progress.setVisibility(View.GONE);
+					}
+					else if(picLoading) {
+						
+						//TODO picture is loading
+						myHolder.picture.setVisibility(View.GONE);
+						myHolder.progress.setVisibility(View.VISIBLE);
+					}
 					String date = Integer.toString(cal.get(cal.DAY_OF_MONTH)) + ".";
-					myHolder.dateView.setText(date);
-					String month = Integer.toString(cal.get(cal.MONTH)) + ".";
-					myHolder.monthView.setText(month);
+					if(date.length() == 2) {
+						myHolder.dateView.setText("0" + date);
+					}
+					else{
+						myHolder.dateView.setText(date);
+					}
+					String month = Integer.toString(cal.get(cal.MONTH)+1) + ".";
+					if(month.length() == 2) {
+						myHolder.monthView.setText("0"+ month);
+					}
+					else{
+						myHolder.monthView.setText(month);
+					}
 					String year = Integer.toString(cal.get(cal.YEAR));
 					myHolder.yearView.setText(year);
 				}
@@ -137,6 +164,8 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 			TextView monthView;
 			TextView yearView;
 			TextView morEv;
+			ImageView picture;
+			ProgressBar progress;
 		}
 
 	}
