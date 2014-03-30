@@ -85,9 +85,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL(SQL_DELETE_ALARM_ENTRIES);
-		db.execSQL(SQL_DELETE_PARTNER_ALARM_ENTRIES);
-		onCreate(db);
 	}
 
 	@Override

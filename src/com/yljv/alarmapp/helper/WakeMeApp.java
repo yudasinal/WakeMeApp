@@ -33,12 +33,6 @@ public class WakeMeApp extends Application {
 		// initialize Settings
 		ApplicationSettings.setSharedPreferences(this);
 		
-		MyAlarmManager.setContext(this);
-		// getAlarms from Database
-		if (ParseUser.getCurrentUser() != null) {
-			MyAlarmManager.getPartnerAlarmsFromDatabase();
-			MyAlarmManager.getMyAlarmsFromDatabase();
-		}
 		super.onCreate();
 	}
 

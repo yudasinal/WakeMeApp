@@ -33,10 +33,15 @@ public class SplashActivity extends Activity {
 		name.setText(Html.fromHtml("<b>wakeme</b>app"));
 
 		ParseAnalytics.trackAppOpened(getIntent());
+		
 
-		// Initialize MyAlarmManager
 		MyAlarmManager.setContext(this);
-
+		// getAlarms from Database
+		if (ParseUser.getCurrentUser() != null) {
+			MyAlarmManager.getPartnerAlarmsFromDatabase();
+			MyAlarmManager.getMyAlarmsFromDatabase();
+		}
+		
 		Thread t = new Thread(){
 			@Override
 			public void run(){
@@ -49,6 +54,7 @@ public class SplashActivity extends Activity {
 			}
 		};
 		t.start();
+		
 
 	}
 

@@ -312,6 +312,7 @@ public class MyAlarmManager {
 			partnerAlarms.add(a);
 			c.move(1);
 		}
+		c.close();
 	}
 
 	public static void getPartnerAlarmsFromServer(
@@ -392,11 +393,27 @@ public class MyAlarmManager {
 			}
 
 			alarm.setValues(cv);
-			db.insertWithOnConflict(Alarm.TABLE_NAME, null, cv,
+			long success = db.insertWithOnConflict(Alarm.TABLE_NAME, null, cv,
 					SQLiteDatabase.CONFLICT_REPLACE);
+			
+			String[] projection = { Alarm.COLUMN_NAME, Alarm.COLUMN_ID,
+					Alarm.COLUMN_TIME, Alarm.COLUMN_ACTIVATED,
+					Alarm.COLUMN_WEEKDAYS, Alarm.COLUMN_VISIBILITY,
+					Alarm.COLUMN_MUSIC_URI, Alarm.COLUMN_VOLUME, Alarm.COLUMN_MSG,
+					Alarm.COLUMN_PICTURE, Alarm.COLUMN_OBJECT_ID };
+
+			String sortOrder = Alarm.COLUMN_TIME;
+			
+			
+			//Check how many 
+			Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null,
+					null, null, sortOrder);
+			c.moveToFirst();
+			int size = c.getCount();
+			Log.i("MyAlarm", Integer.toString(size));
+			c.close();
 			myAlarms.add(alarm);
 		}
-
 	}
 
 	public static ArrayList<Alarm> getMyAlarms() {
@@ -412,8 +429,8 @@ public class MyAlarmManager {
 
 		String sortOrder = Alarm.COLUMN_TIME;
 		// TODO do order!!!
-		Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null,
-				sortOrder, null, null);
+		Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null, null, null,
+				sortOrder);
 		c.moveToFirst();
 		int size = c.getCount();
 		Alarm a;
@@ -449,6 +466,7 @@ public class MyAlarmManager {
 			myAlarms.add(a);
 			c.move(1);
 		}
+		c.close();
 
 	}
 
