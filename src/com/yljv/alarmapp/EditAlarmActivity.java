@@ -125,8 +125,6 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 			}
 		}
 		
-		alarm = new Alarm();
-		alarm.initialize();
         getActionBar().setTitle("Set an alarm");
         getActionBar().setDisplayHomeAsUpEnabled(true);
        
@@ -205,7 +203,7 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 				alarm.setRepeat(i, true);
 			}
 		}
-		MyAlarmManager.setNewAlarm(this, alarm);
+		MyAlarmManager.editAlarm(this, alarm);
 		
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

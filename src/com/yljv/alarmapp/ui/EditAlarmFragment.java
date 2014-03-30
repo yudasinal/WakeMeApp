@@ -1,4 +1,4 @@
-package com.yljv.alarmapp.ui;
+/*package com.yljv.alarmapp.ui;
 
 import java.util.Calendar;
 
@@ -139,10 +139,10 @@ public class EditAlarmFragment extends SherlockFragment implements
 		Fragment newContent = new MyAlarmListFragment();
 
 		// TODO what do I need this for?
-		/*
+		
 		 * Bundle data = new Bundle(); data.putString(ALARM_NAME, nameAlarm);
 		 * newContent.setArguments(data);
-		 */
+		 
 
 		// TODO set volume, repeated, etc..
 		alarm.setName(nameAlarm);
@@ -256,7 +256,7 @@ public class EditAlarmFragment extends SherlockFragment implements
 		return false;
 	}
 
-	/*
+	
 	 * @Override public void onCreate(Bundle savedInstanceState) {
 	 * super.onCreate(savedInstanceState); setHasOptionsMenu(true); }
 	 * 
@@ -275,5 +275,6 @@ public class EditAlarmFragment extends SherlockFragment implements
 	 * switch(item.getItemId()) { case R.id.save_alarm: saveAlarm(); break; case
 	 * R.id.cancel_alarm: getFragmentManager().popBackStackImmediate(); break; }
 	 * return super.onOptionsItemSelected(item); }
-	 */
+	 
 }
+*/

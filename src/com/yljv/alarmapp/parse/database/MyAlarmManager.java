@@ -217,7 +217,10 @@ public class MyAlarmManager {
 
 		AlarmManager alarmMgr = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
+		int alarmID = alarm.getAlarmId();
 		for (int i = 0; i < 7; i++) {
+			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, AlarmInstance.COLUMN_ID + "=" + alarmID + i,
+					null);
 			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
 			if (p != null)
 				alarmMgr.cancel(p);
@@ -507,6 +510,19 @@ public class MyAlarmManager {
 					}
 				});
 			}else{
+				
+				ContentValues cv = new ContentValues();
+				cv.put(AlarmInstance.COLUMN_OBJECT_ID, alarm.getObjectId());
+				cv.put(AlarmInstance.COLUMN_ID, alarm.getInt(AlarmInstance.COLUMN_ID));
+				cv.put(AlarmInstance.COLUMN_MSG,
+						alarm.getString(AlarmInstance.COLUMN_MSG));
+				cv.put(AlarmInstance.COLUMN_NAME,
+						alarm.getString(AlarmInstance.COLUMN_NAME));
+				cv.put(AlarmInstance.COLUMN_TIME,
+						alarm.getLong(AlarmInstance.COLUMN_TIME));
+
+				alarm.setValues(cv);
+				
 				db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
 						null, alarm.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
@@ -546,10 +562,86 @@ public class MyAlarmManager {
 	 * TODO dont sent notifications?
 	 */
 	public static void editAlarm(Context context, Alarm alarm) {
-		MyAlarmManager.deleteAlarm(alarm);
-		MyAlarmManager.setNewAlarm(context, alarm);
+		
+		GregorianCalendar now = new GregorianCalendar();
+		
+		MyAlarmManager.deleteAlarmInstances(alarm);
+		alarm.saveInBackground(new SaveCallback(){
+			@Override
+			public void done(ParseException e) {
+				Log.i("WakeMeApp", "edited alarm saved");
+			}
+		});
+
+		long timeMillis = now.getTimeInMillis();
+
+		boolean[] weekdaysR = alarm.getWeekdaysRepeated();
+
+		int counter = 0;
+		for (int i = 0; i < weekdaysR.length; i++) {
+			if (weekdaysR[i]) {
+				timeMillis = addAlarmInstance(context, alarm, Calendar.SUNDAY
+						+ (i + 1) % 7);
+				counter++;
+			}
+		}
+
+		if (counter == 0) {
+			timeMillis = addAlarmInstance(context, alarm,
+					now.get(Calendar.DAY_OF_WEEK));
+			counter++;
+		}
+
+		if (counter != 0 && alarm.isVisible()) {
+			ParsePush push = new ParsePush();
+			push.setChannel(AccountManager.getSendingChannel());
+			push.setMessage("Hey, I just set a new Alarm!");
+			push.setExpirationTime(timeMillis);
+			push.sendInBackground();
+		}
+		
 	}
 
+	private static void deleteAlarmInstances(Alarm alarm){
+		AlarmManager alarmMgr = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		ComponentName receiver = new ComponentName(context,
+				AlarmBroadcastReceiver.class);
+		PackageManager pm = context.getPackageManager();
+		pm.setComponentEnabledSetting(receiver,
+				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+				PackageManager.DONT_KILL_APP);
+		
+		int alarmID = alarm.getAlarmId();
+		
+		for (int i = 0; i < 7; i++) {
+			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, AlarmInstance.COLUMN_ID + "=" + alarmID + i,
+					null);
+			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
+			if (p != null)
+				alarmMgr.cancel(p);
+			pendingIntents.remove(alarm.getAlarmId() + i);
+		}
+
+		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+		String email = ApplicationSettings.getUserEmail();
+		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
+				alarmID);
+		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
+				alarmID + 9);
+		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
+		query.findInBackground(new FindCallback<AlarmInstance>() {
+			public void done(List<AlarmInstance> list, ParseException e) {
+				if (e == null) {
+					for (AlarmInstance ai : list) {
+						ai.deleteEventually();
+					}
+				} else {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	public static void setNewAlarm(Context context, Alarm alarm) {
 
 		GregorianCalendar now = new GregorianCalendar();
