@@ -152,7 +152,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		finish();
 		
 	}
-
+	
 	@Override
 	public void onLoginFail(ParseException e) {
 		boolean isThereInternet = isNetworkAvailable();

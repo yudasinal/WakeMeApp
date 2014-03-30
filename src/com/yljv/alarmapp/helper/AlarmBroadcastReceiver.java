@@ -18,7 +18,6 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 		context.startActivity(i);
 		
 		
-		
 		// TODO set the alarm here
 		// only for test
 		/*Toast.makeText(context, "Alarm Alarm", Toast.LENGTH_LONG).show();

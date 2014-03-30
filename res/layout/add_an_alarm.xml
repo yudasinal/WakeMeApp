@@ -46,68 +46,82 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content" />
 			</TableRow>
-		
+
 			<LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:gravity="center_horizontal"
-		        android:layout_marginBottom="15dp"
-		        android:textSize="62sp" >
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="15dp"
+			    android:gravity="center_horizontal"
+			    android:textSize="62sp" >
+
 			    <TextView
-			        android:id = "@+id/mon"
+			        android:id="@+id/mon"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:layout_marginRight="20dp"
-			        android:textSize="20sp"
+			        android:layout_marginLeft="10dp"
+			        android:layout_marginRight="10dp"
+			        android:text="M "
 			        android:textColor="#90c5a9"
-			        android:text="M "/>
+			        android:textSize="20sp" />
+
 			    <TextView
-			        android:id = "@+id/tue"
+			        android:id="@+id/tue"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:textSize="20sp"
-			        android:layout_marginRight="20dp"
+			        android:layout_marginLeft="10dp"
+			        android:layout_marginRight="10dp"
+			        android:text="T "
 			        android:textColor="#90c5a9"
-			        android:text="T "/>
+			        android:textSize="20sp" />
+
 			    <TextView
-			        android:id = "@+id/wed"
+			        android:id="@+id/wed"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:textSize="20sp"
-			        android:layout_marginRight="20dp"
+			        android:layout_marginLeft="10dp"
+			        android:layout_marginRight="10dp"
+			        android:text="W "
 			        android:textColor="#90c5a9"
-			        android:text="W "/>
+			        android:textSize="20sp" />
+
 			    <TextView
-			        android:id = "@+id/thu"
+			        android:id="@+id/thu"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:textSize="20sp"
-			        android:layout_marginRight="20dp"
+			        android:layout_marginLeft="10dp"
+			        android:layout_marginRight="10dp"
+			        android:text="T "
 			        android:textColor="#90c5a9"
-			        android:text="T "/>
+			        android:textSize="20sp" />
+
 			    <TextView
-			        android:id = "@+id/fri"
+			        android:id="@+id/fri"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:textSize="20sp"
-			        android:layout_marginRight="20dp"
+			        android:layout_marginLeft="10dp"
+			        android:layout_marginRight="10dp"
+			        android:text="F "
 			        android:textColor="#90c5a9"
-			        android:text="F "/>
+			        android:textSize="20sp" />
+
 			    <TextView
-			        android:id = "@+id/sat"
+			        android:id="@+id/sat"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:textSize="20sp"
-			        android:layout_marginRight="20dp"
+			        android:layout_marginLeft="10dp"
+			        android:layout_marginRight="10dp"
+			        android:text="S "
 			        android:textColor="#90c5a9"
-			        android:text="S "/>
+			        android:textSize="20sp" />
+
 			    <TextView
-			        android:id = "@+id/sun"
+			        android:id="@+id/sun"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:paddingLeft="10dp"
+			        android:text="S "
 			        android:textColor="#90c5a9"
-			        android:textSize="20sp"
-			        android:text="S "/>
+			        android:textSize="20sp" />
 			</LinearLayout>
 			
 			<TableRow
@@ -134,7 +148,7 @@
 	
 				<Button
 				    android:id="@+id/ringtone_button"
-				    android:background = "@drawable/ringtone_field"
+				    android:background = "@drawable/sign_in"
 				    android:layout_width = "150dp"
 				    android:layout_height = "28dp"
 				    android:layout_marginBottom="10dp"

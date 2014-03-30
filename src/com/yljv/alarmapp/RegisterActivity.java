@@ -111,7 +111,9 @@ public class RegisterActivity extends Activity implements OnClickListener,
 			cancel = true; 
 		}
 		if (!email.equals(emailConfirm)){
-			editEmail.setError("Emails do not match");
+			progress.setVisibility(View.GONE);
+			btnRegister.setText("Emails do not match!");
+			btnRegister.setTextColor(Color.parseColor("#3f2860"));
 		}
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
