@@ -204,6 +204,12 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 			values.put(Alarm.COLUMN_ACTIVATED, 0);
 			put(Alarm.COLUMN_ACTIVATED, 0);
 		}
+		try {
+			this.save();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		MyAlarmManager.updateAlarm(this);
 	}
 
 	private void setID(int id) {

@@ -725,4 +725,12 @@ public class MyAlarmManager {
 				AlarmInstance.COLUMN_OBJECT_ID + "=" + alarm.getObjectId(),
 				null);
 	}
+	
+	public static void updateAlarm(Alarm alarm){
+		ContentValues cv = alarm.getValues();
+		
+		db.update(Alarm.TABLE_NAME, cv,
+				Alarm.COLUMN_ID + "=" + alarm.getAlarmId(),
+				null);
+	}
 }
