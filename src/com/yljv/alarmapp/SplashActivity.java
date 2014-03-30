@@ -55,7 +55,7 @@ public class SplashActivity extends Activity {
 	public void cont() {
 		Intent intent;
 		if(ParseUser.getCurrentUser() == null){
-			intent = new Intent(this, MenuMainActivity.class);
+			intent = new Intent(this, ChoiceActivity.class);
 		}else{
 			
 			intent = new Intent(this, MenuMainActivity.class);
