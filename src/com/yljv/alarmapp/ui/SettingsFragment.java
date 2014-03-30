@@ -254,7 +254,7 @@ public class SettingsFragment extends SherlockFragment implements OnClickListene
 					AccountManager.logout(activity);
 					Intent intent = new Intent(activity, SplashActivity.class);
 					activity.startActivity(intent);
-					activity.finish();
+					getActivity().finish();
 				}
 			});
 			
