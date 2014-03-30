@@ -26,7 +26,7 @@ public class PictureReceiver extends BroadcastReceiver {
 			JSONObject json = new JSONObject(intent.getExtras().getString(
 					"com.parse.Data"));
 
-			int id = json.getInt("id");
+			String id = json.getString("id");
 			
 			ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 			query.whereEqualTo(AlarmInstance.COLUMN_USER,

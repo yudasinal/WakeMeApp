@@ -26,6 +26,7 @@ import android.widget.EditText;
 
 import com.yljv.alarmapp.helper.SquareImageView;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 	public class AddPicForPartnerActivity extends Activity implements OnClickListener {
 		
@@ -65,6 +66,10 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			Display display = getWindowManager().getDefaultDisplay();
+			
+			String objectId = this.getIntent().getExtras().getString(AlarmInstance.COLUMN_OBJECT_ID);
+			alarm = MyAlarmManager.findPartnerAlarmByObjectId(objectId);
+			
 			Point size = new Point();
 			display.getSize(size);
 			width = size.x;
@@ -100,7 +105,7 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 			case android.R.id.home:
 				super.onBackPressed();
 			case R.id.save_alarm:
-				//TODO save pic and message
+				MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm, picturePath, addMessage.getText().toString());
 			}
 			
 			return super.onOptionsItemSelected(item);
@@ -217,7 +222,6 @@ import com.yljv.alarmapp.parse.database.AlarmInstance;
 				Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
 				addPicture.setImageBitmap(bitmap);
 				
-				//MyAlarmManager.addPictureToPartnerAlarm(alarm, bitmap);
 			}
 		}
 

@@ -112,7 +112,7 @@ public class MyAlarmManager {
 				null, ai.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
 		Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-		intent.putExtra("id", ai.getID());
+		intent.putExtra(AlarmInstance.COLUMN_ID, ai.getID());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
 				ai.getID(), intent, 0);
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(), alarmIntent);
@@ -128,8 +128,7 @@ public class MyAlarmManager {
 		if (message != null) {
 			alarm.put(AlarmInstance.COLUMN_MSG, message);
 		}
-		alarm.put("message", message);
-
+		
 		if (picturePath != null) {
 			alarm.getValues().put(AlarmInstance.COLUMN_PICTURE, picturePath);
 			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
@@ -196,6 +195,34 @@ public class MyAlarmManager {
 				}
 
 			});
+		}else if(message!=null){
+			alarm.saveInBackground(new SaveCallback(){
+				@Override
+				public void done(ParseException e){
+					db.insertWithOnConflict(
+							AlarmInstance.PARTNER_TABLE_NAME,
+							null, alarm.getValues(),
+							SQLiteDatabase.CONFLICT_REPLACE);
+					ParsePush push = new ParsePush();
+					push.setChannel(AccountManager
+							.getSendingChannel());
+					try {
+						JSONObject json = new JSONObject(
+
+						"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+								+ "\"id\": "
+								+ alarm.getObjectId() + "}");
+
+						push.setData(json);
+						push.setExpirationTime(alarm
+								.getTimeAsCalendar()
+								.getTimeInMillis());
+						push.sendInBackground();
+					} catch (Exception pe) {
+						pe.printStackTrace();
+					}
+				}
+			});
 		}
 
 	}
@@ -259,9 +286,9 @@ public class MyAlarmManager {
 		return null;
 	}
 
-	public static AlarmInstance findPartnerAlarmById(int id) {
+	public static AlarmInstance findPartnerAlarmByObjectId(String id) {
 		for (AlarmInstance alarm : partnerAlarms) {
-			if (alarm.getID() == id) {
+			if (alarm.getObjectId().equals(id)) {
 				return alarm;
 			}
 		}
@@ -703,27 +730,35 @@ public class MyAlarmManager {
 		ContentValues cv = new ContentValues();
 
 		ParseFile pic = alarm.getParseFile(AlarmInstance.COLUMN_PICTURE);
-		try {
-			byte[] bytes = pic.getData();
-			cv.put(AlarmInstance.COLUMN_PICTURE, bytes);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		
+		byte[] bytes;
+		
+		if(pic!=null){
+			try {
+				bytes = pic.getData();
+				cv.put(AlarmInstance.COLUMN_PICTURE, bytes);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		cv.put(AlarmInstance.COLUMN_OBJECT_ID, alarm.getObjectId());
 		cv.put(AlarmInstance.COLUMN_ID, alarm.getInt(AlarmInstance.COLUMN_ID));
-		cv.put(AlarmInstance.COLUMN_MSG,
-				alarm.getString(AlarmInstance.COLUMN_MSG));
+		
+		String msg = alarm.getString(AlarmInstance.COLUMN_NAME);
+		if(msg!=null){
+			cv.put(AlarmInstance.COLUMN_MSG,
+					alarm.getString(AlarmInstance.COLUMN_MSG));
+		}
 		cv.put(AlarmInstance.COLUMN_NAME,
 				alarm.getString(AlarmInstance.COLUMN_NAME));
 		cv.put(AlarmInstance.COLUMN_TIME,
 				alarm.getLong(AlarmInstance.COLUMN_TIME));
 
 		alarm.setValues(cv);
-		db.update(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, cv,
-				AlarmInstance.COLUMN_OBJECT_ID + "=" + alarm.getObjectId(),
-				null);
+		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
 	}
 	
 	public static void updateAlarm(Alarm alarm){

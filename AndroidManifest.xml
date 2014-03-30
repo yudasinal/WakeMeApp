@@ -142,7 +142,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.yljv.PictureReceiver"
+            android:name="com.yljv.alarmapp.helper.PictureReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.yljv.alarmapp.UPDATE_ALARM" />

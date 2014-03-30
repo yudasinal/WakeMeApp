@@ -1,6 +1,7 @@
 package com.yljv.alarmapp.helper;
 
 import com.yljv.alarmapp.WakeUpActivity;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +15,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
 		//TODO add alarm to WakeUpActivity to display time and pic/msg if exists
 		Intent i = new Intent(context, WakeUpActivity.class);
+		int id = intent.getExtras().getInt(AlarmInstance.COLUMN_ID);
+		i.putExtra(AlarmInstance.COLUMN_ID, id);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);
 		

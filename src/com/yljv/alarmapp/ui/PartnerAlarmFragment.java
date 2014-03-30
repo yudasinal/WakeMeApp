@@ -40,6 +40,7 @@ public class PartnerAlarmFragment extends Fragment {
 				// TODO Auto-generated method stub
 				AlarmInstance ai = (AlarmInstance) listView.getAdapter().getItem(position);
 				Intent intent = new Intent(getActivity(), AddPicForPartnerActivity.class);
+				intent.putExtra(AlarmInstance.COLUMN_OBJECT_ID, ai.getObjectId());
 				listView.setItemChecked(position, false);
 				startActivity(intent);
 				/*

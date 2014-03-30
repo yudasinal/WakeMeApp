@@ -17,7 +17,6 @@ import com.yljv.alarmapp.MenuMainActivity;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
-import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 
 	public class PartnerClockAdapter extends ArrayAdapter<AlarmInstance> {
 		
@@ -54,7 +53,9 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 				
 				rowView.setTag(holder);
 				setPicture = (ImageView) rowView.findViewById(R.id.set_picture);
-				setPicture.setOnClickListener(new OnClickListener() {
+				
+				//TODO this did not work properly
+				/*setPicture.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
@@ -66,7 +67,7 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 								mma.switchContent(newContent);
 							} 
 						}
-						/*
+						
 						else {
 							Bundle bundle = new Bundle();
 							alarmPosition = partnerAlarms.
@@ -74,10 +75,10 @@ import com.yljv.alarmapp.ui.AddPicForPartnerFragment;
 							setPicture.setImageResource(R.drawable.ic_action_picture);
 							pictureSet = true;
 						}
-						*/
+						
 					}
 
-				});
+				});*/
 				
 				if (partnerAlarms != null) {
 					ViewHolder myHolder = (ViewHolder)rowView.getTag();

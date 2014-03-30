@@ -1,4 +1,4 @@
-package com.yljv.alarmapp.ui;
+/*package com.yljv.alarmapp.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -49,7 +49,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		getActivity().getActionBar().setTitle("Customize");
 		setHasOptionsMenu(true);
 		Bundle bundle = this.getArguments();
-		alarm = MyAlarmManager.findPartnerAlarmById(bundle.getInt(AlarmInstance.COLUMN_ID));	
+		alarm = MyAlarmManager.findPartnerAlarmByObjectId(bundle.getString(AlarmInstance.COLUMN_ID));	
 	}
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -116,7 +116,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 			});
 			builder.show();
 			break;
-		/*
+		
 		case R.id.preview:
 			String myMessage = addMessage.getText().toString();
 			Bundle data = new Bundle();
@@ -128,12 +128,12 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 				mma.switchContent(newContent);
 			} 
 			break;
-		*/
+		
 		}
 	}
 
 
-	/*
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position == 0) {
@@ -155,8 +155,8 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 				startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 			}
-			*/
-	/*
+			
+	
 	private File createImageFile() throws IOException {
 		// TODO Auto-generated method stub
 		return null;
@@ -168,7 +168,7 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 					startActivityForResult(i, RESULT_LOAD_IMAGE);
 		}
 	}
-	*/
+	
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -193,4 +193,4 @@ public class AddPicForPartnerFragment extends SherlockFragment implements OnClic
 		}
 	}
 
-}
+}*/

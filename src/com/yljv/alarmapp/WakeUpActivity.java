@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.ui.WakeUpFragment;
 import com.yljv.alarmapp.ui.WakeUpFragmentNoExtra;
 
@@ -14,6 +15,7 @@ public class WakeUpActivity extends FragmentActivity {
 	private Fragment mainView;
 	boolean isThereSomething = true;
 
+	AlarmInstance alarm;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,7 @@ public class WakeUpActivity extends FragmentActivity {
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
 
-
+		int id = this.getIntent().getExtras().getInt(AlarmInstance.COLUMN_ID);
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mainView");
