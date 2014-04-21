@@ -13,21 +13,57 @@ public class ApplicationSettings {
 	private final static String PARTNER_EMAIL_KEY = "parter_email";
 	private final static String PARTNER_NAME_KEY = "partner_name";
 	private final static String ALARM_ID_COUNTER_KEY = "counter";
-	private final static String USER_EMAIL_KEY = "user_email";
-	private final static String USER_NAME_KEY = "user_name";
-	private final static String HAS_PARTNER = "has_partner";
+	private final static String USER_EMAIL_KEY = "email";
+	private final static String USER_NAME_KEY = "username";
+	private final static String PARTNER_STATUS = "partner_status";
 	
 	public int alarmIdCounter = 0;
 	
 	private static SharedPreferences preferences;
 	
-	
-	public static boolean hasPartner(String userEmail){
-		return preferences.getBoolean(HAS_PARTNER, true);
+	public static void setPartnerStatus(int status){
+		preferences.edit().putInt(PARTNER_STATUS, status).commit();
+		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, status);
+	}
+	public static void cancelRequest(){
+		preferences.edit().putInt(PARTNER_STATUS, User.NO_PARTNER).commit();
+		preferences.edit().putString(PARTNER_EMAIL_KEY, "").commit();
+		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER);
+		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, "");
+		ParseUser.getCurrentUser().saveEventually();
 	}
 	
-	public static void setPartner(boolean hasPartner) {
-		preferences.edit().putBoolean(HAS_PARTNER, hasPartner).commit();
+	public static void incomingRequest(String email){
+		preferences.edit().putInt(PARTNER_STATUS, User.INCOMING_REQUEST).commit();
+		preferences.edit().putString(PARTNER_EMAIL_KEY, email).commit();
+		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.INCOMING_REQUEST);
+		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, email);
+		ParseUser.getCurrentUser().saveEventually();
+	
+	}
+	
+	public static void unlinkPartner(){
+		preferences.edit().putInt(PARTNER_STATUS, User.NO_PARTNER).commit();
+		preferences.edit().putString(PARTNER_EMAIL_KEY, "").commit();
+		ParseUser user = ParseUser.getCurrentUser();
+		user.put(User.PARTNER_COLUMN, "");
+		user.put(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER);
+		user.saveEventually();
+	}
+	public static void setPartnerRequest(String email){
+		preferences.edit().putInt(PARTNER_STATUS, User.PARTNER_REQUESTED).commit();
+		preferences.edit().putString(PARTNER_EMAIL_KEY, email).commit();
+		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.PARTNER_REQUESTED);
+		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, email);
+		ParseUser.getCurrentUser().saveEventually();
+	}
+	
+	public static boolean hasPartner(String userEmail){
+		return preferences.getInt(PARTNER_STATUS, User.NO_PARTNER) == User.PARTNERED;
+	}
+	
+	public static int getPartnerStatus(){
+		return preferences.getInt(PARTNER_STATUS, User.NO_PARTNER);
 	}
 
 	public static void setSharedPreferences(Context context) {
@@ -36,7 +72,7 @@ public class ApplicationSettings {
 	}
 	
 	public static void setAlarmId(int id){
-		preferences.edit().putInt(ALARM_ID_COUNTER_KEY, id);
+		preferences.edit().putInt(ALARM_ID_COUNTER_KEY, id).commit();
 	}
 	
 	public static int getAlarmId(){
@@ -81,14 +117,17 @@ public class ApplicationSettings {
 	
 	public static void setPartnerEmail(String partnerEmail){
 		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail).commit();
+		preferences.edit().putInt(ApplicationSettings.PARTNER_STATUS, User.PARTNERED).commit();
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put(User.PARTNER_COLUMN, partnerEmail);
+		user.saveEventually();
 	}
 	
 	public static void setPartnerName(String partnerName){
 		preferences.edit().putString(PARTNER_NAME_KEY, partnerName).commit();
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put(PARTNER_NAME_KEY, partnerName);
+		user.saveEventually();
 	}
 	
 	public static void setUserEmail(String userEmail){
@@ -96,6 +135,7 @@ public class ApplicationSettings {
 		ParseUser user = ParseUser.getCurrentUser();
 		user.setEmail(userEmail);
 		user.setUsername(userEmail);
+		user.saveEventually();
 		
 	}
 	
@@ -103,6 +143,7 @@ public class ApplicationSettings {
 		preferences.edit().putString(USER_NAME_KEY, userName).commit();
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put(USER_NAME_KEY, userName);
+		user.saveEventually();
 	}
 	
 	public static void reset(){

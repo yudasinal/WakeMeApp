@@ -1,21 +1,34 @@
 package com.yljv.alarmapp.helper;
 
-import com.yljv.alarmapp.WakeUpActivity;
-import com.yljv.alarmapp.parse.database.AlarmInstance;
+import java.util.ArrayList;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.os.Vibrator;
 
-public class AlarmBroadcastReceiver extends BroadcastReceiver {
+import com.yljv.alarmapp.WakeUpActivity;
+import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
+
+public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		MyAlarmManager.getMyAlarmsFromDatabase();
+		
+		
+
+		int id = intent.getExtras().getInt(AlarmInstance.COLUMN_ID);
+		AlarmInstance alarm = MyAlarmManager.findAlarmInstanceById(id);
+		
+		String message = alarm.getMessage();
+		
+		
 		//TODO add alarm to WakeUpActivity to display time and pic/msg if exists
 		Intent i = new Intent(context, WakeUpActivity.class);
-		int id = intent.getExtras().getInt(AlarmInstance.COLUMN_ID);
 		i.putExtra(AlarmInstance.COLUMN_ID, id);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);
@@ -34,5 +47,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 		 * get music
 		 * set new alarm if repeating
 		 */
+		 Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+		    vibrator.vibrate(2000);
+		    
 	}
 }

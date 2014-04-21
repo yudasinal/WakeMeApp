@@ -36,6 +36,9 @@ public class SplashActivity extends Activity {
 		
 
 		MyAlarmManager.setContext(this);
+		MyAlarmManager.getClockAdapter(this);
+		MyAlarmManager.getPartnerClockAdapter(this);
+		
 		// getAlarms from Database
 		if (ParseUser.getCurrentUser() != null) {
 			MyAlarmManager.getPartnerAlarmsFromDatabase();

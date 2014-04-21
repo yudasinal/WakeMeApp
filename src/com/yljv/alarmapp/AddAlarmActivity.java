@@ -1,5 +1,6 @@
 package com.yljv.alarmapp;
 
+import java.net.URI;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -159,6 +160,7 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 		
 		alarm.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
 		alarm.setName(nameAlarm);
+		alarm.setMusicString(chosenRingtone);
 		for(int i = 0; i < 7; i++){
 			if(scheduled[i]){
 				alarm.setRepeat(i, true);
@@ -182,7 +184,7 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 	          Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
 	          if (uri != null) {
-	              this.chosenRingtone = uri.toString();
+	              this.chosenRingtone = uri.getPath();
 	              Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
 	              ringtoneButton.setText(ringtone.getTitle(this));
 	          }

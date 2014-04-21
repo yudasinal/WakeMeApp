@@ -21,8 +21,8 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 	int red = Color.parseColor("#ff0404");
 	
 	
-	public ClockAdapter(Context context) {
-		super(context, R.layout.alarm_item, new ArrayList<Alarm>());
+	public ClockAdapter(Context context, ArrayList<Alarm> list) {
+		super(context, R.layout.alarm_item, list);
 		this.addAll(MyAlarmManager.getMyAlarms());
 	}
 
@@ -30,7 +30,6 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View rowView = convertView;
 		ViewHolder holder;
-		ArrayList<Alarm> myAlarms;
 		final Alarm myAlarm;
 		final ImageView setAlarm;
 		
@@ -49,13 +48,10 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 			holder.weekdays[4] = (TextView) rowView.findViewById(R.id.fri);
 			holder.weekdays[5] = (TextView) rowView.findViewById(R.id.sat);
 			holder.weekdays[6] = (TextView) rowView.findViewById(R.id.sun);
-			myAlarms = MyAlarmManager.getMyAlarms();
-			Collections.sort(myAlarms);
 			rowView.setTag(holder);
 			setAlarm = (ImageView) rowView.findViewById(R.id.set_alarm);
-			if (myAlarms != null) {
 				ViewHolder myHolder = (ViewHolder)rowView.getTag();
-				myAlarm = myAlarms.get(position);
+				myAlarm = this.getItem(position);
 				String text = myAlarm.getName();
 				String time = myAlarm.getTimeAsString();
 				String morningEvening = myAlarm.getMorningEveningAsString();
@@ -89,11 +85,6 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 	
 				});
 			}
-		}
-		else {
-			holder = (ViewHolder) rowView.getTag();
-		}
-
 		return rowView;
 	}
 	

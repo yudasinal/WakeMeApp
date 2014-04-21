@@ -28,8 +28,8 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 		private Context context;
 		
 		
-		public PartnerClockAdapter(Context context) {
-			super(context, R.layout.partner_alarm_item, new ArrayList<AlarmInstance>());
+		public PartnerClockAdapter(Context context, ArrayList<AlarmInstance> list) {
+			super(context, R.layout.partner_alarm_item, list);
 			this.addAll(MyAlarmManager.getPartnerAlarms());
 		}
 
@@ -53,6 +53,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 				holder.monthView = (TextView) rowView.findViewById(R.id.partner_month);
 				holder.yearView = (TextView) rowView.findViewById(R.id.partner_year);
 				holder.progress = (ProgressBar) rowView.findViewById(R.id.progress);
+				holder.picture = (ImageView) rowView.findViewById(R.id.set_picture);
 				holder.progress.setVisibility(View.GONE);
 				
 				

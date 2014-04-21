@@ -9,10 +9,8 @@ import android.net.Uri;
 
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")
@@ -204,11 +202,6 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 			values.put(Alarm.COLUMN_ACTIVATED, 0);
 			put(Alarm.COLUMN_ACTIVATED, 0);
 		}
-		try {
-			this.save();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		MyAlarmManager.updateAlarm(this);
 	}
 
@@ -222,9 +215,12 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		put(Alarm.COLUMN_MSG, msg);
 	}
 
-	public void setMusicURI(Uri uri) {
-		values.put(Alarm.COLUMN_MUSIC_URI, uri.getPath());
-		put(Alarm.COLUMN_MUSIC_URI, uri.getPath());
+	public void setMusicString(String path) {
+		if(path!=null){
+
+			values.put(Alarm.COLUMN_MUSIC_URI, path);
+			put(Alarm.COLUMN_MUSIC_URI, path);
+		}
 	}
 
 	public void setMusicVolume(int volume) {

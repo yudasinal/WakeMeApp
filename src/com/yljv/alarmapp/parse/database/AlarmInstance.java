@@ -23,6 +23,8 @@ public class AlarmInstance extends ParseObject{
 	public final static String COLUMN_MSG = "msg";
 	public final static String COLUMN_PICTURE = "picture";
 	public final static String COLUMN_USER = "user";
+	public final static String COLUMN_MUSIC = "music";
+	public final static String COLUMN_VISIBLE = "visible";
 	public final static String PARTNER_TABLE_NAME = "partner_alarm_entry";
 	public final static String MY_ALARMINSTANCE_TABLE_NAME="my_alarm_instance_entry";
 	public final static String  COLUMN_OBJECT_ID = "object_id";
@@ -47,8 +49,8 @@ public class AlarmInstance extends ParseObject{
 	}
 	
 	public GregorianCalendar getTimeAsCalendar(){
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(this.getLong(AlarmInstance.COLUMN_TIME));
+		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+		cal.setTimeInMillis(this.values.getAsLong(AlarmInstance.COLUMN_TIME));
 		return cal;
 	}
 	
@@ -137,5 +139,23 @@ public class AlarmInstance extends ParseObject{
 	
 	public boolean isPictureSent(){
 		return sent;
+	}
+	
+	public String getMessage(){
+		return values.getAsString(COLUMN_MSG);
+	}
+	
+	public void setMusicPath(String path){
+		values.put(COLUMN_MUSIC, path);
+		put(COLUMN_MUSIC, path);
+	}
+	
+	public void setVisibility(boolean visible){
+		values.put(COLUMN_VISIBLE, visible);
+		put(COLUMN_VISIBLE, visible);
+	}
+	
+	public boolean isVisible(){
+		return values.getAsBoolean(COLUMN_VISIBLE);
 	}
 }

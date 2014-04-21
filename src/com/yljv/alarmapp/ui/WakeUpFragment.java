@@ -1,7 +1,10 @@
 package com.yljv.alarmapp.ui;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +13,19 @@ import android.widget.TextView;
 
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
+import com.parse.ParseFile;
 import com.yljv.alarmapp.ChoiceActivity;
-import com.yljv.alarmapp.MenuMainActivity;
 //import com.fima.glowpadview.GlowPadView;
 //import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.WakeUpActivity;
+import com.yljv.alarmapp.parse.database.Alarm;
 /*
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
  */
+import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
@@ -38,6 +44,15 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		myTime = (TextView) view.findViewById(R.id.my_time);
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
 
+		
+		Bundle bundle = this.getArguments();
+		int id = bundle.getInt(AlarmInstance.COLUMN_ID);
+		
+		AlarmInstance alarmInstance = MyAlarmManager.findAlarmInstanceById(id);
+		Alarm alarm = MyAlarmManager.findAlarmById(id/10*10);
+		ParseFile pic = alarmInstance.getParseFile(AlarmInstance.COLUMN_PICTURE);
+		String musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		
 		mGlowPadView.setOnTriggerListener(this);
 		
 		// uncomment this to make sure the glowpad doesn't vibrate on touch
@@ -45,6 +60,11 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
+		
+		MediaPlayer mpintro;
+		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
+		mpintro.setLooping(true);
+		        mpintro.start();
 		return view;
 	}
 

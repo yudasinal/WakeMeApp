@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlarmManager;
@@ -31,9 +32,11 @@ import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.yljv.alarmapp.helper.AccountManager;
-import com.yljv.alarmapp.helper.AlarmBroadcastReceiver;
+import com.yljv.alarmapp.helper.AlarmReceiver;
 import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.helper.DBHelper;
+import com.yljv.alarmapp.helper.PartnerClockAdapter;
 
 /*
  * THIS IS THE RIGHT ALARM MANAGER
@@ -57,6 +60,33 @@ public class MyAlarmManager {
 	private static DBHelper dbHelper;
 	private static SQLiteDatabase db;
 
+	private static PartnerClockAdapter pcAdapter;
+	private static ClockAdapter adapter;
+
+	public static PartnerClockAdapter getPartnerClockAdapter(Context context) {
+		if (pcAdapter == null) {
+			pcAdapter = new PartnerClockAdapter(context, partnerAlarms);
+		}
+		return pcAdapter;
+	}
+
+	public static ClockAdapter getClockAdapter(Context context) {
+		if (adapter == null) {
+			adapter = new ClockAdapter(context, myAlarms);
+		}
+		return adapter;
+	}
+
+	public static AlarmInstance findAlarmInstanceById(int id) {
+		ArrayList<AlarmInstance> alarms = MyAlarmManager.getPartnerAlarms();
+		for (AlarmInstance alarm : alarms) {
+			if (alarm.getInt(AlarmInstance.COLUMN_ID) == id) {
+				return alarm;
+			}
+		}
+		return null;
+	}
+
 	public static void cancelAllAlarms() {
 		for (PendingIntent intent : pendingIntents.values()) {
 			AlarmManager alarmMgr = (AlarmManager) context
@@ -73,19 +103,17 @@ public class MyAlarmManager {
 
 		AlarmManager alarmMgr = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
-		ComponentName receiver = new ComponentName(context,
-				AlarmBroadcastReceiver.class);
+		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
 		PackageManager pm = context.getPackageManager();
 		pm.setComponentEnabledSetting(receiver,
 				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
 				PackageManager.DONT_KILL_APP);
 
-		GregorianCalendar now = new GregorianCalendar();
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
+				.getInstance();
 		GregorianCalendar cn = null;
 
-		int min = alarm.getMinute();
-		int hour = alarm.getHourOfDay();
-		cn = new GregorianCalendar();
+		cn = (GregorianCalendar) GregorianCalendar.getInstance();
 		cn.set(Calendar.MINUTE, alarm.getMinute());
 		cn.set(Calendar.HOUR_OF_DAY, alarm.getHourOfDay());
 		cn.set(Calendar.DAY_OF_WEEK, day);
@@ -95,23 +123,44 @@ public class MyAlarmManager {
 		if (cn.getTimeInMillis() < now.getTimeInMillis()) {
 			cn.set(Calendar.YEAR, now.get(Calendar.YEAR) + 1);
 		}
-		Log.i("WakMeApp", cn.toString());
 
 		AlarmInstance ai = new AlarmInstance();
 		ai.initialize();
 		ai.setID(alarm.getAlarmId() + day);
 		ai.setName(alarm.getName());
 		ai.setTime(cn);
+		ai.setMusicPath(alarm.getMusicURIPath());
 		ai.setUser();
+		ai.setVisibility(alarm.isVisible());
 
-		if (alarm.isVisible()) {
-			ai.saveInBackground();
+		try {
+			ai.save();
+
+			if (ai.isVisible()) {
+				ParsePush push = new ParsePush();
+				push.setChannel(AccountManager.getSendingChannel());
+
+				JSONObject json = new JSONObject(
+
+				"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": "
+						+ "\"" + ai.getObjectId() + "\", " + "\"category\": "
+						+ "\"update\"" + "}");
+
+				push.setData(json);
+				push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
+				push.sendInBackground();
+			}
+
+		} catch (ParseException e) {
+
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 
 		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
 				null, ai.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
-		Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+		Intent intent = new Intent(context, AlarmReceiver.class);
 		intent.putExtra(AlarmInstance.COLUMN_ID, ai.getID());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
 				ai.getID(), intent, 0);
@@ -119,7 +168,6 @@ public class MyAlarmManager {
 		pendingIntents.put(ai.getID(), alarmIntent);
 
 		return cn.getTimeInMillis();
-
 	}
 
 	public static void addPictureOrMessageToPartnerAlarm(
@@ -128,7 +176,7 @@ public class MyAlarmManager {
 		if (message != null) {
 			alarm.put(AlarmInstance.COLUMN_MSG, message);
 		}
-		
+
 		if (picturePath != null) {
 			alarm.getValues().put(AlarmInstance.COLUMN_PICTURE, picturePath);
 			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
@@ -170,8 +218,10 @@ public class MyAlarmManager {
 											JSONObject json = new JSONObject(
 
 											"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-													+ "\"id\": "
-													+ alarm.getObjectId() + "}");
+													+ "\"id\": " + "\""
+													+ alarm.getObjectId()
+													+ "\", " + "\"category\": "
+													+ "\"picture\"" + "}");
 
 											push.setData(json);
 											push.setExpirationTime(alarm
@@ -195,27 +245,25 @@ public class MyAlarmManager {
 				}
 
 			});
-		}else if(message!=null){
-			alarm.saveInBackground(new SaveCallback(){
+		} else if (message != null) {
+			alarm.saveInBackground(new SaveCallback() {
 				@Override
-				public void done(ParseException e){
-					db.insertWithOnConflict(
-							AlarmInstance.PARTNER_TABLE_NAME,
+				public void done(ParseException e) {
+					db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME,
 							null, alarm.getValues(),
 							SQLiteDatabase.CONFLICT_REPLACE);
 					ParsePush push = new ParsePush();
-					push.setChannel(AccountManager
-							.getSendingChannel());
+					push.setChannel(AccountManager.getSendingChannel());
 					try {
 						JSONObject json = new JSONObject(
 
 						"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-								+ "\"id\": "
-								+ alarm.getObjectId() + "}");
+								+ "\"id\": " + "\"" + alarm.getObjectId()
+								+ "\", " + "\"category\": " + "\"picture\""
+								+ "}");
 
 						push.setData(json);
-						push.setExpirationTime(alarm
-								.getTimeAsCalendar()
+						push.setExpirationTime(alarm.getTimeAsCalendar()
 								.getTimeInMillis());
 						push.sendInBackground();
 					} catch (Exception pe) {
@@ -246,8 +294,8 @@ public class MyAlarmManager {
 				.getSystemService(Context.ALARM_SERVICE);
 		int alarmID = alarm.getAlarmId();
 		for (int i = 0; i < 7; i++) {
-			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, AlarmInstance.COLUMN_ID + "=" + alarmID + i,
-					null);
+			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+					AlarmInstance.COLUMN_ID + "=" + alarmID + i, null);
 			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
 			if (p != null)
 				alarmMgr.cancel(p);
@@ -266,6 +314,21 @@ public class MyAlarmManager {
 				if (e == null) {
 					for (AlarmInstance ai : list) {
 						ai.deleteEventually();
+						try {
+							JSONObject json = new JSONObject(
+
+							"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+									+ "\"id\": " + "\"" + ai.getObjectId()
+									+ "\", " + "\"category\": " + "\"delete\""
+									+ "}");
+
+							ParsePush push = new ParsePush();
+							push.setChannel(AccountManager.getSendingChannel());
+							push.setData(json);
+							push.sendInBackground();
+						} catch (Exception pe) {
+							pe.printStackTrace();
+						}
 					}
 				} else {
 					e.printStackTrace();
@@ -273,8 +336,23 @@ public class MyAlarmManager {
 			}
 		});
 
-		alarm.deleteEventually();
+		alarm.deleteInBackground(new DeleteCallback() {
+			@Override
+			public void done(ParseException e) {
 
+			}
+		});
+
+	}
+
+	public static void onPartnerAlarmInstanceDeleted(AlarmInstance alarm) {
+
+		int alarmID = alarm.getID();
+		db.delete(AlarmInstance.PARTNER_TABLE_NAME, AlarmInstance.COLUMN_ID
+				+ "=" + alarmID, null);
+
+		partnerAlarms.remove(alarm);
+		pcAdapter.notifyDataSetChanged();
 	}
 
 	public static Alarm findAlarmById(int id) {
@@ -299,6 +377,41 @@ public class MyAlarmManager {
 		return partnerAlarms;
 	}
 
+	public static void setAlarmInstancesAutomatically() {
+
+		AlarmManager alarmMgr = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
+		PackageManager pm = context.getPackageManager();
+		pm.setComponentEnabledSetting(receiver,
+				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+				PackageManager.DONT_KILL_APP);
+
+		String[] projection = { AlarmInstance.COLUMN_TIME,
+				AlarmInstance.COLUMN_ID };
+
+		Cursor c = db.query(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+				projection, null, null, null, null, null);
+		c.moveToFirst();
+		int size = c.getCount();
+
+		for (int i = 0; i < size; i++) {
+			long time = c.getLong(c
+					.getColumnIndexOrThrow(AlarmInstance.COLUMN_TIME));
+			int id = c.getInt(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_ID));
+
+			Intent intent = new Intent(context, AlarmReceiver.class);
+			intent.putExtra(AlarmInstance.COLUMN_ID, id);
+			PendingIntent alarmIntent = PendingIntent.getBroadcast(context, id,
+					intent, 0);
+			alarmMgr.set(AlarmManager.RTC_WAKEUP, time, alarmIntent);
+			pendingIntents.put(id, alarmIntent);
+
+			c.move(1);
+		}
+		c.close();
+	}
+
 	public static void getPartnerAlarmsFromDatabase() {
 
 		partnerAlarms.clear();
@@ -306,7 +419,8 @@ public class MyAlarmManager {
 		String[] projection = { AlarmInstance.COLUMN_NAME,
 				AlarmInstance.COLUMN_ID, AlarmInstance.COLUMN_TIME,
 				AlarmInstance.COLUMN_MSG, AlarmInstance.COLUMN_PICTURE,
-				AlarmInstance.COLUMN_OBJECT_ID };
+				AlarmInstance.COLUMN_OBJECT_ID, AlarmInstance.COLUMN_VISIBLE,
+				AlarmInstance.COLUMN_MUSIC };
 
 		String sortOrder = AlarmInstance.COLUMN_TIME;
 
@@ -333,13 +447,21 @@ public class MyAlarmManager {
 					.getColumnIndexOrThrow(AlarmInstance.COLUMN_PICTURE)));
 			cv.put(AlarmInstance.COLUMN_NAME, c.getString(c
 					.getColumnIndexOrThrow(AlarmInstance.COLUMN_NAME)));
+			cv.put(AlarmInstance.COLUMN_MUSIC,
+					c.getString(c.getColumnIndex(AlarmInstance.COLUMN_MUSIC)));
+			cv.put(AlarmInstance.COLUMN_VISIBLE,
+					c.getInt(c.getColumnIndex(AlarmInstance.COLUMN_VISIBLE)) != 0);
 
 			a.setValues(cv);
 
-			partnerAlarms.add(a);
+			if (MyAlarmManager.findPartnerAlarmByObjectId(a.getObjectId()) == null) {
+				partnerAlarms.add(a);
+			}
 			c.move(1);
 		}
 		c.close();
+
+		pcAdapter.notifyDataSetChanged();
 	}
 
 	public static void getPartnerAlarmsFromServer(
@@ -366,27 +488,33 @@ public class MyAlarmManager {
 	}
 
 	private static void putPartnerAlarmsToDB(List<AlarmInstance> list) {
-		// db.delete(AlarmInstance.TABLE_NAME, null, null);
 
 		for (AlarmInstance ai : list) {
-			ContentValues cv = new ContentValues();
-			cv.put(AlarmInstance.COLUMN_OBJECT_ID, ai.getObjectId());
-			cv.put(AlarmInstance.COLUMN_ID, ai.getInt(AlarmInstance.COLUMN_ID));
-			cv.put(AlarmInstance.COLUMN_MSG,
-					ai.getString(AlarmInstance.COLUMN_MSG));
-			cv.put(AlarmInstance.COLUMN_NAME,
-					ai.getString(AlarmInstance.COLUMN_NAME));
-			cv.put(AlarmInstance.COLUMN_PICTURE,
-					ai.getString(AlarmInstance.COLUMN_PICTURE));
-			cv.put(AlarmInstance.COLUMN_TIME,
-					ai.getLong(AlarmInstance.COLUMN_TIME));
+			if (ai.isVisible()) {
 
-			ai.setValues(cv);
-			db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME, null, cv,
-					SQLiteDatabase.CONFLICT_REPLACE);
-			partnerAlarms.add(ai);
-			// db.insert(AlarmInstance.TABLE_NAME, "null", cv);
+				ContentValues cv = new ContentValues();
+				cv.put(AlarmInstance.COLUMN_OBJECT_ID, ai.getObjectId());
+				cv.put(AlarmInstance.COLUMN_ID,
+						ai.getInt(AlarmInstance.COLUMN_ID));
+				cv.put(AlarmInstance.COLUMN_MSG,
+						ai.getString(AlarmInstance.COLUMN_MSG));
+				cv.put(AlarmInstance.COLUMN_NAME,
+						ai.getString(AlarmInstance.COLUMN_NAME));
+				cv.put(AlarmInstance.COLUMN_PICTURE,
+						ai.getString(AlarmInstance.COLUMN_PICTURE));
+				cv.put(AlarmInstance.COLUMN_TIME,
+						ai.getLong(AlarmInstance.COLUMN_TIME));
+
+				ai.setValues(cv);
+				db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME, null,
+						cv, SQLiteDatabase.CONFLICT_REPLACE);
+
+				if (MyAlarmManager.findPartnerAlarmByObjectId(ai.getObjectId()) == null) {
+					partnerAlarms.add(ai);
+				}
+			}
 		}
+		pcAdapter.notifyDataSetChanged();
 
 	}
 
@@ -422,25 +550,26 @@ public class MyAlarmManager {
 			alarm.setValues(cv);
 			long success = db.insertWithOnConflict(Alarm.TABLE_NAME, null, cv,
 					SQLiteDatabase.CONFLICT_REPLACE);
-			
+
 			String[] projection = { Alarm.COLUMN_NAME, Alarm.COLUMN_ID,
 					Alarm.COLUMN_TIME, Alarm.COLUMN_ACTIVATED,
 					Alarm.COLUMN_WEEKDAYS, Alarm.COLUMN_VISIBILITY,
-					Alarm.COLUMN_MUSIC_URI, Alarm.COLUMN_VOLUME, Alarm.COLUMN_MSG,
-					Alarm.COLUMN_PICTURE, Alarm.COLUMN_OBJECT_ID };
+					Alarm.COLUMN_MUSIC_URI, Alarm.COLUMN_VOLUME,
+					Alarm.COLUMN_MSG, Alarm.COLUMN_PICTURE,
+					Alarm.COLUMN_OBJECT_ID };
 
 			String sortOrder = Alarm.COLUMN_TIME;
-			
-			
-			//Check how many 
-			Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null,
-					null, null, sortOrder);
+
+			// Check how many
+			Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null, null,
+					null, sortOrder);
 			c.moveToFirst();
 			int size = c.getCount();
 			Log.i("MyAlarm", Integer.toString(size));
 			c.close();
 			myAlarms.add(alarm);
 		}
+		adapter.notifyDataSetChanged();
 	}
 
 	public static ArrayList<Alarm> getMyAlarms() {
@@ -456,8 +585,8 @@ public class MyAlarmManager {
 
 		String sortOrder = Alarm.COLUMN_TIME;
 		// TODO do order!!!
-		Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null, null, null,
-				sortOrder);
+		Cursor c = db.query(Alarm.TABLE_NAME, projection, null, null, null,
+				null, sortOrder);
 		c.moveToFirst();
 		int size = c.getCount();
 		Alarm a;
@@ -494,6 +623,7 @@ public class MyAlarmManager {
 			c.move(1);
 		}
 		c.close();
+		adapter.notifyDataSetChanged();
 
 	}
 
@@ -514,7 +644,7 @@ public class MyAlarmManager {
 				}
 			}
 		});
-		
+
 		ParseQuery<AlarmInstance> query2 = ParseQuery.getQuery("AlarmInstance");
 		query2.whereEqualTo(Alarm.COLUMN_USER,
 				ApplicationSettings.getUserEmail());
@@ -530,35 +660,38 @@ public class MyAlarmManager {
 		});
 	}
 
-	public static void setMyAlarmsOnDevice(List<AlarmInstance> list){
-		
-		for(AlarmInstance alarm : list){
+	public static void setMyAlarmsOnDevice(List<AlarmInstance> list) {
+
+		for (AlarmInstance alarm : list) {
 			AlarmManager alarmMgr = (AlarmManager) context
 					.getSystemService(Context.ALARM_SERVICE);
 			ComponentName receiver = new ComponentName(context,
-					AlarmBroadcastReceiver.class);
+					AlarmReceiver.class);
 			PackageManager pm = context.getPackageManager();
 			pm.setComponentEnabledSetting(receiver,
 					PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
 					PackageManager.DONT_KILL_APP);
 
-			GregorianCalendar now = new GregorianCalendar();
-			GregorianCalendar cn = new GregorianCalendar();
+			GregorianCalendar now = (GregorianCalendar) GregorianCalendar
+					.getInstance();
+			GregorianCalendar cn = (GregorianCalendar) GregorianCalendar
+					.getInstance();
 			cn.setTimeInMillis(alarm.getTimeInMillis());
 
 			if (cn.getTimeInMillis() < now.getTimeInMillis()) {
-				alarm.deleteInBackground(new DeleteCallback(){
+				alarm.deleteInBackground(new DeleteCallback() {
 
 					@Override
 					public void done(ParseException e) {
 						Log.i("WakeMeApp", "deleted");
 					}
 				});
-			}else{
-				
+			} else {
+
 				ContentValues cv = new ContentValues();
 				cv.put(AlarmInstance.COLUMN_OBJECT_ID, alarm.getObjectId());
-				cv.put(AlarmInstance.COLUMN_ID, alarm.getInt(AlarmInstance.COLUMN_ID));
+				cv.put(AlarmInstance.COLUMN_ID,
+						alarm.getInt(AlarmInstance.COLUMN_ID));
 				cv.put(AlarmInstance.COLUMN_MSG,
 						alarm.getString(AlarmInstance.COLUMN_MSG));
 				cv.put(AlarmInstance.COLUMN_NAME,
@@ -567,22 +700,23 @@ public class MyAlarmManager {
 						alarm.getLong(AlarmInstance.COLUMN_TIME));
 
 				alarm.setValues(cv);
-				
-				db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-						null, alarm.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
-				Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+				db.insertWithOnConflict(
+						AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, null,
+						alarm.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
+
+				Intent intent = new Intent(context, AlarmReceiver.class);
 				intent.putExtra("id", alarm.getID());
 				PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
 						alarm.getID(), intent, 0);
-				alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(), alarmIntent);
+				alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(),
+						alarmIntent);
 				pendingIntents.put(alarm.getID(), alarmIntent);
 			}
 		}
-		
+
 	}
-	
-	
+
 	public static Context getContext() {
 		return context;
 	}
@@ -607,11 +741,12 @@ public class MyAlarmManager {
 	 * TODO dont sent notifications?
 	 */
 	public static void editAlarm(Context context, Alarm alarm) {
-		
-		GregorianCalendar now = new GregorianCalendar();
-		
+
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
+				.getInstance();
+
 		MyAlarmManager.deleteAlarmInstances(alarm);
-		alarm.saveInBackground(new SaveCallback(){
+		alarm.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
 				Log.i("WakeMeApp", "edited alarm saved");
@@ -644,24 +779,23 @@ public class MyAlarmManager {
 			push.setExpirationTime(timeMillis);
 			push.sendInBackground();
 		}
-		
+
 	}
 
-	private static void deleteAlarmInstances(Alarm alarm){
+	private static void deleteAlarmInstances(Alarm alarm) {
 		AlarmManager alarmMgr = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
-		ComponentName receiver = new ComponentName(context,
-				AlarmBroadcastReceiver.class);
+		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
 		PackageManager pm = context.getPackageManager();
 		pm.setComponentEnabledSetting(receiver,
 				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
 				PackageManager.DONT_KILL_APP);
-		
+
 		int alarmID = alarm.getAlarmId();
-		
+
 		for (int i = 0; i < 7; i++) {
-			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, AlarmInstance.COLUMN_ID + "=" + alarmID + i,
-					null);
+			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+					AlarmInstance.COLUMN_ID + "=" + alarmID + i, null);
 			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
 			if (p != null)
 				alarmMgr.cancel(p);
@@ -670,10 +804,8 @@ public class MyAlarmManager {
 
 		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 		String email = ApplicationSettings.getUserEmail();
-		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
-				alarmID);
-		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
-				alarmID + 9);
+		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmID);
+		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmID + 9);
 		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
 		query.findInBackground(new FindCallback<AlarmInstance>() {
 			public void done(List<AlarmInstance> list, ParseException e) {
@@ -687,9 +819,11 @@ public class MyAlarmManager {
 			}
 		});
 	}
+
 	public static void setNewAlarm(Context context, Alarm alarm) {
 
-		GregorianCalendar now = new GregorianCalendar();
+		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
+				.getInstance();
 		long timeMillis = now.getTimeInMillis();
 
 		boolean[] weekdaysR = alarm.getWeekdaysRepeated();
@@ -724,17 +858,23 @@ public class MyAlarmManager {
 		// TODO make sure that really saved in background -> check
 
 		alarm.saveInBackground();
+		adapter.notifyDataSetChanged();
 	}
 
-	public static void updateAlarmInstance(AlarmInstance alarm) {
+	public static void updatePartnerAlarmInstance(AlarmInstance alarm) {
+		List<AlarmInstance> list = new ArrayList<AlarmInstance>();
+		list.add(alarm);
+		MyAlarmManager.putPartnerAlarmsToDB(list);
+	}
+
+	public static void updateMyAlarmInstance(AlarmInstance alarm) {
 		ContentValues cv = new ContentValues();
 
 		ParseFile pic = alarm.getParseFile(AlarmInstance.COLUMN_PICTURE);
-		
-		
+
 		byte[] bytes;
-		
-		if(pic!=null){
+
+		if (pic != null) {
 			try {
 				bytes = pic.getData();
 				cv.put(AlarmInstance.COLUMN_PICTURE, bytes);
@@ -746,9 +886,9 @@ public class MyAlarmManager {
 
 		cv.put(AlarmInstance.COLUMN_OBJECT_ID, alarm.getObjectId());
 		cv.put(AlarmInstance.COLUMN_ID, alarm.getInt(AlarmInstance.COLUMN_ID));
-		
+
 		String msg = alarm.getString(AlarmInstance.COLUMN_NAME);
-		if(msg!=null){
+		if (msg != null) {
 			cv.put(AlarmInstance.COLUMN_MSG,
 					alarm.getString(AlarmInstance.COLUMN_MSG));
 		}
@@ -758,14 +898,91 @@ public class MyAlarmManager {
 				alarm.getLong(AlarmInstance.COLUMN_TIME));
 
 		alarm.setValues(cv);
-		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+				null, cv, SQLiteDatabase.CONFLICT_REPLACE);
 	}
-	
-	public static void updateAlarm(Alarm alarm){
-		ContentValues cv = alarm.getValues();
+
+	private static void makeAlarmInstanceVisible(AlarmInstance ai) {
+		ParsePush push = new ParsePush();
+		push.setChannel(AccountManager.getSendingChannel());
+		try {
+			JSONObject json = new JSONObject(
+
+			"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": " + "\""
+					+ ai.getObjectId() + "\", " + "\"category\": "
+					+ "\"update\"" + "}");
+
+			push.setData(json);
+			push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
+			push.sendInBackground();
+		} catch (Exception pe) {
+			pe.printStackTrace();
+		}
+	}
+
+	private static void makeAlarmInstanceInvisible(AlarmInstance ai) {
+		ParsePush push = new ParsePush();
+		push.setChannel(AccountManager.getSendingChannel());
+		try {
+			JSONObject json = new JSONObject(
+
+			"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": " + "\""
+					+ ai.getObjectId() + "\", " + "\"category\": "
+					+ "\"delete\"" + "}");
+
+			push.setData(json);
+			push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
+			push.sendInBackground();
+		} catch (Exception pe) {
+			pe.printStackTrace();
+		}
+	}
+
+	public static void makeAlarmVisible(Alarm alarm) {
+
+		alarm.setVisible(true);
+		alarm.saveEventually();
 		
+		final boolean visible = alarm.isVisible();
+
+		ContentValues cv = alarm.getValues();
+
 		db.update(Alarm.TABLE_NAME, cv,
-				Alarm.COLUMN_ID + "=" + alarm.getAlarmId(),
-				null);
+				Alarm.COLUMN_ID + "=" + alarm.getAlarmId(), null);
+
+		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+		String email = ApplicationSettings.getUserEmail();
+		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
+				alarm.getAlarmId());
+		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
+				alarm.getAlarmId() + 9);
+		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
+		query.findInBackground(new FindCallback<AlarmInstance>() {
+			@Override
+			public void done(List<AlarmInstance> list, ParseException e) {
+				if(e==null){
+					for(AlarmInstance ai : list){
+						if(visible){
+							MyAlarmManager.makeAlarmInstanceVisible(ai);
+						}else{
+							MyAlarmManager.makeAlarmInstanceInvisible(ai);
+						}
+					}
+				}else{
+					
+				}
+			}
+		});
+
+	}
+
+	public static void updateAlarm(final Alarm alarm) {
+		ContentValues cv = alarm.getValues();
+
+		db.update(Alarm.TABLE_NAME, cv,
+				Alarm.COLUMN_ID + "=" + alarm.getAlarmId(), null);
+
+		alarm.saveInBackground();
+
 	}
 }

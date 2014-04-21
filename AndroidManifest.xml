@@ -36,7 +36,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyTheme" >
         <receiver
-            android:name="com.yljv.alarmapp.helper.AlarmBroadcastReceiver"
+            android:name="com.yljv.alarmapp.helper.BootBroadcastReceiver"
             android:enabled="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" >
@@ -44,6 +44,9 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name="com.yljv.alarmapp.helper.AlarmReceiver">
+        </receiver>
         <activity
             android:name="com.yljv.alarmapp.MainActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -143,10 +146,17 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.yljv.alarmapp.helper.PictureReceiver"
+            android:name="com.yljv.alarmapp.helper.UpdateReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.yljv.alarmapp.UPDATE_ALARM" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.yljv.alarmapp.helper.PartnerReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.yljv.alarmapp.PARTNER_REQUEST" />
             </intent-filter>
         </receiver>
         <receiver

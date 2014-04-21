@@ -89,31 +89,6 @@
 	    	android:layout_height="0.5dp"
 	    	android:background="#3f2860"/>
 	    
-	    <TableRow
-	        android:id="@+id/row13"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="@drawable/background_table_row">
-	        <RelativeLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content" >
-			    <TextView
-			        android:id="@+id/add_partner"
-			        android:paddingTop="15dp"
-			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:text="Add an alarm buddy"
-			        android:textSize="18sp"/>
-			    
-			    <TextView
-			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:textSize="14sp"
-			        android:layout_below="@id/add_partner"/>
-	    	</RelativeLayout>
-	        
-	    </TableRow>
-	    
 	    <View
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="0.5dp"
@@ -195,7 +170,7 @@
 		        android:layout_height="wrap_content">
 			    
 		        <TextView 
-		            android:id="@+id/independent"
+		            android:id="@+id/partner_action"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:text="Become Independent :)"
@@ -203,12 +178,12 @@
 		            android:paddingTop="5dp"/>
 		        
 		        <TextView
-				        android:id="@+id/unlink"
+				        android:id="@+id/partner_action_subtitle"
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
 				        android:text="Unlink"
 				        android:textSize="16sp"
-				        android:layout_below="@id/independent"/>
+				        android:layout_below="@id/partner_action"/>
 		        </RelativeLayout>
 		        
 	    </TableRow>

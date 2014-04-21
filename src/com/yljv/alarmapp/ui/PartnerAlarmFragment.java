@@ -17,6 +17,7 @@ import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class PartnerAlarmFragment extends Fragment {
 
@@ -30,7 +31,7 @@ public class PartnerAlarmFragment extends Fragment {
 		View view = inflater.inflate(R.layout.partner_clock_layout, container, false);
 		listView = (ListView) view.findViewById(R.id.partner_clock_list);
 		getActivity().getActionBar().setTitle("Partner Alarms");
-		listView.setAdapter(new PartnerClockAdapter(this.getActivity()));
+		listView.setAdapter(MyAlarmManager.getPartnerClockAdapter(this.getActivity()));
 		listView.setEmptyView(view.findViewById(R.id.empty_list));
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			

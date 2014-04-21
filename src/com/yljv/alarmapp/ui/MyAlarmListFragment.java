@@ -1,12 +1,13 @@
 package com.yljv.alarmapp.ui;
 
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);	
 		listView = (ListView) view.findViewById(R.id.clock_list);
 
-		ClockAdapter myAdapter = new ClockAdapter(this.getActivity());
+		ClockAdapter myAdapter = MyAlarmManager.getClockAdapter(this.getActivity());
 		listView.setAdapter(myAdapter);	
 		listView.setEmptyView(view.findViewById(R.id.empty_list));
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -191,13 +192,16 @@ public class MyAlarmListFragment extends SherlockFragment {
 				    myAdapter.notifyDataSetChanged();
 				    deleteAlarm.setVisible(false);*/
 					ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
+					ArrayList<Alarm> alarms = new ArrayList<Alarm>();
 					for(int i = 0; i < getSelected().length; i++) {
 						if(selectedItems[i] == true) {
-							Alarm myAlarm = myAdapter.getItem(i); 
-							myAdapter.remove(myAlarm);
-						    MyAlarmManager.deleteAlarm(myAlarm);
-						    myAdapter.notifyDataSetChanged();
+							alarms.add(myAdapter.getItem(i)); 
 						}
+					}
+					for(Alarm alarm : alarms){
+						myAdapter.remove(alarm);
+					    MyAlarmManager.deleteAlarm(alarm);
+					    myAdapter.notifyDataSetChanged();
 					}
 					deleteAlarm.setVisible(false);
 					cancelAlarm.setVisible(false);

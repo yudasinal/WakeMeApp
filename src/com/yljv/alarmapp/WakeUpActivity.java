@@ -33,8 +33,11 @@ public class WakeUpActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			if(ApplicationSettings.hasPartner(ApplicationSettings.getUserEmail()) == true) {
 				if(isThereSomething) {
-					//TODO check if there's something uploaded to an alarm 
+					//TODO check if there's something uploaded to an alarm
+					Bundle bundle = new Bundle();
+					bundle.putInt(AlarmInstance.COLUMN_ID, id);
 					mainView = (Fragment) new WakeUpFragment();
+					mainView.setArguments(bundle);
 				}
 				else{
 					mainView = (Fragment) new WakeUpFragmentNoExtra();

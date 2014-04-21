@@ -10,7 +10,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.yljv.alarmapp.ui.MenuList;
 
-public class BaseActivity extends SlidingFragmentActivity {
+public class BaseActivity extends SlidingFragmentActivity{
 	
 	private int appTitle;
 	protected SherlockListFragment menuFragment; 

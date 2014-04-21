@@ -73,8 +73,12 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE); 
 
-		inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                   InputMethodManager.HIDE_NOT_ALWAYS);
+
+		if(inputManager!=null && getCurrentFocus()!=null){
+
+			inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+	                   InputMethodManager.HIDE_NOT_ALWAYS);
+		}
 		switch(v.getId()){
 			case  R.id.btnLogin:
 				loginBtn.setTextColor(Color.parseColor("#fa8b60"));

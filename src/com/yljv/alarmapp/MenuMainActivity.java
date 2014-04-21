@@ -22,7 +22,6 @@ public class MenuMainActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mainView");
@@ -42,10 +41,10 @@ public class MenuMainActivity extends BaseActivity {
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
 	}
-	
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override
@@ -57,16 +56,14 @@ public class MenuMainActivity extends BaseActivity {
 	public void switchContent(Fragment fragment) {
 		mainView = fragment;
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, fragment)
-				.addToBackStack(null).commit();
+				.replace(R.id.content_frame, fragment).addToBackStack(null)
+				.commit();
 		getSlidingMenu().showContent();
 		this.invalidateOptionsMenu();
 	}
-	
+
 	@Override
-	public void onBackPressed(){
-		if (getIntent().getBooleanExtra("EXIT", false)) {
-            finish();
-        }
+	public void onBackPressed() {
+		finish();
 	}
 }
