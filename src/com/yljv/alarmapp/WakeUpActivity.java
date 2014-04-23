@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.ui.WakeUpFragment;
 import com.yljv.alarmapp.ui.WakeUpFragmentNoExtra;
 
@@ -53,6 +55,8 @@ public class WakeUpActivity extends FragmentActivity {
 				.replace(R.id.content_frame, mainView).commit();
 
 
+		Alarm alarm = MyAlarmManager.findAlarmById(id/10);
+		MyAlarmManager.setNextAlarmInstance(alarm);
 
 	}
 	

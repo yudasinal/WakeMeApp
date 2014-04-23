@@ -56,10 +56,12 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		setID(ApplicationSettings.getAlarmId() * 10);
 		setMusicVolume(5);
 		setMessage("");
+		setMusicString("");
 		for (int i = 0; i < 7; i++) {
 			this.setRepeat(i, false);
 		}
-		this.setActivated(true);
+		values.put(Alarm.COLUMN_ACTIVATED, true);
+		put(Alarm.COLUMN_ACTIVATED, true);
 		this.setVisible(true);
 	}
 
@@ -180,8 +182,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public boolean isActivated() {
-		int res = (Integer) values.get(Alarm.COLUMN_ACTIVATED);
-		return (res == 1) ? true : false;
+		return values.getAsBoolean(Alarm.COLUMN_ACTIVATED);
 	}
 
 	public boolean isAM() {
@@ -195,14 +196,9 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public void setActivated(boolean activated) {
-		if (activated) {
-			values.put(Alarm.COLUMN_ACTIVATED, 1);
-			put(Alarm.COLUMN_ACTIVATED, 1);
-		} else {
-			values.put(Alarm.COLUMN_ACTIVATED, 0);
-			put(Alarm.COLUMN_ACTIVATED, 0);
-		}
-		MyAlarmManager.updateAlarm(this);
+			values.put(Alarm.COLUMN_ACTIVATED, activated);
+			put(Alarm.COLUMN_ACTIVATED, activated);
+		MyAlarmManager.activateAlarm(this);
 	}
 
 	private void setID(int id) {

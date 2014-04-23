@@ -150,6 +150,10 @@ public class AlarmInstance extends ParseObject{
 		put(COLUMN_MUSIC, path);
 	}
 	
+	public String getMusicPath(){
+		return values.getAsString(COLUMN_MUSIC);
+	}
+	
 	public void setVisibility(boolean visible){
 		values.put(COLUMN_VISIBLE, visible);
 		put(COLUMN_VISIBLE, visible);

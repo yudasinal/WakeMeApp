@@ -66,8 +66,10 @@ public class AccountManager {
 					ApplicationSettings.setUserEmail(user.getEmail());
 					ApplicationSettings.setUserName(user.getUsername());
 					ApplicationSettings.setPartnerStatus(user.getInt(User.PARTNER_STATUS_COLUMN));
-						ApplicationSettings.setPartnerEmail(user
-								.getString(User.PARTNER_COLUMN));
+					String partner = user.getString(User.PARTNER_COLUMN);
+					if(partner!=null){
+						ApplicationSettings.setPartnerEmail(partner);
+					}
 					ApplicationSettings.setAlarmId(user.getInt(User.ID_COLUMN));
 					listener.onLoginSuccessful();
 				} else {
@@ -161,17 +163,15 @@ public class AccountManager {
 	}
 
 	public static void unlink(){
-		ApplicationSettings.unlinkPartner();
 		
-		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_');
+		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
 		try {
 			JSONObject json = new JSONObject(
 
 			"{action: \"com.yljv.alarmapp.PARTNER_REQUEST\","
-					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\"" 
-					+ "\"category\":" + "\"partner\"" 
-					+ "\"partner_category\":" + "4"
+					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\", " 
+					+ "\"category\":" + "4"
 					+"}"
 					);
 
@@ -179,22 +179,28 @@ public class AccountManager {
 			push.setChannel(channel);
 			push.setData(json);
 			push.sendInBackground();
+			
+			ParsePush pushy = new ParsePush();
+			pushy.setChannel(channel);
+			pushy.setMessage("unlink");
+			pushy.sendInBackground();
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
-		
+
+		ApplicationSettings.unlinkPartner();
 	}
 	public static void acceptPartnerRequest() {
 		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN,
 				User.PARTNERED);
 		
-		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_');
+		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
 		try {
 			JSONObject json = new JSONObject(
 
 			"{action: \"com.yljv.alarmapp.PARTNER_REQUEST\","
-					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\"" 
+					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\", " 
 					+ "\"category\":" + "2" 
 					+"}"
 					);
@@ -237,14 +243,14 @@ public class AccountManager {
 					ApplicationSettings.setPartnerRequest(email);
 
 					String channel;
-					String mail = email.replace('@', '_');
+					String mail = email.replace('@', '_').replace('.', '_');
 					channel = "user_" + mail;
 					
 					try {
 						JSONObject json = new JSONObject(
 
 						"{action: \"com.yljv.alarmapp.PARTNER_REQUEST\","
-								+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\"" 
+								+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\", " 
 								+ "\"category\":" + "0" 
 								+"}"
 								);
@@ -274,13 +280,13 @@ public class AccountManager {
 				User.NO_PARTNER);
 		ParseUser.getCurrentUser().saveEventually();
 		
-		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_');
+		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
 		try {
 			JSONObject json = new JSONObject(
 
 			"{action: \"com.yljv.alarmapp.PARTNER_REQUEST\","
-					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\"" 
+					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\", " 
 					+ "\"category\":" + "1" 
 					+"}"
 					);
@@ -302,13 +308,13 @@ public class AccountManager {
 				User.NO_PARTNER);
 		ParseUser.getCurrentUser().saveEventually();
 
-		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_');
+		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
 		try {
 			JSONObject json = new JSONObject(
 
 			"{action: \"com.yljv.alarmapp.PARTNER_REQUEST\","
-					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\"" 
+					+ "\"email\": " + "\"" + ApplicationSettings.getUserEmail() + "\", " 
 					+ "\"category\":" + "3" 
 					+"}"
 					);

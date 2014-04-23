@@ -34,20 +34,24 @@ public class PartnerReceiver extends BroadcastReceiver{
 			
 			switch(cat){
 			case PARTNER_REQUEST:
-				ApplicationSettings.incomingRequest(email);
+				AccountManager.incomingPartnerRequest(email);
 				break;
 			case PARTNER_CANCEL_REQUEST:
+				AccountManager.onRequestCancelled();
 				break;
 			case PARTNER_ACCEPT_REQUEST:
+				AccountManager.onRequestAccepted();
 				break;
 			case PARTNER_DECLINE_REQUEST:
+				AccountManager.onRequestDeclined();
 				break;
 			case PARTNER_UNLINK:
+				AccountManager.onUnlinked();
 				break;
 			}
 			
 		} catch (JSONException e) {
-			
+			e.printStackTrace();
 		}
 	}
 }

@@ -45,6 +45,9 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ AlarmInstance.COLUMN_MSG
 			+ TEXT_TYPE
 			+ COMMA
+			+ AlarmInstance.COLUMN_VISIBLE 
+			+ INT_TYPE
+			+ COMMA
 			+ AlarmInstance.COLUMN_PICTURE + TEXT_TYPE + " );";
 	
 	public static final String SQL_CREATE_MY_ALARM_INSTANCES = "CREATE TABLE "
@@ -61,6 +64,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ COMMA
 			+ AlarmInstance.COLUMN_MSG
 			+ TEXT_TYPE
+			+ COMMA
+			+ AlarmInstance.COLUMN_MUSIC
+			+ TEXT_TYPE
+			+ COMMA
+			+ AlarmInstance.COLUMN_VISIBLE
+			+ INT_TYPE
 			+ COMMA
 			+ AlarmInstance.COLUMN_OBJECT_ID + TEXT_TYPE + COMMA 
 			+ AlarmInstance.COLUMN_PICTURE + TEXT_TYPE + " );";

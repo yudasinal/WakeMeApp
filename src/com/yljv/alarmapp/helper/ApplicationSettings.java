@@ -24,6 +24,7 @@ public class ApplicationSettings {
 	public static void setPartnerStatus(int status){
 		preferences.edit().putInt(PARTNER_STATUS, status).commit();
 		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, status);
+		ParseUser.getCurrentUser().saveEventually();
 	}
 	public static void cancelRequest(){
 		preferences.edit().putInt(PARTNER_STATUS, User.NO_PARTNER).commit();
@@ -87,8 +88,7 @@ public class ApplicationSettings {
 	
 	
 	public static String getPartnerEmail(){
-		//TODO 
-		return preferences.getString(PARTNER_EMAIL_KEY, "jon@gmail.com");
+		return preferences.getString(PARTNER_EMAIL_KEY, "");
 	}
 
 	public static String getPartnerName(){
@@ -98,12 +98,12 @@ public class ApplicationSettings {
 
 	public static String getUserEmail(){
 		//TODO
-		return preferences.getString(USER_EMAIL_KEY, "jane@gmail.com");
+		return preferences.getString(USER_EMAIL_KEY, "");
 	}
 	
 	public static String getUserName(){
 		//TODO
-		String res = preferences.getString(USER_NAME_KEY, "Jane");
+		String res = preferences.getString(USER_NAME_KEY, "");
 		return res;
 	}
 

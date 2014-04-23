@@ -166,6 +166,7 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 				alarm.setRepeat(i, true);
 			}
 		}
+		alarm.setVisible(true);
 		MyAlarmManager.setNewAlarm(this, alarm);
 		
 		Intent intent = new Intent(this, MenuMainActivity.class);

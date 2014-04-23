@@ -1,14 +1,16 @@
 package com.yljv.alarmapp.helper;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.yljv.alarmapp.WakeUpActivity;
-import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
@@ -18,20 +20,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 
 		MyAlarmManager.getMyAlarmsFromDatabase();
-		
-		
 
 		int id = intent.getExtras().getInt(AlarmInstance.COLUMN_ID);
-		AlarmInstance alarm = MyAlarmManager.findAlarmInstanceById(id);
-		
-		String message = alarm.getMessage();
-		
 		
 		//TODO add alarm to WakeUpActivity to display time and pic/msg if exists
-		Intent i = new Intent(context, WakeUpActivity.class);
-		i.putExtra(AlarmInstance.COLUMN_ID, id);
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(i);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
 		
 		
 		// TODO set the alarm here

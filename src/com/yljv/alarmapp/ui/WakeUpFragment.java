@@ -1,18 +1,22 @@
 package com.yljv.alarmapp.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.yljv.alarmapp.ChoiceActivity;
 //import com.fima.glowpadview.GlowPadView;
@@ -29,13 +33,13 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
-	
 	private GlowPadView mGlowPadView;
 	private TextView myTime;
 	private TextView mornEv;
-	
-	
-	
+
+	private ParseFile pic;
+	private String musicPath;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -44,27 +48,40 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		myTime = (TextView) view.findViewById(R.id.my_time);
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
 
-		
 		Bundle bundle = this.getArguments();
 		int id = bundle.getInt(AlarmInstance.COLUMN_ID);
-		
+
 		AlarmInstance alarmInstance = MyAlarmManager.findAlarmInstanceById(id);
-		Alarm alarm = MyAlarmManager.findAlarmById(id/10*10);
-		ParseFile pic = alarmInstance.getParseFile(AlarmInstance.COLUMN_PICTURE);
-		String musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
-		
+		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+
+		pic = alarmInstance.getParseFile(AlarmInstance.COLUMN_PICTURE);
+		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+
 		mGlowPadView.setOnTriggerListener(this);
-		
+
 		// uncomment this to make sure the glowpad doesn't vibrate on touch
 		// mGlowPadView.setVibrateEnabled(false);
-		
+
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
-		
+
 		MediaPlayer mpintro;
 		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
 		mpintro.setLooping(true);
-		        mpintro.start();
+		mpintro.start();
+
+		Bitmap bmp;
+		try {
+			bmp = BitmapFactory.decodeByteArray(pic.getData(), 0,
+					pic.getData().length);
+
+			MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+					bmp,
+					Long.toString(alarmInstance.getTimeInMillis()), "");
+		} catch (ParseException e) {
+			Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
+			e.printStackTrace();
+		}
 		return view;
 	}
 
@@ -85,9 +102,10 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		final int resId = mGlowPadView.getResourceIdForTarget(target);
 		switch (resId) {
 		case R.drawable.snooze_progress1:
-			//TODO snooze alarm
-			
-			Intent intent1 = new Intent(this.getActivity(), ChoiceActivity.class);
+			// TODO snooze alarm
+
+			Intent intent1 = new Intent(this.getActivity(),
+					ChoiceActivity.class);
 			startActivity(intent1);
 			break;
 
@@ -96,7 +114,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			if (getActivity() instanceof WakeUpActivity) {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
-			} 
+			}
 			break;
 		default:
 			// Code should never reach here.
@@ -115,6 +133,5 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		// TODO Auto-generated method stub
 
 	}
-	
 
 }

@@ -198,6 +198,7 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 		
 		alarm.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
 		alarm.setName(nameAlarm);
+		alarm.setVisible(true);
 		for(int i = 0; i < 7; i++){
 			if(scheduled[i]){
 				alarm.setRepeat(i, true);

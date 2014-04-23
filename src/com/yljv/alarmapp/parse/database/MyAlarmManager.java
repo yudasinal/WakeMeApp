@@ -31,6 +31,7 @@ import com.parse.ParseFile;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.yljv.alarmapp.WakeUpActivity;
 import com.yljv.alarmapp.helper.AccountManager;
 import com.yljv.alarmapp.helper.AlarmReceiver;
 import com.yljv.alarmapp.helper.ApplicationSettings;
@@ -133,34 +134,41 @@ public class MyAlarmManager {
 		ai.setUser();
 		ai.setVisibility(alarm.isVisible());
 
-		try {
-			ai.save();
+		final boolean visible = ai.isVisible();
+		final String objectId = ai.getObjectId();
+		final long time = ai.getTimeInMillis();
 
-			if (ai.isVisible()) {
-				ParsePush push = new ParsePush();
-				push.setChannel(AccountManager.getSendingChannel());
+		ai.saveInBackground(new SaveCallback() {
 
-				JSONObject json = new JSONObject(
+			@Override
+			public void done(ParseException e) {
+				if (visible) {
+					ParsePush push = new ParsePush();
+					push.setChannel(AccountManager.getSendingChannel());
 
-				"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": "
-						+ "\"" + ai.getObjectId() + "\", " + "\"category\": "
-						+ "\"update\"" + "}");
+					JSONObject json;
+					try {
+						json = new JSONObject(
 
-				push.setData(json);
-				push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
-				push.sendInBackground();
+						"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+								+ "\"id\": " + "\"" + objectId + "\", "
+								+ "\"category\": " + "\"update\"" + "}");
+
+						push.setData(json);
+						push.setExpirationTime(time);
+						push.sendInBackground();
+					} catch (JSONException e1) {
+						e1.printStackTrace();
+					}
+				}
 			}
 
-		} catch (ParseException e) {
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		});
 
 		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
 				null, ai.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
-		Intent intent = new Intent(context, AlarmReceiver.class);
+		Intent intent = new Intent(context, WakeUpActivity.class);
 		intent.putExtra(AlarmInstance.COLUMN_ID, ai.getID());
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
 				ai.getID(), intent, 0);
@@ -419,8 +427,7 @@ public class MyAlarmManager {
 		String[] projection = { AlarmInstance.COLUMN_NAME,
 				AlarmInstance.COLUMN_ID, AlarmInstance.COLUMN_TIME,
 				AlarmInstance.COLUMN_MSG, AlarmInstance.COLUMN_PICTURE,
-				AlarmInstance.COLUMN_OBJECT_ID, AlarmInstance.COLUMN_VISIBLE,
-				AlarmInstance.COLUMN_MUSIC };
+				AlarmInstance.COLUMN_OBJECT_ID, AlarmInstance.COLUMN_VISIBLE };
 
 		String sortOrder = AlarmInstance.COLUMN_TIME;
 
@@ -447,8 +454,6 @@ public class MyAlarmManager {
 					.getColumnIndexOrThrow(AlarmInstance.COLUMN_PICTURE)));
 			cv.put(AlarmInstance.COLUMN_NAME, c.getString(c
 					.getColumnIndexOrThrow(AlarmInstance.COLUMN_NAME)));
-			cv.put(AlarmInstance.COLUMN_MUSIC,
-					c.getString(c.getColumnIndex(AlarmInstance.COLUMN_MUSIC)));
 			cv.put(AlarmInstance.COLUMN_VISIBLE,
 					c.getInt(c.getColumnIndex(AlarmInstance.COLUMN_VISIBLE)) != 0);
 
@@ -490,7 +495,7 @@ public class MyAlarmManager {
 	private static void putPartnerAlarmsToDB(List<AlarmInstance> list) {
 
 		for (AlarmInstance ai : list) {
-			if (ai.isVisible()) {
+			if (ai.getBoolean(AlarmInstance.COLUMN_VISIBLE)) {
 
 				ContentValues cv = new ContentValues();
 				cv.put(AlarmInstance.COLUMN_OBJECT_ID, ai.getObjectId());
@@ -504,6 +509,8 @@ public class MyAlarmManager {
 						ai.getString(AlarmInstance.COLUMN_PICTURE));
 				cv.put(AlarmInstance.COLUMN_TIME,
 						ai.getLong(AlarmInstance.COLUMN_TIME));
+				cv.put(AlarmInstance.COLUMN_VISIBLE,
+						ai.getBoolean(AlarmInstance.COLUMN_VISIBLE));
 
 				ai.setValues(cv);
 				db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME, null,
@@ -942,7 +949,7 @@ public class MyAlarmManager {
 
 		alarm.setVisible(true);
 		alarm.saveEventually();
-		
+
 		final boolean visible = alarm.isVisible();
 
 		ContentValues cv = alarm.getValues();
@@ -960,23 +967,23 @@ public class MyAlarmManager {
 		query.findInBackground(new FindCallback<AlarmInstance>() {
 			@Override
 			public void done(List<AlarmInstance> list, ParseException e) {
-				if(e==null){
-					for(AlarmInstance ai : list){
-						if(visible){
+				if (e == null) {
+					for (AlarmInstance ai : list) {
+						if (visible) {
 							MyAlarmManager.makeAlarmInstanceVisible(ai);
-						}else{
+						} else {
 							MyAlarmManager.makeAlarmInstanceInvisible(ai);
 						}
 					}
-				}else{
-					
+				} else {
+
 				}
 			}
 		});
 
 	}
 
-	public static void updateAlarm(final Alarm alarm) {
+	public static void activateAlarm(final Alarm alarm) {
 		ContentValues cv = alarm.getValues();
 
 		db.update(Alarm.TABLE_NAME, cv,
@@ -984,5 +991,94 @@ public class MyAlarmManager {
 
 		alarm.saveInBackground();
 
+		if (alarm.isActivated()) {
+
+			GregorianCalendar now = (GregorianCalendar) GregorianCalendar
+					.getInstance();
+			long timeMillis = now.getTimeInMillis();
+
+			boolean[] weekdaysR = alarm.getWeekdaysRepeated();
+
+			int counter = 0;
+			for (int i = 0; i < weekdaysR.length; i++) {
+				if (weekdaysR[i]) {
+					timeMillis = addAlarmInstance(context, alarm,
+							Calendar.SUNDAY + (i + 1) % 7);
+					counter++;
+				}
+			}
+
+			if (counter == 0) {
+				timeMillis = addAlarmInstance(context, alarm,
+						now.get(Calendar.DAY_OF_WEEK));
+				counter++;
+			}
+
+			if (counter != 0 && alarm.isVisible()) {
+				ParsePush push = new ParsePush();
+				push.setChannel(AccountManager.getSendingChannel());
+				push.setMessage("Hey, I just set a new Alarm!");
+				push.setExpirationTime(timeMillis);
+				push.sendInBackground();
+			}
+
+			alarm.saveInBackground();
+			adapter.notifyDataSetChanged();
+
+		} else {
+			AlarmManager alarmMgr = (AlarmManager) context
+					.getSystemService(Context.ALARM_SERVICE);
+			int alarmID = alarm.getAlarmId();
+			for (int i = 0; i < 7; i++) {
+				db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+						AlarmInstance.COLUMN_ID + "=" + alarmID + i, null);
+				PendingIntent p = pendingIntents.get(alarm.getAlarmId());
+				if (p != null)
+					alarmMgr.cancel(p);
+				pendingIntents.remove(alarm.getAlarmId() + i);
+			}
+
+			ParseQuery<AlarmInstance> query = ParseQuery
+					.getQuery("AlarmInstance");
+			String email = ApplicationSettings.getUserEmail();
+			query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
+					alarm.getAlarmId());
+			query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
+					alarm.getAlarmId() + 9);
+			query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
+			query.findInBackground(new FindCallback<AlarmInstance>() {
+				public void done(List<AlarmInstance> list, ParseException e) {
+					if (e == null) {
+						for (AlarmInstance ai : list) {
+							ai.deleteEventually();
+							try {
+								JSONObject json = new JSONObject(
+
+								"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+										+ "\"id\": " + "\"" + ai.getObjectId()
+										+ "\", " + "\"category\": "
+										+ "\"delete\"" + "}");
+
+								ParsePush push = new ParsePush();
+								push.setChannel(AccountManager
+										.getSendingChannel());
+								push.setData(json);
+								push.sendInBackground();
+							} catch (Exception pe) {
+								pe.printStackTrace();
+							}
+						}
+					} else {
+						e.printStackTrace();
+					}
+				}
+			});
+
+		}
+	}
+
+	public static void setNextAlarmInstance(Alarm alarm) {
+		GregorianCalendar now = (GregorianCalendar) Calendar.getInstance();
+		addAlarmInstance(context, alarm, now.get(Calendar.DAY_OF_WEEK));
 	}
 }
