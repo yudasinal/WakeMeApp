@@ -136,6 +136,7 @@ public class AccountManager {
 	
 	public static void onRequestAccepted(){
 		ApplicationSettings.setPartnerStatus(User.PARTNERED);
+		MyAlarmManager.getPartnerAlarmsFromServer();
 	}
 	
 	public static void onRequestDeclined(){

@@ -445,8 +445,7 @@ public class MyAlarmManager {
 		pcAdapter.notifyDataSetChanged();
 	}
 
-	public static void getPartnerAlarmsFromServer(
-			final ParsePartnerAlarmListener listener) {
+	public static void getPartnerAlarmsFromServer() {
 
 		partnerAlarms.clear();
 
@@ -459,9 +458,8 @@ public class MyAlarmManager {
 			public void done(List<AlarmInstance> list, ParseException e) {
 				if (e == null) {
 					MyAlarmManager.putPartnerAlarmsToDB(list);
-					listener.partnerAlarmsFound(list);
 				} else {
-					listener.partnerAlarmsSearchFailed(e);
+					e.printStackTrace();
 				}
 			}
 		});

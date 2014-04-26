@@ -27,8 +27,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.parse.database.ParseLoginListener;
 import com.yljv.alarmapp.parse.database.ParsePartnerAlarmListener;
 
-public class LoginActivity extends Activity implements OnClickListener, ParseLoginListener,
-		ParsePartnerAlarmListener {
+public class LoginActivity extends Activity implements OnClickListener, ParseLoginListener {
 
 	EditText editPassword;
 	EditText editEmail;
@@ -148,15 +147,15 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		
 		
 		if(AccountManager.hasPartner()){
-			MyAlarmManager.getPartnerAlarmsFromServer(this);
+			MyAlarmManager.getPartnerAlarmsFromServer();
 		}
 		MyAlarmManager.getMyAlarmsFromServer();
 		
 		if(AccountManager.hasPartner()){
 			PushService.subscribe(this, AccountManager.getSubscribedChannel(), MenuMainActivity.class);
 		}
-		Intent intent = new Intent (this, MenuMainActivity.class);
-		startActivity(intent);
+		
+		cont();
 		finish();
 		
 	}
@@ -195,20 +194,6 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		Intent intent = new Intent(this, MenuMainActivity.class);
 		startActivity(intent);
 		
-	}
-
-	@Override
-	public void partnerAlarmsFound(List<AlarmInstance> alarms) {
-		if(visible){
-			cont();
-		}
-	}
-
-	@Override
-	public void partnerAlarmsSearchFailed(Exception e) {
-		if(visible){
-			cont();
-		}
 	}
 
 }
