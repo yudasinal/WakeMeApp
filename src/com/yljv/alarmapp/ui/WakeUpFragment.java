@@ -23,6 +23,7 @@ import com.yljv.alarmapp.ChoiceActivity;
 //import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.WakeUpActivity;
+import com.yljv.alarmapp.helper.MsgPictureTuple;
 import com.yljv.alarmapp.parse.database.Alarm;
 /*
  * Window you see when you wake up
@@ -39,6 +40,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 	private ParseFile pic;
 	private String musicPath;
+	private String message;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,10 +53,12 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		Bundle bundle = this.getArguments();
 		int id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
-		AlarmInstance alarmInstance = MyAlarmManager.findAlarmInstanceById(id);
 		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
 
-		pic = alarmInstance.getParseFile(AlarmInstance.COLUMN_PICTURE);
+		MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);
+		byte[] picData = t.getPicData();
+		pic = new ParseFile(picData);
+		message = t.getMsg();
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
 
 		mGlowPadView.setOnTriggerListener(this);
@@ -77,7 +81,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 			MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
 					bmp,
-					Long.toString(alarmInstance.getTimeInMillis()), "");
+					Long.toString(System.nanoTime()), "");
 		} catch (ParseException e) {
 			Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
 			e.printStackTrace();

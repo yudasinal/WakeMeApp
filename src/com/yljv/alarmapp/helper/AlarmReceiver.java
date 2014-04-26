@@ -21,11 +21,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		MyAlarmManager.getMyAlarmsFromDatabase();
 
-		int id = intent.getExtras().getInt(AlarmInstance.COLUMN_ID);
+		int id = intent.getIntExtra(AlarmInstance.COLUMN_ID, 0);
 		
 		//TODO add alarm to WakeUpActivity to display time and pic/msg if exists
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
+		Intent i = new Intent(context, WakeUpActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		i.putExtra(AlarmInstance.COLUMN_ID, id);
+		context.startActivity(i);
 		
 		
 		// TODO set the alarm here

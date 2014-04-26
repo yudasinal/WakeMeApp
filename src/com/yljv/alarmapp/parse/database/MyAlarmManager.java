@@ -37,12 +37,16 @@ import com.yljv.alarmapp.helper.AlarmReceiver;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.helper.ClockAdapter;
 import com.yljv.alarmapp.helper.DBHelper;
+import com.yljv.alarmapp.helper.MsgPictureTuple;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 
 /*
  * THIS IS THE RIGHT ALARM MANAGER
  */
+
+
 public class MyAlarmManager {
+
 
 	public static int SUNDAY = 1;
 	public static int MONDAY = 2;
@@ -63,6 +67,29 @@ public class MyAlarmManager {
 
 	private static PartnerClockAdapter pcAdapter;
 	private static ClockAdapter adapter;
+	
+	
+
+	public static MsgPictureTuple findPicMsgByAlarmId(int id){
+		
+		String selection[] = {
+			AlarmInstance.COLUMN_MSG,
+			AlarmInstance.COLUMN_PICTURE,
+			AlarmInstance.COLUMN_ID
+		};
+		Cursor c = db.query(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+				selection, AlarmInstance.COLUMN_ID + "=" + id, null, null, null, null);
+		c.moveToFirst();
+		int size = c.getCount();
+
+		String msg = c.getString(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_MSG));
+		byte[] data = c.getBlob(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_PICTURE));
+		
+		c.close();
+		
+		return new MsgPictureTuple(msg, data);
+	}
+
 
 	public static PartnerClockAdapter getPartnerClockAdapter(Context context) {
 		if (pcAdapter == null) {
@@ -78,7 +105,7 @@ public class MyAlarmManager {
 		return adapter;
 	}
 
-	public static AlarmInstance findAlarmInstanceById(int id) {
+	public static AlarmInstance findPartnerAlarmInstanceById(int id) {
 		ArrayList<AlarmInstance> alarms = MyAlarmManager.getPartnerAlarms();
 		for (AlarmInstance alarm : alarms) {
 			if (alarm.getInt(AlarmInstance.COLUMN_ID) == id) {
@@ -100,21 +127,13 @@ public class MyAlarmManager {
 	/*
 	 * creates Alarm on device
 	 */
-	private static long addAlarmInstance(Context context, Alarm alarm, int day) {
-
-		AlarmManager alarmMgr = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
-		PackageManager pm = context.getPackageManager();
-		pm.setComponentEnabledSetting(receiver,
-				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-				PackageManager.DONT_KILL_APP);
+	private static long addAlarmInstance(final Context context, Alarm alarm,
+			int day) {
 
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
 				.getInstance();
-		GregorianCalendar cn = null;
-
-		cn = (GregorianCalendar) GregorianCalendar.getInstance();
+		final GregorianCalendar cn = (GregorianCalendar) GregorianCalendar
+				.getInstance();
 		cn.set(Calendar.MINUTE, alarm.getMinute());
 		cn.set(Calendar.HOUR_OF_DAY, alarm.getHourOfDay());
 		cn.set(Calendar.DAY_OF_WEEK, day);
@@ -125,7 +144,7 @@ public class MyAlarmManager {
 			cn.set(Calendar.YEAR, now.get(Calendar.YEAR) + 1);
 		}
 
-		AlarmInstance ai = new AlarmInstance();
+		final AlarmInstance ai = new AlarmInstance();
 		ai.initialize();
 		ai.setID(alarm.getAlarmId() + day);
 		ai.setName(alarm.getName());
@@ -134,15 +153,32 @@ public class MyAlarmManager {
 		ai.setUser();
 		ai.setVisibility(alarm.isVisible());
 
-		final boolean visible = ai.isVisible();
-		final String objectId = ai.getObjectId();
-		final long time = ai.getTimeInMillis();
-
 		ai.saveInBackground(new SaveCallback() {
 
 			@Override
 			public void done(ParseException e) {
-				if (visible) {
+				AlarmManager alarmMgr = (AlarmManager) context
+						.getSystemService(Context.ALARM_SERVICE);
+				ComponentName receiver = new ComponentName(context,
+						AlarmReceiver.class);
+				PackageManager pm = context.getPackageManager();
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+						PackageManager.DONT_KILL_APP);
+
+				Intent intent = new Intent(context, AlarmReceiver.class);
+				intent.putExtra(AlarmInstance.COLUMN_ID, ai.getID());
+				PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
+						ai.getID(), intent, 0);
+				alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(),
+						alarmIntent);
+				pendingIntents.put(ai.getID(), alarmIntent);
+
+				db.insertWithOnConflict(
+						AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME, null,
+						ai.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
+
+				if (ai.isVisible()) {
 					ParsePush push = new ParsePush();
 					push.setChannel(AccountManager.getSendingChannel());
 
@@ -151,11 +187,11 @@ public class MyAlarmManager {
 						json = new JSONObject(
 
 						"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-								+ "\"id\": " + "\"" + objectId + "\", "
+								+ "\"id\": " + "\"" + ai.getObjectId() + "\", "
 								+ "\"category\": " + "\"update\"" + "}");
 
 						push.setData(json);
-						push.setExpirationTime(time);
+						push.setExpirationTime(ai.getTimeInMillis());
 						push.sendInBackground();
 					} catch (JSONException e1) {
 						e1.printStackTrace();
@@ -164,16 +200,6 @@ public class MyAlarmManager {
 			}
 
 		});
-
-		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-				null, ai.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
-
-		Intent intent = new Intent(context, WakeUpActivity.class);
-		intent.putExtra(AlarmInstance.COLUMN_ID, ai.getID());
-		PendingIntent alarmIntent = PendingIntent.getBroadcast(context,
-				ai.getID(), intent, 0);
-		alarmMgr.set(AlarmManager.RTC_WAKEUP, cn.getTimeInMillis(), alarmIntent);
-		pendingIntents.put(ai.getID(), alarmIntent);
 
 		return cn.getTimeInMillis();
 	}
@@ -311,7 +337,6 @@ public class MyAlarmManager {
 		}
 
 		MyAlarmManager.deleteAlarmInstances(alarm.getAlarmId());
-		
 
 		alarm.deleteInBackground(new DeleteCallback() {
 			@Override
@@ -319,7 +344,7 @@ public class MyAlarmManager {
 
 			}
 		});
-		
+
 		adapter.notifyDataSetChanged();
 
 	}
@@ -336,10 +361,6 @@ public class MyAlarmManager {
 
 	public static Alarm findAlarmById(int id) {
 		for (Alarm alarm : myAlarms) {
-			if(260 == id) {
-				return alarm;
-				
-			}
 			int alarmID = alarm.getAlarmId();
 			if (alarmID == id) {
 				return alarm;
@@ -347,7 +368,7 @@ public class MyAlarmManager {
 		}
 		return null;
 	}
-	
+
 	public static AlarmInstance findPartnerAlarmByObjectId(String id) {
 		for (AlarmInstance alarm : partnerAlarms) {
 			if (alarm.getObjectId().equals(id)) {
@@ -772,7 +793,6 @@ public class MyAlarmManager {
 				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
 				PackageManager.DONT_KILL_APP);
 
-
 		for (int i = 0; i <= 7; i++) {
 			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
 					AlarmInstance.COLUMN_ID + "=" + alarmId + i, null);
@@ -782,13 +802,10 @@ public class MyAlarmManager {
 			pendingIntents.remove(alarmId + i);
 		}
 
-		
 		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 		String email = ApplicationSettings.getUserEmail();
-		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
-				alarmId);
-		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
-				alarmId + 9);
+		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmId);
+		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmId + 9);
 		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
 		query.findInBackground(new FindCallback<AlarmInstance>() {
 			public void done(List<AlarmInstance> list, ParseException e) {
@@ -816,7 +833,7 @@ public class MyAlarmManager {
 				}
 			}
 		});
-		
+
 		adapter.notifyDataSetChanged();
 	}
 
@@ -857,13 +874,13 @@ public class MyAlarmManager {
 
 		// TODO make sure that really saved in background -> check
 
-		alarm.saveEventually(new SaveCallback(){
+		alarm.saveEventually(new SaveCallback() {
 
 			@Override
 			public void done(ParseException e) {
-				if(e==null){
+				if (e == null) {
 					Log.i("WakemeApp", "Alarm saved");
-				}else{
+				} else {
 					Log.e("WakemeApp", "Alarm not saved");
 				}
 			}
@@ -897,7 +914,7 @@ public class MyAlarmManager {
 		cv.put(AlarmInstance.COLUMN_OBJECT_ID, alarm.getObjectId());
 		cv.put(AlarmInstance.COLUMN_ID, alarm.getInt(AlarmInstance.COLUMN_ID));
 
-		String msg = alarm.getString(AlarmInstance.COLUMN_NAME);
+		String msg = alarm.getString(AlarmInstance.COLUMN_MSG);
 		if (msg != null) {
 			cv.put(AlarmInstance.COLUMN_MSG,
 					alarm.getString(AlarmInstance.COLUMN_MSG));

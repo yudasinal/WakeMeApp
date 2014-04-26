@@ -24,10 +24,12 @@ public class WakeUpActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
 
-		int id = this.getIntent().getExtras().getInt(AlarmInstance.COLUMN_ID);
+		int id = this.getIntent().getIntExtra(AlarmInstance.COLUMN_ID, 0);
+		
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mainView");
@@ -55,7 +57,7 @@ public class WakeUpActivity extends FragmentActivity {
 				.replace(R.id.content_frame, mainView).commit();
 
 
-		Alarm alarm = MyAlarmManager.findAlarmById(id/10);
+		Alarm alarm = MyAlarmManager.findAlarmById(id/10 * 10);
 		MyAlarmManager.setNextAlarmInstance(alarm);
 
 	}
