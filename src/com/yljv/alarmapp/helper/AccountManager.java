@@ -65,7 +65,8 @@ public class AccountManager {
 				if (user != null) {
 					ApplicationSettings.setUserEmail(user.getEmail());
 					ApplicationSettings.setUserName(user.getUsername());
-					ApplicationSettings.setPartnerStatus(user.getInt(User.PARTNER_STATUS_COLUMN));
+					int status = user.getInt(User.PARTNER_STATUS_COLUMN);
+					ApplicationSettings.setPartnerStatus(status);
 					String partner = user.getString(User.PARTNER_COLUMN);
 					if(partner!=null){
 						ApplicationSettings.setPartnerEmail(partner);
@@ -95,9 +96,9 @@ public class AccountManager {
 					user.put(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER);
 					ApplicationSettings.setUserEmail(user.getEmail());
 					ApplicationSettings.setUserName(user.getUsername());
-					if (user.getString(User.PARTNER_COLUMN) != null) {
-						ApplicationSettings.setPartnerEmail(user
-								.getString(User.PARTNER_COLUMN));
+					String partner = user.getString(User.PARTNER_COLUMN);
+					if (partner != null) {
+						ApplicationSettings.setPartnerEmail(partner);
 					}
 					if (user.get(User.ID_COLUMN) != null) {
 						ApplicationSettings.setAlarmId(user

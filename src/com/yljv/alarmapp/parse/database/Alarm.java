@@ -9,8 +9,10 @@ import android.net.Uri;
 
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.yljv.alarmapp.helper.ApplicationSettings;
 
 @ParseClassName("Alarm")
@@ -72,7 +74,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public int getAlarmId() {
-		return (Integer) values.get(Alarm.COLUMN_ID);
+		return (int) values.getAsInteger(Alarm.COLUMN_ID);
 	}
 
 	/*
@@ -196,9 +198,19 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public void setActivated(boolean activated) {
-			values.put(Alarm.COLUMN_ACTIVATED, activated);
-			put(Alarm.COLUMN_ACTIVATED, activated);
-		MyAlarmManager.activateAlarm(this);
+		
+		final Alarm alarm = this;
+		
+		values.put(Alarm.COLUMN_ACTIVATED, activated);
+		put(Alarm.COLUMN_ACTIVATED, activated);
+		this.saveEventually(new SaveCallback(){
+
+			@Override
+			public void done(ParseException e) {
+				MyAlarmManager.activateAlarm(alarm);
+			}
+			
+		});
 	}
 
 	private void setID(int id) {

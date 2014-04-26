@@ -310,39 +310,8 @@ public class MyAlarmManager {
 			pendingIntents.remove(alarm.getAlarmId() + i);
 		}
 
-		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
-		String email = ApplicationSettings.getUserEmail();
-		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
-				alarm.getAlarmId());
-		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
-				alarm.getAlarmId() + 9);
-		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
-		query.findInBackground(new FindCallback<AlarmInstance>() {
-			public void done(List<AlarmInstance> list, ParseException e) {
-				if (e == null) {
-					for (AlarmInstance ai : list) {
-						ai.deleteEventually();
-						try {
-							JSONObject json = new JSONObject(
-
-							"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-									+ "\"id\": " + "\"" + ai.getObjectId()
-									+ "\", " + "\"category\": " + "\"delete\""
-									+ "}");
-
-							ParsePush push = new ParsePush();
-							push.setChannel(AccountManager.getSendingChannel());
-							push.setData(json);
-							push.sendInBackground();
-						} catch (Exception pe) {
-							pe.printStackTrace();
-						}
-					}
-				} else {
-					e.printStackTrace();
-				}
-			}
-		});
+		MyAlarmManager.deleteAlarmInstances(alarm.getAlarmId());
+		
 
 		alarm.deleteInBackground(new DeleteCallback() {
 			@Override
@@ -350,6 +319,8 @@ public class MyAlarmManager {
 
 			}
 		});
+		
+		adapter.notifyDataSetChanged();
 
 	}
 
@@ -365,13 +336,18 @@ public class MyAlarmManager {
 
 	public static Alarm findAlarmById(int id) {
 		for (Alarm alarm : myAlarms) {
-			if (alarm.getAlarmId() == id) {
+			if(260 == id) {
+				return alarm;
+				
+			}
+			int alarmID = alarm.getAlarmId();
+			if (alarmID == id) {
 				return alarm;
 			}
 		}
 		return null;
 	}
-
+	
 	public static AlarmInstance findPartnerAlarmByObjectId(String id) {
 		for (AlarmInstance alarm : partnerAlarms) {
 			if (alarm.getObjectId().equals(id)) {
@@ -752,7 +728,7 @@ public class MyAlarmManager {
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
 				.getInstance();
 
-		MyAlarmManager.deleteAlarmInstances(alarm);
+		MyAlarmManager.deleteAlarmInstances(alarm.getAlarmId());
 		alarm.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
@@ -789,7 +765,7 @@ public class MyAlarmManager {
 
 	}
 
-	private static void deleteAlarmInstances(Alarm alarm) {
+	private static void deleteAlarmInstances(int alarmId) {
 		AlarmManager alarmMgr = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
@@ -798,33 +774,52 @@ public class MyAlarmManager {
 				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
 				PackageManager.DONT_KILL_APP);
 
-		int alarmID = alarm.getAlarmId();
 
 		for (int i = 0; i < 7; i++) {
 			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-					AlarmInstance.COLUMN_ID + "=" + alarmID + i, null);
-			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
+					AlarmInstance.COLUMN_ID + "=" + alarmId + i, null);
+			PendingIntent p = pendingIntents.get(alarmId);
 			if (p != null)
 				alarmMgr.cancel(p);
-			pendingIntents.remove(alarm.getAlarmId() + i);
+			pendingIntents.remove(alarmId + i);
 		}
 
+		
 		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
 		String email = ApplicationSettings.getUserEmail();
-		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmID);
-		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmID + 9);
+		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
+				alarmId);
+		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
+				alarmId + 9);
 		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
 		query.findInBackground(new FindCallback<AlarmInstance>() {
 			public void done(List<AlarmInstance> list, ParseException e) {
 				if (e == null) {
 					for (AlarmInstance ai : list) {
 						ai.deleteEventually();
+						try {
+							JSONObject json = new JSONObject(
+
+							"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+									+ "\"id\": " + "\"" + ai.getObjectId()
+									+ "\", " + "\"category\": " + "\"delete\""
+									+ "}");
+
+							ParsePush push = new ParsePush();
+							push.setChannel(AccountManager.getSendingChannel());
+							push.setData(json);
+							push.sendInBackground();
+						} catch (Exception pe) {
+							pe.printStackTrace();
+						}
 					}
 				} else {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+		adapter.notifyDataSetChanged();
 	}
 
 	public static void setNewAlarm(Context context, Alarm alarm) {
@@ -864,7 +859,17 @@ public class MyAlarmManager {
 
 		// TODO make sure that really saved in background -> check
 
-		alarm.saveInBackground();
+		alarm.saveEventually(new SaveCallback(){
+
+			@Override
+			public void done(ParseException e) {
+				if(e==null){
+					Log.i("WakemeApp", "Alarm saved");
+				}else{
+					Log.e("WakemeApp", "Alarm not saved");
+				}
+			}
+		});
 		adapter.notifyDataSetChanged();
 	}
 
@@ -989,8 +994,6 @@ public class MyAlarmManager {
 		db.update(Alarm.TABLE_NAME, cv,
 				Alarm.COLUMN_ID + "=" + alarm.getAlarmId(), null);
 
-		alarm.saveInBackground();
-
 		if (alarm.isActivated()) {
 
 			GregorianCalendar now = (GregorianCalendar) GregorianCalendar
@@ -1022,58 +1025,11 @@ public class MyAlarmManager {
 				push.sendInBackground();
 			}
 
-			alarm.saveInBackground();
 			adapter.notifyDataSetChanged();
 
 		} else {
-			AlarmManager alarmMgr = (AlarmManager) context
-					.getSystemService(Context.ALARM_SERVICE);
 			int alarmID = alarm.getAlarmId();
-			for (int i = 0; i < 7; i++) {
-				db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-						AlarmInstance.COLUMN_ID + "=" + alarmID + i, null);
-				PendingIntent p = pendingIntents.get(alarm.getAlarmId());
-				if (p != null)
-					alarmMgr.cancel(p);
-				pendingIntents.remove(alarm.getAlarmId() + i);
-			}
-
-			ParseQuery<AlarmInstance> query = ParseQuery
-					.getQuery("AlarmInstance");
-			String email = ApplicationSettings.getUserEmail();
-			query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID,
-					alarm.getAlarmId());
-			query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID,
-					alarm.getAlarmId() + 9);
-			query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
-			query.findInBackground(new FindCallback<AlarmInstance>() {
-				public void done(List<AlarmInstance> list, ParseException e) {
-					if (e == null) {
-						for (AlarmInstance ai : list) {
-							ai.deleteEventually();
-							try {
-								JSONObject json = new JSONObject(
-
-								"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-										+ "\"id\": " + "\"" + ai.getObjectId()
-										+ "\", " + "\"category\": "
-										+ "\"delete\"" + "}");
-
-								ParsePush push = new ParsePush();
-								push.setChannel(AccountManager
-										.getSendingChannel());
-								push.setData(json);
-								push.sendInBackground();
-							} catch (Exception pe) {
-								pe.printStackTrace();
-							}
-						}
-					} else {
-						e.printStackTrace();
-					}
-				}
-			});
-
+			MyAlarmManager.deleteAlarmInstances(alarmID);
 		}
 	}
 

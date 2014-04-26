@@ -117,7 +117,6 @@ public class ApplicationSettings {
 	
 	public static void setPartnerEmail(String partnerEmail){
 		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail).commit();
-		preferences.edit().putInt(ApplicationSettings.PARTNER_STATUS, User.PARTNERED).commit();
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put(User.PARTNER_COLUMN, partnerEmail);
 		user.saveEventually();
