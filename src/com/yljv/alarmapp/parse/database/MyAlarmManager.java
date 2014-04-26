@@ -775,7 +775,7 @@ public class MyAlarmManager {
 				PackageManager.DONT_KILL_APP);
 
 
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i <= 7; i++) {
 			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
 					AlarmInstance.COLUMN_ID + "=" + alarmId + i, null);
 			PendingIntent p = pendingIntents.get(alarmId);

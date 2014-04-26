@@ -21,6 +21,13 @@ public class ApplicationSettings {
 	
 	private static SharedPreferences preferences;
 	
+	
+	public static void acceptRequest(){
+		preferences.edit().putInt(PARTNER_STATUS, User.PARTNERED).commit();
+		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.PARTNERED);
+		ParseUser.getCurrentUser().saveEventually();
+	}
+	
 	public static void setPartnerStatus(int status){
 		preferences.edit().putInt(PARTNER_STATUS, status).commit();
 		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, status);

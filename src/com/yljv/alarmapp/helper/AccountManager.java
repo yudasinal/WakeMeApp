@@ -192,8 +192,6 @@ public class AccountManager {
 		ApplicationSettings.unlinkPartner();
 	}
 	public static void acceptPartnerRequest() {
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN,
-				User.PARTNERED);
 		
 		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
@@ -213,6 +211,8 @@ public class AccountManager {
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
+		
+		ApplicationSettings.acceptRequest();
 	}
 
 	public static void sendPartnerRequest(String email,
@@ -274,13 +274,6 @@ public class AccountManager {
 
 	public static void cancelPartnerRequest() {
 		
-		ApplicationSettings.cancelRequest();
-
-		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, "");
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN,
-				User.NO_PARTNER);
-		ParseUser.getCurrentUser().saveEventually();
-		
 		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
 		try {
@@ -299,15 +292,11 @@ public class AccountManager {
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
+
+		ApplicationSettings.cancelRequest();
 	}
 	
 	public static void declinePartnerRequest(){
-
-		ApplicationSettings.unlinkPartner();
-		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, "");
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN,
-				User.NO_PARTNER);
-		ParseUser.getCurrentUser().saveEventually();
 
 		String channel = "user_" + ApplicationSettings.getPartnerEmail().replace('@', '_').replace('.', '_');
 		
@@ -327,6 +316,8 @@ public class AccountManager {
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
+		
+		ApplicationSettings.unlinkPartner();
 	}
 	
 	public static void incomingPartnerRequest(String email){
