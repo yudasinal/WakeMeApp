@@ -41,6 +41,12 @@ public class SettingsFragment extends SherlockFragment implements
 	TextView myEmail;
 	TextView partnerName;
 	TextView partnerEmail;
+	TableRow rowPartnerName;
+	TableRow rowPartnerEmail;
+	TableRow partnerAction;
+	TextView partnerActionUp;
+	TextView partnerActionDown;
+	String name;
 
 	Activity activity;
 	PartnerRequestListener fragment;
@@ -58,16 +64,11 @@ public class SettingsFragment extends SherlockFragment implements
 		TableRow changeMyName = (TableRow) view.findViewById(R.id.row1);
 		TableRow changeMyEmail = (TableRow) view.findViewById(R.id.row2);
 
-		TableRow changePartnerName;
-		TableRow changePartnerEmail;
-		TableRow partnerAction;
-		TextView partnerActionUp;
-		TextView partnerActionDown;
 
 
-		changePartnerName = (TableRow) view
+		rowPartnerName = (TableRow) view
 				.findViewById(R.id.row3);
-		changePartnerEmail = (TableRow) view
+		rowPartnerEmail = (TableRow) view
 				.findViewById(R.id.row4);
 		
 		partnerAction = (TableRow) view.findViewById(R.id.row5);
@@ -77,32 +78,32 @@ public class SettingsFragment extends SherlockFragment implements
 		
 		switch(ApplicationSettings.getPartnerStatus()){
 		case User.INCOMING_REQUEST:
-			changePartnerName.setVisibility(View.GONE);
-			changePartnerEmail.setVisibility(View.GONE);
+			rowPartnerName.setVisibility(View.GONE);
+			rowPartnerEmail.setVisibility(View.GONE);
 			partnerActionUp.setText("Accept/Decline buddy request");
-			String name = ApplicationSettings.getPartnerName();
+			name = ApplicationSettings.getPartnerName();
 			partnerActionDown.setText(name + " wants to be your alarm buddy");
 			break;
 		case User.NO_PARTNER:
-			changePartnerName.setVisibility(View.GONE);
-			changePartnerEmail.setVisibility(View.GONE);
+			rowPartnerName.setVisibility(View.GONE);
+			rowPartnerEmail.setVisibility(View.GONE);
 			partnerActionUp.setText("Add an Alarm Buddy");
 			partnerActionDown.setText("Cause it's awesome");
 			break;
 		case User.PARTNER_REQUESTED:
-			changePartnerName.setVisibility(View.GONE);
-			changePartnerEmail.setVisibility(View.GONE);
+			rowPartnerName.setVisibility(View.GONE);
+			rowPartnerEmail.setVisibility(View.GONE);
 			partnerActionUp.setText("Cancel Partner Request");
-			String email = ApplicationSettings.getPartnerEmail();
-			partnerActionDown.setText("Request sent to " + email);
+			name = ApplicationSettings.getPartnerName();
+			partnerActionDown.setText("Request sent to " + name);
 			break;
 		case User.PARTNERED:
 			partnerName = (TextView) view.findViewById(R.id.partner_name);
 			partnerName.setText(ApplicationSettings.getPartnerName());
 			partnerEmail = (TextView) view.findViewById(R.id.partner_email);
 			partnerEmail.setText(ApplicationSettings.getPartnerEmail());
-			changePartnerName.setOnClickListener(this);
-			changePartnerEmail.setOnClickListener(this);
+			rowPartnerName.setOnClickListener(this);
+			rowPartnerEmail.setOnClickListener(this);
 			partnerActionUp.setText("Unlink");
 			partnerActionDown.setText("Become Independent :)");
 			break;
@@ -298,6 +299,10 @@ public class SettingsFragment extends SherlockFragment implements
 									String changedPartnerName = addPartnerName
 											.getText().toString();
 									ApplicationSettings.setPartnerName(changedPartnerName);
+									partnerActionUp.setText("Cancel Partner Request");
+									name = ApplicationSettings.getPartnerName();
+									partnerActionDown.setText("Request sent to " + name);
+									
 									String toast = "Invitation to " + changedPartnerName + " is sent";
 									Toast.makeText(getActivity(),
 											toast,
@@ -322,10 +327,19 @@ public class SettingsFragment extends SherlockFragment implements
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						AccountManager.acceptPartnerRequest();
+						partnerActionUp.setText("Unlink");
+						partnerActionDown.setText("Become Independent :)");
+
+						rowPartnerName.setVisibility(View.VISIBLE);
+						rowPartnerEmail.setVisibility(View.VISIBLE);
+						
 						Toast.makeText(getActivity(),
-								"Partner request accepted",
+								"Buddy request accepted",
 								Toast.LENGTH_LONG).show();
 					}
+					
+					
+					
 				});
 				action.setNegativeButton("Decline request", new DialogInterface.OnClickListener() {
 					
@@ -333,19 +347,23 @@ public class SettingsFragment extends SherlockFragment implements
 					public void onClick(DialogInterface dialog, int which) {
 						AccountManager.declinePartnerRequest();
 						Toast.makeText(getActivity(),
-								"Partner request declined",
+								"Buddy request declined",
 								Toast.LENGTH_LONG).show();
+
+						partnerActionUp.setText("Add an Alarm Buddy");
+						partnerActionDown.setText("Cause it's awesome");
+						
 					}
 				});
 				action.show();
 			}else if(status == User.PARTNER_REQUESTED){
 				action.setTitle("Do you want to cancel your request?");
-				action.setPositiveButton("Cancel request", new DialogInterface.OnClickListener() {
+				action.setPositiveButton("Delete request", new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Toast.makeText(getActivity(),
-								"Partner request cancelled",
+								"Buddy request cancelled",
 								Toast.LENGTH_LONG).show();
 						AccountManager.cancelPartnerRequest();
 					}
@@ -366,10 +384,18 @@ public class SettingsFragment extends SherlockFragment implements
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						AccountManager.unlink();
+						name = ApplicationSettings.getPartnerName();
+						rowPartnerName.setVisibility(View.GONE);
+						rowPartnerEmail.setVisibility(View.GONE);
 						Toast.makeText(getActivity(),
-								"Unlinked",
+								"You and " + name + " are not alarm buddies anymore",
 								Toast.LENGTH_LONG).show();
+
+						partnerActionUp.setText("Add an Alarm Buddy");
+						partnerActionDown.setText("Cause it's awesome");
 					}
+					
+					
 				});
 
 				action.setNegativeButton("Cancel",
@@ -447,14 +473,14 @@ public class SettingsFragment extends SherlockFragment implements
 	@Override
 	public void onNoPartnerFound() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "No Partner Found",
+		Toast.makeText(this.getActivity(), "No Buddy Found",
 				Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onAlreadyPartnered() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "You already have a partner",
+		Toast.makeText(this.getActivity(), "You already have a buddy",
 				Toast.LENGTH_LONG).show();
 
 	}
