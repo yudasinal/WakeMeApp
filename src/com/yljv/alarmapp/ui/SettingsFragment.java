@@ -295,9 +295,6 @@ public class SettingsFragment extends SherlockFragment implements
 								if(addPartnerEmail.getText() != null){
 									AccountManager.sendPartnerRequest(addPartnerEmail
 											.getText().toString(), fragment);
-									Toast.makeText(getActivity(),
-											"Invitation to John is sent",
-											Toast.LENGTH_LONG).show();
 								}
 							}
 						});
@@ -458,8 +455,10 @@ public class SettingsFragment extends SherlockFragment implements
 	@Override
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "Request sent", Toast.LENGTH_LONG)
-				.show();
+
+		Toast.makeText(getActivity(),
+				"Invitation sent",
+				Toast.LENGTH_LONG).show();
 
 	}
 

@@ -209,6 +209,11 @@ public class AccountManager {
 			push.setChannel(channel);
 			push.setData(json);
 			push.sendInBackground();
+			
+			ParsePush p = new ParsePush();
+			p.setChannel(channel);
+			p.setMessage("Request accepted");
+			p.sendInBackground();
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
@@ -296,6 +301,11 @@ public class AccountManager {
 			push.setChannel(channel);
 			push.setData(json);
 			push.sendInBackground();
+			
+			ParsePush p = new ParsePush();
+			p.setChannel(channel);
+			p.setMessage("Request cancelled");
+			p.sendInBackground();
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
@@ -320,6 +330,12 @@ public class AccountManager {
 			push.setChannel(channel);
 			push.setData(json);
 			push.sendInBackground();
+			
+			ParsePush p = new ParsePush();
+			p.setChannel(channel);
+			p.setMessage("Request declined");
+			p.sendInBackground();
+			
 		} catch (Exception pe) {
 			pe.printStackTrace();
 		}
