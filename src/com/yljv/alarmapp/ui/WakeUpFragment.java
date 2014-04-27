@@ -42,6 +42,8 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private String musicPath;
 	private String message;
 	
+	MediaPlayer mpintro;
+	
 	private int id;
 
 	@Override
@@ -56,7 +58,11 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
 		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		if(musicPath.equals("")){
+			musicPath = "";
+		}
 		
 
 		mGlowPadView.setOnTriggerListener(this);
@@ -70,25 +76,24 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 		MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);
 		byte[] picData = t.getPicData();
-		pic = new ParseFile(picData);
+		if(picData!=null){
+			pic = new ParseFile(picData);
+			Bitmap bmp;
+			try {
+				bmp = BitmapFactory.decodeByteArray(pic.getData(), 0,
+						pic.getData().length);
+
+				MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+						bmp,
+						Long.toString(System.nanoTime()), "");
+			} catch (ParseException e) {
+				Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}
+		
 		message = t.getMsg();
 
-		
-
-		Bitmap bmp;
-		try {
-			bmp = BitmapFactory.decodeByteArray(pic.getData(), 0,
-					pic.getData().length);
-
-			MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-					bmp,
-					Long.toString(System.nanoTime()), "");
-		} catch (ParseException e) {
-			Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
-			e.printStackTrace();
-		}
-
-		MediaPlayer mpintro;
 		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
 		mpintro.setLooping(true);
 		mpintro.start();
@@ -117,6 +122,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			Intent intent1 = new Intent(this.getActivity(),
 					ChoiceActivity.class);
 			startActivity(intent1);
+			mpintro.stop();
 			break;
 
 		case R.drawable.pic_msg:
@@ -125,6 +131,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
 			}
+			mpintro.stop();
 			break;
 		default:
 			// Code should never reach here.
