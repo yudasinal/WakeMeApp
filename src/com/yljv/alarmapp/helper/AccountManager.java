@@ -142,6 +142,7 @@ public class AccountManager {
 	public static void onRequestDeclined(){
 		ApplicationSettings.setPartnerEmail("");
 		ApplicationSettings.setPartnerStatus(User.NO_PARTNER);
+		
 	}
 
 	public static void onUnlinked(){

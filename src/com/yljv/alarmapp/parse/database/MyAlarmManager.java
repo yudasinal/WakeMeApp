@@ -349,13 +349,16 @@ public class MyAlarmManager {
 
 	}
 
-	public static void onPartnerAlarmInstanceDeleted(AlarmInstance alarm) {
+	public static void onPartnerAlarmInstanceDeleted(String id) {
 
-		int alarmID = alarm.getID();
-		db.delete(AlarmInstance.PARTNER_TABLE_NAME, AlarmInstance.COLUMN_ID
-				+ "=" + alarmID, null);
+		db.delete(AlarmInstance.PARTNER_TABLE_NAME, AlarmInstance.COLUMN_OBJECT_ID
+				+ "=" + "'" +  id + "'", null);
 
-		partnerAlarms.remove(alarm);
+		for(AlarmInstance alarm : partnerAlarms){
+			if(alarm.getObjectId().equals(id)){
+				partnerAlarms.remove(alarm);
+			}
+		}
 		pcAdapter.notifyDataSetChanged();
 	}
 

@@ -22,10 +22,8 @@ public class UpdateReceiver extends BroadcastReceiver {
 	private static final String DELETE_CATEGORY = "delete";
 	private static final String UPDATE_CATEGORY = "update";
 	private static final String PICTURE_CATEGORY = "picture";
-	
 
 	private static final String CATEGORY_KEY = "category";
-	
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -34,11 +32,13 @@ public class UpdateReceiver extends BroadcastReceiver {
 			JSONObject json = new JSONObject(intent.getExtras().getString(
 					"com.parse.Data"));
 
-			String id = json.getString("id");
+			final String id = json.getString("id");
 
 			final String cat = json.getString(CATEGORY_KEY);
 
-			if (cat.equals(DELETE_CATEGORY) || cat.equals(UPDATE_CATEGORY)) {
+			if (cat.equals(DELETE_CATEGORY)) {
+				MyAlarmManager.onPartnerAlarmInstanceDeleted(id);
+			} else if (cat.equals(UPDATE_CATEGORY)) {
 				ParseQuery<AlarmInstance> query = ParseQuery
 						.getQuery("AlarmInstance");
 				query.whereEqualTo("objectId", id);
@@ -47,18 +47,12 @@ public class UpdateReceiver extends BroadcastReceiver {
 					public void done(List<AlarmInstance> list, ParseException e) {
 						if (e == null) {
 							if (list.size() == 1) {
-								if (cat.equals(UPDATE_CATEGORY)) {
-									MyAlarmManager
-									.updatePartnerAlarmInstance(list
-											.get(0));
-								} else if (cat.equals(DELETE_CATEGORY)) {
-									MyAlarmManager
-									.onPartnerAlarmInstanceDeleted(list
-											.get(0));
-								}
+								MyAlarmManager.updatePartnerAlarmInstance(list
+										.get(0));
 							}
 						}
 					}
+
 				});
 			} else if (cat.equals(PICTURE_CATEGORY)) {
 				ParseQuery<AlarmInstance> query = ParseQuery

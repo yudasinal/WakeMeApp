@@ -3,37 +3,36 @@
     xmlns:glowpad="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="#3f2860" >
-    
+    android:background="#3f2860"
+    tools:context=".MainActivity" >
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="45dp"
-        android:layout_alignParentTop="true">
-        
-    <TextView
-        android:id="@+id/my_time"
-        android:layout_width = "wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#fa8b60"
-        android:textSize="80sp"
-        android:text="8:00"
-        />
-    
-    <TextView
-        android:id = "@+id/morningEvening"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:layout_toRightOf="@+id/my_time"
-        android:text="AM"
-        android:textColor="#fa8b60"
-        android:textSize="40sp"
-        android:layout_marginLeft="5dp"
-        android:layout_alignBaseline="@+id/my_time" />
+        android:layout_marginTop="45dp" >
 
+        <TextView
+            android:id="@+id/my_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8:00"
+            android:textColor="#fa8b60"
+            android:textSize="80sp" />
+
+        <TextView
+            android:id="@+id/morningEvening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/my_time"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/my_time"
+            android:text="AM"
+            android:textColor="#fa8b60"
+            android:textSize="40sp" />
     </RelativeLayout>
+
     <com.fima.glowpadview.GlowPadView
         android:id="@+id/glow_pad_view"
         android:layout_width="wrap_content"
