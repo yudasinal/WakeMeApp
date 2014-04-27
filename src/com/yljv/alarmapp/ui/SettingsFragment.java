@@ -79,21 +79,21 @@ public class SettingsFragment extends SherlockFragment implements
 		case User.INCOMING_REQUEST:
 			changePartnerName.setVisibility(View.GONE);
 			changePartnerEmail.setVisibility(View.GONE);
-			partnerActionUp.setText("Accept/Decline partner request");
-			String email = ApplicationSettings.getPartnerEmail();
-			partnerActionDown.setText(email + " wants to be your alarm buddy");
+			partnerActionUp.setText("Accept/Decline buddy request");
+			String name = ApplicationSettings.getPartnerName();
+			partnerActionDown.setText(name + " wants to be your alarm buddy");
 			break;
 		case User.NO_PARTNER:
 			changePartnerName.setVisibility(View.GONE);
 			changePartnerEmail.setVisibility(View.GONE);
-			partnerActionUp.setText("Add Partner");
-			partnerActionDown.setText(" ");
+			partnerActionUp.setText("Add an Alarm Buddy");
+			partnerActionDown.setText("Cause it's awesome");
 			break;
 		case User.PARTNER_REQUESTED:
 			changePartnerName.setVisibility(View.GONE);
 			changePartnerEmail.setVisibility(View.GONE);
 			partnerActionUp.setText("Cancel Partner Request");
-			email = ApplicationSettings.getPartnerEmail();
+			String email = ApplicationSettings.getPartnerEmail();
 			partnerActionDown.setText("Request sent to " + email);
 			break;
 		case User.PARTNERED:
@@ -295,8 +295,12 @@ public class SettingsFragment extends SherlockFragment implements
 								if(addPartnerEmail.getText() != null){
 									AccountManager.sendPartnerRequest(addPartnerEmail
 											.getText().toString(), fragment);
+									String changedPartnerName = addPartnerName
+											.getText().toString();
+									ApplicationSettings.setPartnerName(changedPartnerName);
+									String toast = "Invitation to " + changedPartnerName + " is sent";
 									Toast.makeText(getActivity(),
-											"Invitation to John is sent",
+											toast,
 											Toast.LENGTH_LONG).show();
 								}
 							}
