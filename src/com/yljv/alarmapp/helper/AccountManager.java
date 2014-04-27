@@ -261,6 +261,12 @@ public class AccountManager {
 						push.setChannel(channel);
 						push.setData(json);
 						push.sendInBackground();
+						
+
+						ParsePush p = new ParsePush();
+						p.setChannel(channel);
+						p.setMessage("Request");
+						p.sendInBackground();
 					} catch (Exception pe) {
 						pe.printStackTrace();
 					}

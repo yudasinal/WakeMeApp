@@ -41,6 +41,8 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private ParseFile pic;
 	private String musicPath;
 	private String message;
+	
+	private int id;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,15 +53,11 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
 
 		Bundle bundle = this.getArguments();
-		int id = bundle.getInt(AlarmInstance.COLUMN_ID);
+		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
 		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
-
-		MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);
-		byte[] picData = t.getPicData();
-		pic = new ParseFile(picData);
-		message = t.getMsg();
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		
 
 		mGlowPadView.setOnTriggerListener(this);
 
@@ -69,10 +67,13 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
 
-		MediaPlayer mpintro;
-		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
-		mpintro.setLooping(true);
-		mpintro.start();
+
+		MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);
+		byte[] picData = t.getPicData();
+		pic = new ParseFile(picData);
+		message = t.getMsg();
+
+		
 
 		Bitmap bmp;
 		try {
@@ -86,6 +87,12 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
+
+		MediaPlayer mpintro;
+		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
+		mpintro.setLooping(true);
+		mpintro.start();
+		
 		return view;
 	}
 
@@ -107,7 +114,6 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		switch (resId) {
 		case R.drawable.snooze_progress1:
 			// TODO snooze alarm
-
 			Intent intent1 = new Intent(this.getActivity(),
 					ChoiceActivity.class);
 			startActivity(intent1);
