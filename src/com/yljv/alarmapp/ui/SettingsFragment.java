@@ -303,11 +303,10 @@ public class SettingsFragment extends SherlockFragment implements
 									name = ApplicationSettings.getPartnerName();
 									partnerActionDown.setText("Request sent to " + name);
 									
-									String toast = "Invitation to " + changedPartnerName + " is sent";
-									Toast.makeText(getActivity(),
-											toast,
-											Toast.LENGTH_LONG).show();
 								}
+								String changedPartnerName = addPartnerName
+										.getText().toString();
+								ApplicationSettings.setPartnerName(changedPartnerName);
 							}
 						});
 
@@ -488,8 +487,12 @@ public class SettingsFragment extends SherlockFragment implements
 	@Override
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "Request sent", Toast.LENGTH_LONG)
-				.show();
+
+
+		String toast = "Invitation to " + ApplicationSettings.getPartnerName() + " is sent";
+		Toast.makeText(getActivity(),
+				toast,
+				Toast.LENGTH_LONG).show();
 
 	}
 
