@@ -121,6 +121,12 @@
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
+            android:name="com.yljv.alarmapp.FullScreenViewImage"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
             android:name="com.yljv.alarmapp.InvitationActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"

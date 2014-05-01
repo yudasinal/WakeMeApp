@@ -10,18 +10,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.FloatMath;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.EditText;
 
 import com.yljv.alarmapp.helper.SquareImageView;
@@ -102,10 +101,13 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 			switch(item.getItemId()) {
 			case R.id.cancel_alarm:
 				super.onBackPressed();
+				break;
 			case android.R.id.home:
 				super.onBackPressed();
+				break;
 			case R.id.save_alarm:
 				MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm, picturePath, addMessage.getText().toString());
+				break;
 			}
 			
 			return super.onOptionsItemSelected(item);
@@ -209,6 +211,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 			
 			if(requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
 				Uri selectedImage = data.getData();
+				
 				String[] filePathColumn = { MediaStore.Images.Media.DATA };
 				
 				Cursor cursor = getContentResolver().query(selectedImage, 
@@ -220,6 +223,27 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 				cursor.close();
 				
 				Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+				
+				try{
+					ExifInterface exif = new ExifInterface(picturePath);
+					int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+					Log.d("EXIF", "Exif: " + orientation);
+					Matrix matrix = new Matrix();
+					if(orientation == 6) {
+						matrix.postRotate(90);
+					}
+					else if(orientation == 3) {
+						matrix.postRotate(180);
+					}
+					else if(orientation == 8) {
+						matrix.postRotate(270);
+					}
+					bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+				}
+				catch(Exception e) {
+					
+				}
+				
 				addPicture.setImageBitmap(bitmap);
 				
 			}

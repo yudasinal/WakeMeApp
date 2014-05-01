@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.yljv.alarmapp.AddPicForPartnerActivity;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.helper.ApplicationSettings;
 import com.yljv.alarmapp.helper.PartnerClockAdapter;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
@@ -32,7 +33,12 @@ public class PartnerAlarmFragment extends Fragment {
 		listView = (ListView) view.findViewById(R.id.partner_clock_list);
 		getActivity().getActionBar().setTitle("Partner Alarms");
 		listView.setAdapter(MyAlarmManager.getPartnerClockAdapter(this.getActivity()));
-		listView.setEmptyView(view.findViewById(R.id.empty_list));
+		if(ApplicationSettings.hasPartner("hello") == true) {
+			listView.setEmptyView(view.findViewById(R.id.empty_list));
+		}
+		else{
+			listView.setEmptyView(view.findViewById(R.id.no_buddy));
+		}
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			
 			@Override
