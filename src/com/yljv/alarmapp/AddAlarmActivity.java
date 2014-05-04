@@ -1,10 +1,9 @@
 package com.yljv.alarmapp;
 
-import java.net.URI;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Ringtone;
@@ -12,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.ui.MyAlarmListFragment;
@@ -58,11 +60,14 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 	
 	Alarm alarm;
 	
-	
+	Context context;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		context = this;
+		
 		setContentView(R.layout.add_an_alarm);
 		timePicker = (TimePicker) findViewById(R.id.timePicker);
 		alarmName = (EditText) findViewById(R.id.alarm_name);
@@ -167,7 +172,20 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 			}
 		}
 		alarm.setVisible(true);
-		MyAlarmManager.setNewAlarm(this, alarm);
+		
+
+		alarm.saveInBackground(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				if (e == null) {
+					MyAlarmManager.setNewAlarm(context, alarm);
+					Log.i("WakemeApp", "Alarm saved");
+				} else {
+					Log.e("WakemeApp", "Alarm not saved");
+				}
+			}
+		});
 		
 		Intent intent = new Intent(this, MenuMainActivity.class);
 		startActivity(intent);
@@ -185,7 +203,7 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 	          Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
 	          if (uri != null) {
-	              this.chosenRingtone = uri.getPath();
+	              this.chosenRingtone = uri.toString();
 	              Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
 	              ringtoneButton.setText(ringtone.getTitle(this));
 	          }

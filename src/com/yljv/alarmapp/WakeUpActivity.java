@@ -13,55 +13,53 @@ import com.yljv.alarmapp.ui.WakeUpFragment;
 import com.yljv.alarmapp.ui.WakeUpFragmentNoExtra;
 
 public class WakeUpActivity extends FragmentActivity {
-	
+
 	private Fragment mainView;
 	boolean isThereSomething = true;
 
 	AlarmInstance alarm;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
-		
-		
+
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
 
 		int id = this.getIntent().getIntExtra(AlarmInstance.COLUMN_ID, 0);
-		
+
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mainView");
 		}
 		if (savedInstanceState == null) {
-			if(ApplicationSettings.hasPartner(ApplicationSettings.getUserEmail()) == true) {
-				if(isThereSomething) {
-					//TODO check if there's something uploaded to an alarm
+			if (ApplicationSettings.hasPartner()) {
+				if (isThereSomething) {
+					// TODO check if there's something uploaded to an alarm
 					Bundle bundle = new Bundle();
 					bundle.putInt(AlarmInstance.COLUMN_ID, id);
 					mainView = (Fragment) new WakeUpFragment();
 					mainView.setArguments(bundle);
-				}
-				else{
+				} else {
 					mainView = (Fragment) new WakeUpFragmentNoExtra();
 				}
-			}
-			else{
+			} else {
 				mainView = (Fragment) new WakeUpFragmentNoExtra();
 			}
 		}
 
+
+		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		MyAlarmManager.setNextAlarmInstance(alarm);
+		
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.content_frame, mainView).commit();
 
 
-		Alarm alarm = MyAlarmManager.findAlarmById(id/10 * 10);
-		MyAlarmManager.setNextAlarmInstance(alarm);
-
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -71,15 +69,15 @@ public class WakeUpActivity extends FragmentActivity {
 	public void switchContent(Fragment fragment) {
 		mainView = fragment;
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, fragment)
-				.addToBackStack(null).commit();
+				.replace(R.id.content_frame, fragment).addToBackStack(null)
+				.commit();
 		this.invalidateOptionsMenu();
 	}
-	
+
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
 		if (getIntent().getBooleanExtra("EXIT", false)) {
-            finish();
-        }
+			finish();
+		}
 	}
 }

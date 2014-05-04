@@ -66,7 +66,7 @@ public class ApplicationSettings {
 		ParseUser.getCurrentUser().saveEventually();
 	}
 	
-	public static boolean hasPartner(String userEmail){
+	public static boolean hasPartner(){
 		return preferences.getInt(PARTNER_STATUS, User.NO_PARTNER) == User.PARTNERED;
 	}
 	

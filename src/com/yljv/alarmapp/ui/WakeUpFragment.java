@@ -1,13 +1,21 @@
 package com.yljv.alarmapp.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,15 +49,17 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private ParseFile pic;
 	private String musicPath;
 	private String message;
-	
+
 	MediaPlayer mpintro;
+
+	View view;
 	
 	private int id;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.wake_up_layout, container, false);
+		view = inflater.inflate(R.layout.wake_up_layout, container, false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
 		myTime = (TextView) view.findViewById(R.id.my_time);
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
@@ -61,7 +71,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
 		if(musicPath.equals("")){
-			musicPath = "";
+			musicPath = "content://media/external/audio/media/11";
 		}
 		
 
@@ -73,32 +83,28 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
 
-
-		MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);
-		byte[] picData = t.getPicData();
-		if(picData!=null){
-			pic = new ParseFile(picData);
-			Bitmap bmp;
-			try {
-				bmp = BitmapFactory.decodeByteArray(pic.getData(), 0,
-						pic.getData().length);
-
-				MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-						bmp,
-						Long.toString(System.nanoTime()), "");
-			} catch (ParseException e) {
-				Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
-				e.printStackTrace();
-			}
+		try{
+			 Uri alert =  Uri.parse(musicPath);//RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+			 mpintro = new MediaPlayer();
+			 mpintro.setDataSource(this.getActivity(), alert);
+			  final AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
+			 if (audioManager.getStreamVolume(AudioManager.STREAM_RING) != 0) {
+				 mpintro.setAudioStreamType(AudioManager.STREAM_RING);
+			 mpintro.setLooping(true);
+			 mpintro.prepare();
+			 mpintro.start();
+			 }
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
-		message = t.getMsg();
 
-		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
-		mpintro.setLooping(true);
-		mpintro.start();
+		 return view; 
+		 
+		//mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
+		//mpintro.setLooping(true);
+		//mpintro.start();
 		
-		return view;
 	}
 
 	@Override
@@ -127,6 +133,9 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 		case R.drawable.pic_msg:
 			Fragment newContent = new PicMsgArrivedFragment();
+			Bundle bundle = new Bundle();
+			bundle.putInt(AlarmInstance.COLUMN_ID, id);
+			newContent.setArguments(bundle);
 			if (getActivity() instanceof WakeUpActivity) {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);

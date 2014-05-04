@@ -1,6 +1,8 @@
 package com.yljv.alarmapp.ui;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +25,9 @@ import com.yljv.alarmapp.R;
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
  */
+import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
 public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener {
 
@@ -31,6 +36,12 @@ public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener
 	private TextView myTime;
 	private TextView mornEv;
 	
+
+	MediaPlayer mpintro;
+	
+	String musicPath;
+	
+	int id;
 	
 	
 	@Override
@@ -43,11 +54,28 @@ public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener
 
 		mGlowPadView.setOnTriggerListener(this);
 		
+		
 		// uncomment this to make sure the glowpad doesn't vibrate on touch
 		// mGlowPadView.setVibrateEnabled(false);
 		
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
+		
+
+		Bundle bundle = this.getArguments();
+		id = bundle.getInt(AlarmInstance.COLUMN_ID);
+		
+		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		
+		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		if(musicPath.equals("")){
+			musicPath = "/internal/audio/media/9";
+		}
+		
+		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
+		mpintro.setLooping(true);
+		mpintro.start();
+		
 		return view;
 	}
 

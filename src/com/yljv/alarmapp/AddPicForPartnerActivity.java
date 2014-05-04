@@ -1,7 +1,15 @@
 	package com.yljv.alarmapp;
 
-	import android.app.Activity;
+	import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,16 +20,15 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.FloatMath;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.EditText;
 
 import com.yljv.alarmapp.helper.SquareImageView;
@@ -40,6 +47,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 		MenuItem addPic;
 		int width;
 		int height;
+		Context context;
 
 		private Matrix matrix = new Matrix();
 		private Matrix savedMatrix = new Matrix();
@@ -65,6 +73,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 		
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
+			context = this;
 			Display display = getWindowManager().getDefaultDisplay();
 			
 			String objectId = this.getIntent().getExtras().getString(AlarmInstance.COLUMN_OBJECT_ID);
@@ -106,6 +115,7 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 				super.onBackPressed();
 			case R.id.save_alarm:
 				MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm, picturePath, addMessage.getText().toString());
+				super.onBackPressed();
 			}
 			
 			return super.onOptionsItemSelected(item);
@@ -139,7 +149,9 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 						// TODO Auto-generated method stub
 						if(picOption[item].equals("Take Photo")) {
 							Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-							startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+						    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+						        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+						    }
 						}
 						else {
 							Intent i = new Intent(
@@ -222,8 +234,44 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 				Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
 				addPicture.setImageBitmap(bitmap);
 				
+				//TODO delete
+				try {
+					
+					String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+							.format(new Date());
+					String imageFileName = "JPEG_" + timeStamp + "_";
+					File storageDir = Environment
+							.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+					File image = File.createTempFile(imageFileName, /* prefix */
+							".jpg", /* suffix */
+							storageDir /* directory */
+					);
+
+					// Save a file: path for use with ACTION_VIEW intents
+					String mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+
+					FileOutputStream fos = new FileOutputStream(image.getPath());
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+					fos.flush();
+					fos.close();
+					
+					Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				    File f = new File(mCurrentPhotoPath);
+				    Uri contentUri = Uri.fromFile(f);
+				    mediaScanIntent.setData(contentUri);
+				    this.sendBroadcast(mediaScanIntent);
+				    
+				    //Images.Media.insertImage(getContentResolver(), bitmap, "picture", "description");
+
+					
+				} catch (IOException e) {
+					Log.e("WakeMeApp", "Exception", e);
+				}
+				
 			}
 		}
+		
+		
 
 		/*
 		@Override

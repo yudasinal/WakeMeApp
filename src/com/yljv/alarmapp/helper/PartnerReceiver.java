@@ -26,6 +26,7 @@ public class PartnerReceiver extends BroadcastReceiver{
 	public void onReceive(Context context, Intent intent) {
 		try {
 			
+
 			JSONObject json = new JSONObject(intent.getExtras().getString(
 					"com.parse.Data"));
 

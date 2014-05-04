@@ -1,12 +1,20 @@
 package com.yljv.alarmapp.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.parse.ParseUser;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.SplashActivity;
 import com.yljv.alarmapp.helper.AccountManager;
@@ -50,6 +59,8 @@ public class SettingsFragment extends SherlockFragment implements
 
 	Activity activity;
 	PartnerRequestListener fragment;
+	
+	View view;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +70,7 @@ public class SettingsFragment extends SherlockFragment implements
 
 		activity = this.getActivity();
 
-		View view = inflater
+		view = inflater
 				.inflate(R.layout.settings_layout, container, false);
 		TableRow changeMyName = (TableRow) view.findViewById(R.id.row1);
 		TableRow changeMyEmail = (TableRow) view.findViewById(R.id.row2);
@@ -449,8 +460,11 @@ public class SettingsFragment extends SherlockFragment implements
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							// TODO Save changed name
-
+							//TODO
+							//ParseUser user = ParseUser.getCurrentUser();
+							//user.deleteInBackground();
+							takeScreenshot();
+							Log.e("WakeMeApp", "Screenshot");
 						}
 					});
 
@@ -513,4 +527,24 @@ public class SettingsFragment extends SherlockFragment implements
 
 	}
 
+	public void takeScreenshot(){
+		View v = view.getRootView();
+		v.setDrawingCacheEnabled(true);
+		Bitmap b = v.getDrawingCache();
+		String extr = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+		long currentTime = System.currentTimeMillis();
+		File myPath = new File(extr, Long.toString(currentTime)+".jpg");
+		FileOutputStream fos = null;
+		try {
+		    fos = new FileOutputStream(myPath);
+		    b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+		    fos.flush();
+		    fos.close();
+		    MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), b, "Screen", "screen");
+		} catch (FileNotFoundException e) {
+			Log.e("WakeMeApp", "Error", e);
+		} catch (Exception e) {
+			Log.e("WakeMeApp", "Error", e);
+		}
+	}
 }

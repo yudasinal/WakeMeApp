@@ -207,7 +207,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 			@Override
 			public void done(ParseException e) {
-				MyAlarmManager.activateAlarm(alarm);
+				MyAlarmManager.setAlarmActivate(alarm);
 			}
 			
 		});
@@ -225,7 +225,6 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 	public void setMusicString(String path) {
 		if(path!=null){
-
 			values.put(Alarm.COLUMN_MUSIC_URI, path);
 			put(Alarm.COLUMN_MUSIC_URI, path);
 		}
