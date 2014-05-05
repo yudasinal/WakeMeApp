@@ -50,8 +50,6 @@ public class WakeUpActivity extends FragmentActivity {
 		}
 
 
-		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
-		MyAlarmManager.setNextAlarmInstance(alarm);
 		
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager().beginTransaction()

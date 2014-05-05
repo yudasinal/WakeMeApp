@@ -3,9 +3,14 @@ package com.yljv.alarmapp.ui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +26,7 @@ import android.widget.ImageView;
 
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.helper.MsgPictureTuple;
+import com.yljv.alarmapp.parse.database.Alarm;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
@@ -72,6 +78,12 @@ public class PicMsgArrivedFragment extends Fragment {
 		}
 
 		new TakeScreenshotTask().execute();
+		
+
+		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		if(alarm!=null){
+			MyAlarmManager.setNextAlarmInstance(alarm);
+		}
 
 		return view;
 	}
@@ -92,23 +104,42 @@ public class PicMsgArrivedFragment extends Fragment {
 	public void takeScreenshot() {
 		View v = view.getRootView();
 		v.setDrawingCacheEnabled(true);
-		Bitmap b = v.getDrawingCache();
-		String extr = Environment.getExternalStorageDirectory().toString();
-		long currentTime = System.currentTimeMillis();
-		File myPath = new File(extr, Long.toString(currentTime) + ".jpg");
-		FileOutputStream fos = null;
+
+		Bitmap bitmap = v.getDrawingCache();
+
 		try {
-			fos = new FileOutputStream(myPath);
-			b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+			
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+					.format(new Date());
+			String imageFileName = "JPEG_" + timeStamp + "_";
+			File storageDir = Environment
+					.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+			File image = File.createTempFile(imageFileName, /* prefix */
+					".jpg", /* suffix */
+					storageDir /* directory */
+			);
+
+			// Save a file: path for use with ACTION_VIEW intents
+			String mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+
+			FileOutputStream fos = new FileOutputStream(image.getPath());
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
 			fos.flush();
 			fos.close();
-			MediaStore.Images.Media.insertImage(getActivity()
-					.getContentResolver(), b, "Screen", "screen");
-		} catch (FileNotFoundException e) {
-			Log.e("WakeMeApp", "Error", e);
-		} catch (Exception e) {
-			Log.e("WakeMeApp", "Error", e);
+			
+			Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+		    File f = new File(mCurrentPhotoPath);
+		    Uri contentUri = Uri.fromFile(f);
+		    mediaScanIntent.setData(contentUri);
+		    getActivity().sendBroadcast(mediaScanIntent);
+		    
+		    //Images.Media.insertImage(getContentResolver(), bitmap, "picture", "description");
+
+			
+		} catch (IOException e) {
+			Log.e("WakeMeApp", "Exception", e);
 		}
+		
 	}
 
 }

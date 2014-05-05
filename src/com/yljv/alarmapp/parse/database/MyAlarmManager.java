@@ -133,6 +133,7 @@ public class MyAlarmManager {
 				.getInstance();
 		final GregorianCalendar cn = (GregorianCalendar) GregorianCalendar
 				.getInstance();
+		cn.set(Calendar.SECOND, 0);
 		cn.set(Calendar.MINUTE, alarm.getMinute());
 		cn.set(Calendar.HOUR_OF_DAY, alarm.getHourOfDay());
 		cn.set(Calendar.DAY_OF_WEEK, day);
@@ -206,6 +207,9 @@ public class MyAlarmManager {
 	public static void addPictureOrMessageToPartnerAlarm(
 			final AlarmInstance alarm, String picturePath, String message) {
 
+		alarm.setPictureSent(false);
+		pcAdapter.notifyDataSetChanged();
+		
 		if (message != null) {
 			alarm.put(AlarmInstance.COLUMN_MSG, message);
 		}
@@ -239,7 +243,6 @@ public class MyAlarmManager {
 
 									@Override
 									public void done(ParseException e) {
-										alarm.setPictureSent();
 										db.insertWithOnConflict(
 												AlarmInstance.PARTNER_TABLE_NAME,
 												null, alarm.getValues(),
@@ -261,6 +264,7 @@ public class MyAlarmManager {
 													.getTimeAsCalendar()
 													.getTimeInMillis());
 											push.sendInBackground();
+											alarm.setPictureSent(true);
 										} catch (Exception pe) {
 											pe.printStackTrace();
 										}
@@ -1059,7 +1063,7 @@ public class MyAlarmManager {
 		}
 	}
 
-	public static void setNextAlarmInstance(Alarm alarm) {
+	public static void setNextAlarmInstance(final Alarm alarm) {
 		boolean[] weekdays = alarm.getWeekdaysRepeated();
 
 		boolean activated = false;
@@ -1071,9 +1075,50 @@ public class MyAlarmManager {
 			}
 		}
 
+
+		
 		if (activated) {
-			GregorianCalendar now = (GregorianCalendar) Calendar.getInstance();
-			addAlarmInstance(context, alarm, now.get(Calendar.DAY_OF_WEEK));
+			final GregorianCalendar now = (GregorianCalendar) Calendar.getInstance();
+
+			ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+			String email = ApplicationSettings.getUserEmail();
+			query.whereEqualTo(AlarmInstance.COLUMN_ID, alarm.getInt(Alarm.COLUMN_ID) + now.get(Calendar.DAY_OF_WEEK));
+			query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
+			query.findInBackground(new FindCallback<AlarmInstance>() {
+				public void done(List<AlarmInstance> list, ParseException e) {
+					if (e == null) {
+						for (AlarmInstance ai : list) {
+							final String objectId = ai.getObjectId();
+							ai.deleteInBackground(new DeleteCallback(){
+
+								@Override
+								public void done(ParseException e) {
+									try {
+										JSONObject json = new JSONObject(
+
+										"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+												+ "\"id\": " + "\"" + objectId
+												+ "\", " + "\"category\": " + "\"delete\""
+												+ "}");
+
+										ParsePush push = new ParsePush();
+										push.setChannel(AccountManager.getSendingChannel());
+										push.setData(json);
+										push.sendInBackground();
+									} catch (Exception pe) {
+										pe.printStackTrace();
+									}
+									addAlarmInstance(context, alarm, now.get(Calendar.DAY_OF_WEEK));
+								}
+								
+							});
+							
+						}
+					} else {
+						e.printStackTrace();
+					}
+				}
+			});
 		} else {
 			alarm.setActivated(false);
 		}

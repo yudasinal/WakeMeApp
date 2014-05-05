@@ -32,6 +32,7 @@ public class MenuList extends SherlockListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
 		ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getActivity(),
 				R.layout.menu_layout, menu);
 		

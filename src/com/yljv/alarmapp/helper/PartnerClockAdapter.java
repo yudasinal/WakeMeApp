@@ -120,7 +120,8 @@ import com.yljv.alarmapp.parse.database.MyAlarmManager;
 					myHolder.timeView.setText(time);
 					myHolder.morEv.setText(morEv);
 					myHolder.dayView.setText(dayString);
-					if(hasPicture) {
+					
+					if(partnerAlarm.isPictureSent()){
 						
 						//TODO if the picture is already there
 						myHolder.picture.setImageResource(R.drawable.ic_action_picture);

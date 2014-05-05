@@ -70,7 +70,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
 		
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
-		if(musicPath.equals("")){
+		if(musicPath == null || musicPath.equals("")){
 			musicPath = "content://media/external/audio/media/11";
 		}
 		
@@ -86,6 +86,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		try{
 			 Uri alert =  Uri.parse(musicPath);//RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
 			 mpintro = new MediaPlayer();
+			 mpintro.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			 mpintro.setDataSource(this.getActivity(), alert);
 			  final AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
 			 if (audioManager.getStreamVolume(AudioManager.STREAM_RING) != 0) {

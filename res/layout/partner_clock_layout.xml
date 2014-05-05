@@ -25,5 +25,15 @@
         android:gravity = "center"
         android:textSize="24sp"
         android:textColor="#3f2860"/>
+    
+     <TextView 
+        android:id="@+id/no_buddy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		android:layout_gravity="center"
+        android:text="You don't have an alarm buddy :("
+        android:gravity = "center"
+        android:textSize="24sp"
+        android:textColor="#3f2860"/>
 
 </LinearLayout>

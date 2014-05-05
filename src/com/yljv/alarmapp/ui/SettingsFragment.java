@@ -56,6 +56,7 @@ public class SettingsFragment extends SherlockFragment implements
 	TextView partnerActionUp;
 	TextView partnerActionDown;
 	String name;
+	String changedPartnerName;
 
 	Activity activity;
 	PartnerRequestListener fragment;
@@ -99,12 +100,12 @@ public class SettingsFragment extends SherlockFragment implements
 			rowPartnerName.setVisibility(View.GONE);
 			rowPartnerEmail.setVisibility(View.GONE);
 			partnerActionUp.setText("Add an Alarm Buddy");
-			partnerActionDown.setText("Cause it's awesome");
+			partnerActionDown.setText("Cause it's awesome!");
 			break;
 		case User.PARTNER_REQUESTED:
 			rowPartnerName.setVisibility(View.GONE);
 			rowPartnerEmail.setVisibility(View.GONE);
-			partnerActionUp.setText("Cancel Partner Request");
+			partnerActionUp.setText("Cancel Buddy Request");
 			name = ApplicationSettings.getPartnerName();
 			partnerActionDown.setText("Request sent to " + name);
 			break;
@@ -215,7 +216,7 @@ public class SettingsFragment extends SherlockFragment implements
 
 			AlertDialog.Builder changePartnerName = new AlertDialog.Builder(
 					this.getActivity());
-			changePartnerName.setTitle("Change partner's name");
+			changePartnerName.setTitle("Change buddy's name");
 			final EditText newPartnerName = new EditText(this.getActivity());
 			newPartnerName.setId(TEXT_ID2);
 			changePartnerName.setView(newPartnerName);
@@ -249,9 +250,10 @@ public class SettingsFragment extends SherlockFragment implements
 
 			AlertDialog.Builder changePartnerEmail = new AlertDialog.Builder(
 					this.getActivity());
-			changePartnerEmail.setTitle("Change partner's email");
+			changePartnerEmail.setTitle("Change buddy's email");
 			final EditText newPartnerEmail = new EditText(this.getActivity());
 			newPartnerEmail.setId(TEXT_ID3);
+			newPartnerEmail.setText(ApplicationSettings.getPartnerEmail());
 			changePartnerEmail.setView(newPartnerEmail);
 			changePartnerEmail.setPositiveButton("Save",
 					new DialogInterface.OnClickListener() {
@@ -262,7 +264,7 @@ public class SettingsFragment extends SherlockFragment implements
 									.getText().toString();
 							ApplicationSettings
 									.setPartnerName(changedPartnerEmail);
-							partnerName.setText(ApplicationSettings
+							partnerEmail.setText(ApplicationSettings
 									.getPartnerEmail());
 
 						}
@@ -307,15 +309,10 @@ public class SettingsFragment extends SherlockFragment implements
 								if(addPartnerEmail.getText() != null){
 									AccountManager.sendPartnerRequest(addPartnerEmail
 											.getText().toString(), fragment);
-									String changedPartnerName = addPartnerName
-											.getText().toString();
-									ApplicationSettings.setPartnerName(changedPartnerName);
-									partnerActionUp.setText("Cancel Partner Request");
-									name = ApplicationSettings.getPartnerName();
-									partnerActionDown.setText("Request sent to " + name);
 									
 								}
-								String changedPartnerName = addPartnerName
+								
+								changedPartnerName = addPartnerName
 										.getText().toString();
 								ApplicationSettings.setPartnerName(changedPartnerName);
 							}
@@ -342,6 +339,10 @@ public class SettingsFragment extends SherlockFragment implements
 
 						rowPartnerName.setVisibility(View.VISIBLE);
 						rowPartnerEmail.setVisibility(View.VISIBLE);
+						partnerName = (TextView) view.findViewById(R.id.partner_name);
+						partnerName.setText(ApplicationSettings.getPartnerName());
+						partnerEmail = (TextView) view.findViewById(R.id.partner_email);
+						partnerEmail.setText(ApplicationSettings.getPartnerEmail());
 						
 						Toast.makeText(getActivity(),
 								"Buddy request accepted",
@@ -361,7 +362,7 @@ public class SettingsFragment extends SherlockFragment implements
 								Toast.LENGTH_LONG).show();
 
 						partnerActionUp.setText("Add an Alarm Buddy");
-						partnerActionDown.setText("Cause it's awesome");
+						partnerActionDown.setText("Cause it's awesome!");
 						
 					}
 				});
@@ -372,6 +373,10 @@ public class SettingsFragment extends SherlockFragment implements
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+
+						partnerActionUp.setText("Add an Alarm Buddy");
+						partnerActionDown.setText("Cause it's awesome!");
+						
 						Toast.makeText(getActivity(),
 								"Buddy request cancelled",
 								Toast.LENGTH_LONG).show();
@@ -402,7 +407,7 @@ public class SettingsFragment extends SherlockFragment implements
 								Toast.LENGTH_LONG).show();
 
 						partnerActionUp.setText("Add an Alarm Buddy");
-						partnerActionDown.setText("Cause it's awesome");
+						partnerActionDown.setText("Cause it's awesome!");
 					}
 					
 					
@@ -503,6 +508,10 @@ public class SettingsFragment extends SherlockFragment implements
 		// TODO Auto-generated method stub
 
 
+		ApplicationSettings.setPartnerName(changedPartnerName);
+		partnerActionUp.setText("Cancel Buddy Request");
+		name = ApplicationSettings.getPartnerName();
+		partnerActionDown.setText("Request sent to " + name);
 		String toast = "Invitation to " + ApplicationSettings.getPartnerName() + " is sent";
 		Toast.makeText(getActivity(),
 				toast,

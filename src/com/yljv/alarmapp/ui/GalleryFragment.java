@@ -2,10 +2,10 @@ package com.yljv.alarmapp.ui;
 
 import java.util.ArrayList;
 
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.ActionBar;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +13,70 @@ import android.widget.GridView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.helper.GalleryConstants;
+import com.yljv.alarmapp.helper.GalleryUtils;
+import com.yljv.alarmapp.helper.GridViewImageAdapter;
 
 /*
  * shows you all your saved pictures
  */
 public class GalleryFragment extends SherlockFragment{
+	
+	private GalleryUtils utils;
+    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private GridViewImageAdapter adapter;
+    private GridView gridView;
+    private int columnWidth;
+    
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ActionBar myBar = getActivity().getActionBar();
+		myBar.setTitle("Gallery");
+		setHasOptionsMenu(true);
+	}
+ 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.gallery_layout, container, false);
+ 
+        gridView = (GridView) view.findViewById(R.id.grid_view);
+ 
+        utils = new GalleryUtils(getActivity());
+ 
+        // Initilizing Grid View
+        InitilizeGridLayout();
+ 
+        // loading all image paths from SD card
+        imagePaths = utils.getFilePaths();
+ 
+        // Gridview adapter
+        adapter = new GridViewImageAdapter(getActivity(), imagePaths,
+                columnWidth);
+        
+        gridView.setAdapter(adapter);
+ 
+        return view;
+    }
+ 
+    private void InitilizeGridLayout() {
+        Resources r = getResources();
+        float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                GalleryConstants.GRID_PADDING, r.getDisplayMetrics());
+ 
+        columnWidth = (int) ((utils.getScreenWidth() - ((GalleryConstants.NUM_OF_COLUMNS + 1) * padding)) / GalleryConstants.NUM_OF_COLUMNS);
+ 
+        gridView.setNumColumns(GalleryConstants.NUM_OF_COLUMNS);
+        gridView.setColumnWidth(columnWidth);
+        gridView.setStretchMode(GridView.NO_STRETCH);
+        gridView.setPadding((int) padding, (int) padding, (int) padding,
+                (int) padding);
+        gridView.setHorizontalSpacing((int) padding);
+        gridView.setVerticalSpacing((int) padding);
+    }
+ 
+	/*
 	private GridView gridView;
 	private PictureAdapter myPictureAdapter;
 	
@@ -44,6 +103,7 @@ public class GalleryFragment extends SherlockFragment{
 		}
 		return pictureItems;
 	}
+	*/
 	
 	
 	

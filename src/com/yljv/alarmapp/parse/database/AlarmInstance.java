@@ -30,7 +30,7 @@ public class AlarmInstance extends ParseObject{
 	public final static String  COLUMN_OBJECT_ID = "object_id";
 	
 	private ContentValues values = new ContentValues();
-	private boolean sent = false;
+	private boolean sent = true;
 	
 
 	public AlarmInstance() {
@@ -125,8 +125,8 @@ public class AlarmInstance extends ParseObject{
 		put(COLUMN_MSG, msg);
 	}
 	
-	public void setPictureSent(){
-		this.sent = true;
+	public void setPictureSent(boolean b){
+		this.sent = b;
 	}
 	
 	public void setValues(ContentValues values){
