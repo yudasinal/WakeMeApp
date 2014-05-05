@@ -11,9 +11,13 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-public class RegisterPartnerActivity extends Activity implements OnClickListener {
+import com.yljv.alarmapp.helper.AccountManager;
+import com.yljv.alarmapp.helper.ApplicationSettings;
+import com.yljv.alarmapp.parse.database.PartnerRequestListener;
+
+public class RegisterPartnerActivity extends Activity implements OnClickListener, PartnerRequestListener {
 	
 	Button btnSkip;
 	Button btnInvite;
@@ -45,6 +49,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
+			AccountManager.sendPartnerRequest(email, this);
 		Intent main = new Intent(this, MenuMainActivity.class);
 	
 		startActivity(main);
@@ -58,6 +63,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 		btnInvite = (Button) findViewById(R.id.btnInvite);
 		btnSkip = (Button) findViewById(R.id.btnSkip);
 		btnInvite.setOnClickListener(this);
+		btnSkip.setOnClickListener(this);
 		partnerEmail = (EditText) findViewById(R.id.partner_email);
 		partnerName = (EditText) findViewById(R.id.partner_name);
 		
@@ -109,9 +115,56 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
-			Intent main = new Intent(this, MenuMainActivity.class);
-
-			startActivity(main);
+			AccountManager.sendPartnerRequest(email, this);
 		}
+
+	}
+	
+
+
+	@Override
+	public void onNoPartnerFound() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "No Buddy Found",
+				Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onAlreadyPartnered() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "You already have a buddy",
+				Toast.LENGTH_LONG).show();
+
+	}
+
+	@Override
+	public void onPartnerRequested() {
+		// TODO Auto-generated method stub
+
+		String toast = "Invitation to " + ApplicationSettings.getPartnerName() + " is sent";
+		Toast.makeText(this,
+				toast,
+				Toast.LENGTH_LONG).show();
+
+		Intent main = new Intent(this, MenuMainActivity.class);
+		startActivity(main);
+
+	}
+
+	@Override
+	public void onOlderRequestAlreadySent() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "You have sent a request before",
+				Toast.LENGTH_LONG).show();
+
+	}
+
+	@Override
+	public void onPartnerNotAvailable() {
+		// TODO Auto-generated method stub
+		Toast.makeText(this,
+				"The requested Buddy is not available", Toast.LENGTH_LONG)
+				.show();
+
 	}
 }

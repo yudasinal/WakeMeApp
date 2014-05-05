@@ -1,10 +1,12 @@
 package com.yljv.alarmapp.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,19 @@ public class GalleryFragment extends SherlockFragment{
         InitilizeGridLayout();
  
         // loading all image paths from SD card
-        imagePaths = utils.getFilePaths();
+        File path = new File(Environment
+				.getExternalStorageDirectory().getAbsolutePath()
+				+ "/WakeMeApp");
+        String[] fileNames;
+        
+        if(path.exists())
+        {
+            fileNames = path.list();
+            for(String s : fileNames){
+            	imagePaths.add(s);
+            }
+        }
+        
  
         // Gridview adapter
         adapter = new GridViewImageAdapter(getActivity(), imagePaths,

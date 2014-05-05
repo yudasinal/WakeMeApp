@@ -466,9 +466,8 @@ public class SettingsFragment extends SherlockFragment implements
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							//TODO
-							//ParseUser user = ParseUser.getCurrentUser();
-							//user.deleteInBackground();
-							takeScreenshot();
+							ParseUser user = ParseUser.getCurrentUser();
+							user.deleteInBackground();
 							Log.e("WakeMeApp", "Screenshot");
 						}
 					});

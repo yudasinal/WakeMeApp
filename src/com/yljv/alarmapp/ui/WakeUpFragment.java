@@ -3,6 +3,7 @@ package com.yljv.alarmapp.ui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -68,6 +69,16 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
 		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		int hour = alarm.getHour();
+		int minute = alarm.getMinute();
+		
+		String time;
+		String hourS = (hour < 10) ? "0" + Integer.toString(hour) : Integer.toString(hour);
+		String minuteS = (minute < 10) ? "0" + Integer.toString(minute) : Integer.toString(minute);
+		time = hourS + ":" + minuteS;
+		myTime.setText(time);
+		String am_pm = (alarm.getTimeInMinutes() < 12*60) ? "AM" : "PM";
+		mornEv.setText(am_pm);
 		
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
 		if(musicPath == null || musicPath.equals("")){

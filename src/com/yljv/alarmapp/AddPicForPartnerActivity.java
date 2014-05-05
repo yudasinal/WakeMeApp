@@ -126,37 +126,7 @@ public class AddPicForPartnerActivity extends Activity implements
 			MyAlarmManager.addPictureOrMessageToPartnerAlarm(alarm,
 					picturePath, addMessage.getText().toString());
 
-			View view = (View) findViewById(R.id.screen);
-			View v = view.getRootView();
-			v.setDrawingCacheEnabled(true);
-
-			Bitmap bitmap = v.getDrawingCache();
-
-			try {
-
-				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-						.format(new Date());
-				String imageFileName = "JPEG_" + timeStamp + "_";
-				
-				File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WakeMeApp");
-				storageDir.mkdirs();
-				
-				File image = File.createTempFile(imageFileName, ".jpg",
-						storageDir);
-
-				// Save a file: path for use with ACTION_VIEW intents
-				String mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-
-				FileOutputStream fos = new FileOutputStream(image.getPath());
-				bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
-				fos.flush();
-				fos.close();
-
-				new SingleMediaScanner(this, image);
-				
-			} catch (IOException e) {
-				Log.e("WakeMeApp", "Exception", e);
-			}
+			
 
 			/*
 			 * View view = (View) findViewById(R.id.screen); view =

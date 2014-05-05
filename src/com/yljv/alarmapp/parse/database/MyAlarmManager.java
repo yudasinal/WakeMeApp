@@ -179,23 +179,27 @@ public class MyAlarmManager {
 						ai.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
 				if (ai.isVisible()) {
-					ParsePush push = new ParsePush();
-					push.setChannel(AccountManager.getSendingChannel());
+					if (AccountManager.hasPartner()) {
+						ParsePush push = new ParsePush();
+						push.setChannel(AccountManager.getSendingChannel());
 
-					JSONObject json;
-					try {
-						json = new JSONObject(
+						JSONObject json;
+						try {
+							json = new JSONObject(
 
-						"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-								+ "\"id\": " + "\"" + ai.getObjectId() + "\", "
-								+ "\"category\": " + "\"update\"" + "}");
+							"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+									+ "\"id\": " + "\"" + ai.getObjectId()
+									+ "\", " + "\"category\": " + "\"update\""
+									+ "}");
 
-						push.setData(json);
-						push.setExpirationTime(ai.getTimeInMillis());
-						push.sendInBackground();
-					} catch (JSONException e1) {
-						e1.printStackTrace();
+							push.setData(json);
+							push.setExpirationTime(ai.getTimeInMillis());
+							push.sendInBackground();
+						} catch (JSONException e1) {
+							e1.printStackTrace();
+						}
 					}
+
 				}
 			}
 
@@ -209,7 +213,7 @@ public class MyAlarmManager {
 
 		alarm.setPictureSent(false);
 		pcAdapter.notifyDataSetChanged();
-		
+
 		if (message != null) {
 			alarm.put(AlarmInstance.COLUMN_MSG, message);
 		}
@@ -247,27 +251,31 @@ public class MyAlarmManager {
 												AlarmInstance.PARTNER_TABLE_NAME,
 												null, alarm.getValues(),
 												SQLiteDatabase.CONFLICT_REPLACE);
-										ParsePush push = new ParsePush();
-										push.setChannel(AccountManager
-												.getSendingChannel());
-										try {
-											JSONObject json = new JSONObject(
+										if (AccountManager.hasPartner()) {
+											ParsePush push = new ParsePush();
+											push.setChannel(AccountManager
+													.getSendingChannel());
+											try {
+												JSONObject json = new JSONObject(
 
-											"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-													+ "\"id\": " + "\""
-													+ alarm.getObjectId()
-													+ "\", " + "\"category\": "
-													+ "\"picture\"" + "}");
+												"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+														+ "\"id\": " + "\""
+														+ alarm.getObjectId()
+														+ "\", "
+														+ "\"category\": "
+														+ "\"picture\"" + "}");
 
-											push.setData(json);
-											push.setExpirationTime(alarm
-													.getTimeAsCalendar()
-													.getTimeInMillis());
-											push.sendInBackground();
-											alarm.setPictureSent(true);
-										} catch (Exception pe) {
-											pe.printStackTrace();
+												push.setData(json);
+												push.setExpirationTime(alarm
+														.getTimeAsCalendar()
+														.getTimeInMillis());
+												push.sendInBackground();
+												alarm.setPictureSent(true);
+											} catch (Exception pe) {
+												pe.printStackTrace();
+											}
 										}
+
 									}
 
 								});
@@ -289,22 +297,24 @@ public class MyAlarmManager {
 					db.insertWithOnConflict(AlarmInstance.PARTNER_TABLE_NAME,
 							null, alarm.getValues(),
 							SQLiteDatabase.CONFLICT_REPLACE);
-					ParsePush push = new ParsePush();
-					push.setChannel(AccountManager.getSendingChannel());
-					try {
-						JSONObject json = new JSONObject(
+					if (AccountManager.hasPartner()) {
+						ParsePush push = new ParsePush();
+						push.setChannel(AccountManager.getSendingChannel());
+						try {
+							JSONObject json = new JSONObject(
 
-						"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-								+ "\"id\": " + "\"" + alarm.getObjectId()
-								+ "\", " + "\"category\": " + "\"picture\""
-								+ "}");
+							"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+									+ "\"id\": " + "\"" + alarm.getObjectId()
+									+ "\", " + "\"category\": " + "\"picture\""
+									+ "}");
 
-						push.setData(json);
-						push.setExpirationTime(alarm.getTimeAsCalendar()
-								.getTimeInMillis());
-						push.sendInBackground();
-					} catch (Exception pe) {
-						pe.printStackTrace();
+							push.setData(json);
+							push.setExpirationTime(alarm.getTimeAsCalendar()
+									.getTimeInMillis());
+							push.sendInBackground();
+						} catch (Exception pe) {
+							pe.printStackTrace();
+						}
 					}
 				}
 			});
@@ -780,7 +790,7 @@ public class MyAlarmManager {
 			counter++;
 		}
 
-		if (counter != 0 && alarm.isVisible()) {
+		if (counter != 0 && alarm.isVisible() && AccountManager.hasPartner()) {
 			ParsePush push = new ParsePush();
 			push.setChannel(AccountManager.getSendingChannel());
 			push.setMessage("Hey, I just set a new Alarm!");
@@ -818,20 +828,24 @@ public class MyAlarmManager {
 				if (e == null) {
 					for (AlarmInstance ai : list) {
 						ai.deleteEventually();
-						try {
-							JSONObject json = new JSONObject(
 
-							"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-									+ "\"id\": " + "\"" + ai.getObjectId()
-									+ "\", " + "\"category\": " + "\"delete\""
-									+ "}");
+						if (AccountManager.hasPartner()) {
+							try {
+								JSONObject json = new JSONObject(
 
-							ParsePush push = new ParsePush();
-							push.setChannel(AccountManager.getSendingChannel());
-							push.setData(json);
-							push.sendInBackground();
-						} catch (Exception pe) {
-							pe.printStackTrace();
+								"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+										+ "\"id\": " + "\"" + ai.getObjectId()
+										+ "\", " + "\"category\": "
+										+ "\"delete\"" + "}");
+
+								ParsePush push = new ParsePush();
+								push.setChannel(AccountManager
+										.getSendingChannel());
+								push.setData(json);
+								push.sendInBackground();
+							} catch (Exception pe) {
+								pe.printStackTrace();
+							}
 						}
 					}
 				} else {
@@ -872,7 +886,7 @@ public class MyAlarmManager {
 			counter++;
 		}
 
-		if (counter != 0 && alarm.isVisible()) {
+		if (counter != 0 && alarm.isVisible() && AccountManager.hasPartner()) {
 			ParsePush push = new ParsePush();
 			push.setChannel(AccountManager.getSendingChannel());
 			push.setMessage("Hey, I just set a new Alarm!");
@@ -945,38 +959,42 @@ public class MyAlarmManager {
 	}
 
 	private static void setMyAlarmInstanceVisible(AlarmInstance ai) {
-		ParsePush push = new ParsePush();
-		push.setChannel(AccountManager.getSendingChannel());
-		try {
-			JSONObject json = new JSONObject(
+		if (AccountManager.hasPartner()) {
+			ParsePush push = new ParsePush();
+			push.setChannel(AccountManager.getSendingChannel());
+			try {
+				JSONObject json = new JSONObject(
 
-			"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": " + "\""
-					+ ai.getObjectId() + "\", " + "\"category\": "
-					+ "\"update\"" + "}");
+				"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": "
+						+ "\"" + ai.getObjectId() + "\", " + "\"category\": "
+						+ "\"update\"" + "}");
 
-			push.setData(json);
-			push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
-			push.sendInBackground();
-		} catch (Exception pe) {
-			pe.printStackTrace();
+				push.setData(json);
+				push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
+				push.sendInBackground();
+			} catch (Exception pe) {
+				pe.printStackTrace();
+			}
 		}
 	}
 
 	private static void setMyAlarmInstanceInvisible(AlarmInstance ai) {
-		ParsePush push = new ParsePush();
-		push.setChannel(AccountManager.getSendingChannel());
-		try {
-			JSONObject json = new JSONObject(
+		if (AccountManager.hasPartner()) {
+			ParsePush push = new ParsePush();
+			push.setChannel(AccountManager.getSendingChannel());
+			try {
+				JSONObject json = new JSONObject(
 
-			"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": " + "\""
-					+ ai.getObjectId() + "\", " + "\"category\": "
-					+ "\"delete\"" + "}");
+				"{action: \"com.yljv.alarmapp.UPDATE_ALARM\"," + "\"id\": "
+						+ "\"" + ai.getObjectId() + "\", " + "\"category\": "
+						+ "\"delete\"" + "}");
 
-			push.setData(json);
-			push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
-			push.sendInBackground();
-		} catch (Exception pe) {
-			pe.printStackTrace();
+				push.setData(json);
+				push.setExpirationTime(ai.getTimeAsCalendar().getTimeInMillis());
+				push.sendInBackground();
+			} catch (Exception pe) {
+				pe.printStackTrace();
+			}
 		}
 	}
 
@@ -1047,7 +1065,8 @@ public class MyAlarmManager {
 				counter++;
 			}
 
-			if (counter != 0 && alarm.isVisible()) {
+			if (counter != 0 && alarm.isVisible()
+					&& AccountManager.hasPartner()) {
 				ParsePush push = new ParsePush();
 				push.setChannel(AccountManager.getSendingChannel());
 				push.setMessage("Hey, I just set a new Alarm!");
@@ -1075,44 +1094,52 @@ public class MyAlarmManager {
 			}
 		}
 
-
-		
 		if (activated) {
-			final GregorianCalendar now = (GregorianCalendar) Calendar.getInstance();
+			final GregorianCalendar now = (GregorianCalendar) Calendar
+					.getInstance();
 
-			ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+			ParseQuery<AlarmInstance> query = ParseQuery
+					.getQuery("AlarmInstance");
 			String email = ApplicationSettings.getUserEmail();
-			query.whereEqualTo(AlarmInstance.COLUMN_ID, alarm.getInt(Alarm.COLUMN_ID) + now.get(Calendar.DAY_OF_WEEK));
+			query.whereEqualTo(
+					AlarmInstance.COLUMN_ID,
+					alarm.getInt(Alarm.COLUMN_ID)
+							+ now.get(Calendar.DAY_OF_WEEK));
 			query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
 			query.findInBackground(new FindCallback<AlarmInstance>() {
 				public void done(List<AlarmInstance> list, ParseException e) {
 					if (e == null) {
 						for (AlarmInstance ai : list) {
 							final String objectId = ai.getObjectId();
-							ai.deleteInBackground(new DeleteCallback(){
+							ai.deleteInBackground(new DeleteCallback() {
 
 								@Override
 								public void done(ParseException e) {
-									try {
-										JSONObject json = new JSONObject(
+									if (AccountManager.hasPartner()) {
+										try {
+											JSONObject json = new JSONObject(
 
-										"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
-												+ "\"id\": " + "\"" + objectId
-												+ "\", " + "\"category\": " + "\"delete\""
-												+ "}");
+											"{action: \"com.yljv.alarmapp.UPDATE_ALARM\","
+													+ "\"id\": " + "\""
+													+ objectId + "\", "
+													+ "\"category\": "
+													+ "\"delete\"" + "}");
 
-										ParsePush push = new ParsePush();
-										push.setChannel(AccountManager.getSendingChannel());
-										push.setData(json);
-										push.sendInBackground();
-									} catch (Exception pe) {
-										pe.printStackTrace();
+											ParsePush push = new ParsePush();
+											push.setChannel(AccountManager
+													.getSendingChannel());
+											push.setData(json);
+											push.sendInBackground();
+										} catch (Exception pe) {
+											pe.printStackTrace();
+										}
 									}
-									addAlarmInstance(context, alarm, now.get(Calendar.DAY_OF_WEEK));
+									addAlarmInstance(context, alarm,
+											now.get(Calendar.DAY_OF_WEEK));
 								}
-								
+
 							});
-							
+
 						}
 					} else {
 						e.printStackTrace();

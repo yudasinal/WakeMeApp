@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.yljv.alarmapp.helper.ApplicationSettings;
-import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.helper.MsgPictureTuple;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.ui.WakeUpFragment;
@@ -35,18 +35,20 @@ public class WakeUpActivity extends FragmentActivity {
 		}
 		if (savedInstanceState == null) {
 			if (ApplicationSettings.hasPartner()) {
-				if (isThereSomething) {
+				MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);				if(t.getMsg()!=null && t.getPicData()!=null) {
 					// TODO check if there's something uploaded to an alarm
-					Bundle bundle = new Bundle();
-					bundle.putInt(AlarmInstance.COLUMN_ID, id);
 					mainView = (Fragment) new WakeUpFragment();
-					mainView.setArguments(bundle);
 				} else {
 					mainView = (Fragment) new WakeUpFragmentNoExtra();
 				}
 			} else {
 				mainView = (Fragment) new WakeUpFragmentNoExtra();
 			}
+
+			Bundle bundle = new Bundle();
+			bundle.putInt(AlarmInstance.COLUMN_ID, id);
+			mainView.setArguments(bundle);
+
 		}
 
 

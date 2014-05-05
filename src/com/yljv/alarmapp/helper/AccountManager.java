@@ -44,10 +44,15 @@ public class AccountManager {
 
 	public static String getSendingChannel() {
 
-		String email = ParseUser.getCurrentUser()
-				.getString(User.PARTNER_COLUMN).replace('.', '_');
-		email = email.replace('@', '_');
-		return "user_" + email;
+		if(AccountManager.hasPartner()){
+
+			String email = ParseUser.getCurrentUser()
+					.getString(User.PARTNER_COLUMN).replace('.', '_');
+			email = email.replace('@', '_');
+			return "user_" + email;	
+		}else{
+			return null;
+		}
 	}
 
 	public static String getSubscribedChannel() {
