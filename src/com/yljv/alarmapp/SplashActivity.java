@@ -1,7 +1,5 @@
 package com.yljv.alarmapp;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +9,12 @@ import android.widget.TextView;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
-import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
-import com.yljv.alarmapp.parse.database.ParsePartnerAlarmListener;
-
 /*
  * very first screen to see after opening the app
  * disappears after a few seconds
  */
+ 
 public class SplashActivity extends Activity {
 
 	@Override
@@ -74,4 +70,7 @@ public class SplashActivity extends Activity {
 		startActivity(intent);
 		finish();
 	}
+ 
 }
+
+
