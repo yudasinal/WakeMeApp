@@ -6,62 +6,60 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.yljv.alarmapp.helper.ApplicationSettings;
-import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.helper.MsgPictureTuple;
 import com.yljv.alarmapp.parse.database.AlarmInstance;
 import com.yljv.alarmapp.parse.database.MyAlarmManager;
 import com.yljv.alarmapp.ui.WakeUpFragment;
 import com.yljv.alarmapp.ui.WakeUpFragmentNoExtra;
 
 public class WakeUpActivity extends FragmentActivity {
-	
+
 	private Fragment mainView;
 	boolean isThereSomething = true;
 
 	AlarmInstance alarm;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
-		
-		
+
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		getActionBar().hide();
 
 		int id = this.getIntent().getIntExtra(AlarmInstance.COLUMN_ID, 0);
-		
+
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mainView");
 		}
 		if (savedInstanceState == null) {
-			if(ApplicationSettings.hasPartner(ApplicationSettings.getUserEmail()) == true) {
-				if(isThereSomething) {
-					//TODO check if there's something uploaded to an alarm
-					Bundle bundle = new Bundle();
-					bundle.putInt(AlarmInstance.COLUMN_ID, id);
+			if (ApplicationSettings.hasPartner()) {
+				MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);				if(t.getMsg()!=null && t.getPicData()!=null) {
+					// TODO check if there's something uploaded to an alarm
 					mainView = (Fragment) new WakeUpFragment();
-					mainView.setArguments(bundle);
-				}
-				else{
+				} else {
 					mainView = (Fragment) new WakeUpFragmentNoExtra();
 				}
-			}
-			else{
+			} else {
 				mainView = (Fragment) new WakeUpFragmentNoExtra();
 			}
+
+			Bundle bundle = new Bundle();
+			bundle.putInt(AlarmInstance.COLUMN_ID, id);
+			mainView.setArguments(bundle);
+
 		}
 
+
+		
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.content_frame, mainView).commit();
 
 
-		Alarm alarm = MyAlarmManager.findAlarmById(id/10 * 10);
-		MyAlarmManager.setNextAlarmInstance(alarm);
-
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -71,15 +69,15 @@ public class WakeUpActivity extends FragmentActivity {
 	public void switchContent(Fragment fragment) {
 		mainView = fragment;
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, fragment)
-				.addToBackStack(null).commit();
+				.replace(R.id.content_frame, fragment).addToBackStack(null)
+				.commit();
 		this.invalidateOptionsMenu();
 	}
-	
+
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
 		if (getIntent().getBooleanExtra("EXIT", false)) {
-            finish();
-        }
+			finish();
+		}
 	}
 }

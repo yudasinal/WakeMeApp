@@ -1,13 +1,22 @@
 package com.yljv.alarmapp.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Calendar;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +50,17 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private ParseFile pic;
 	private String musicPath;
 	private String message;
+
+	MediaPlayer mpintro;
+
+	View view;
 	
 	private int id;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.wake_up_layout, container, false);
+		view = inflater.inflate(R.layout.wake_up_layout, container, false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
 		myTime = (TextView) view.findViewById(R.id.my_time);
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
@@ -56,7 +69,21 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
 		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		int hour = alarm.getHour();
+		int minute = alarm.getMinute();
+		
+		String time;
+		String hourS = (hour < 10) ? "0" + Integer.toString(hour) : Integer.toString(hour);
+		String minuteS = (minute < 10) ? "0" + Integer.toString(minute) : Integer.toString(minute);
+		time = hourS + ":" + minuteS;
+		myTime.setText(time);
+		String am_pm = (alarm.getTimeInMinutes() < 12*60) ? "AM" : "PM";
+		mornEv.setText(am_pm);
+		
 		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		if(musicPath == null || musicPath.equals("")){
+			musicPath = "content://media/external/audio/media/11";
+		}
 		
 
 		mGlowPadView.setOnTriggerListener(this);
@@ -67,33 +94,29 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
 
-
-		MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);
-		byte[] picData = t.getPicData();
-		pic = new ParseFile(picData);
-		message = t.getMsg();
-
-		
-
-		Bitmap bmp;
-		try {
-			bmp = BitmapFactory.decodeByteArray(pic.getData(), 0,
-					pic.getData().length);
-
-			MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-					bmp,
-					Long.toString(System.nanoTime()), "");
-		} catch (ParseException e) {
-			Toast.makeText(this.getActivity(), "Problem in saving picture to gallery", Toast.LENGTH_LONG).show();
+		try{
+			 Uri alert =  Uri.parse(musicPath);//RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+			 mpintro = new MediaPlayer();
+			 mpintro.setAudioStreamType(AudioManager.STREAM_MUSIC);
+			 mpintro.setDataSource(this.getActivity(), alert);
+			  final AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
+			 if (audioManager.getStreamVolume(AudioManager.STREAM_RING) != 0) {
+				 mpintro.setAudioStreamType(AudioManager.STREAM_RING);
+			 mpintro.setLooping(true);
+			 mpintro.prepare();
+			 mpintro.start();
+			 }
+		}catch(Exception e){
 			e.printStackTrace();
 		}
-
-		MediaPlayer mpintro;
-		mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
-		mpintro.setLooping(true);
-		mpintro.start();
 		
-		return view;
+
+		 return view; 
+		 
+		//mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
+		//mpintro.setLooping(true);
+		//mpintro.start();
+		
 	}
 
 	@Override
@@ -117,14 +140,19 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			Intent intent1 = new Intent(this.getActivity(),
 					ChoiceActivity.class);
 			startActivity(intent1);
+			mpintro.stop();
 			break;
 
 		case R.drawable.pic_msg:
 			Fragment newContent = new PicMsgArrivedFragment();
+			Bundle bundle = new Bundle();
+			bundle.putInt(AlarmInstance.COLUMN_ID, id);
+			newContent.setArguments(bundle);
 			if (getActivity() instanceof WakeUpActivity) {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
 			}
+			mpintro.stop();
 			break;
 		default:
 			// Code should never reach here.

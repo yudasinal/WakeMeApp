@@ -1,8 +1,23 @@
 package com.yljv.alarmapp.ui;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +30,7 @@ import com.yljv.alarmapp.ChoiceActivity;
 //import com.fima.glowpadview.GlowPadView;
 //import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.helper.SingleMediaScanner;
 /*
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
@@ -23,31 +39,82 @@ import com.yljv.alarmapp.R;
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
  */
+import com.yljv.alarmapp.parse.database.Alarm;
+import com.yljv.alarmapp.parse.database.AlarmInstance;
+import com.yljv.alarmapp.parse.database.MyAlarmManager;
 
-public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener {
+public class WakeUpFragmentNoExtra extends Fragment implements
+		OnTriggerListener {
 
-	
 	private GlowPadView mGlowPadView;
 	private TextView myTime;
 	private TextView mornEv;
-	
-	
-	
+
+	MediaPlayer mpintro;
+
+	String musicPath;
+
+	int id;
+
+	View view;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.wakeup_layout_no_extra, container, false);
+		view = inflater.inflate(R.layout.wakeup_layout_no_extra, container,
+				false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
 		myTime = (TextView) view.findViewById(R.id.my_time);
 		mornEv = (TextView) view.findViewById(R.id.morningEvening);
 
 		mGlowPadView.setOnTriggerListener(this);
-		
+
 		// uncomment this to make sure the glowpad doesn't vibrate on touch
 		// mGlowPadView.setVibrateEnabled(false);
-		
+
 		// uncomment this to hide targets
 		mGlowPadView.setShowTargetsOnIdle(true);
+
+		Bundle bundle = this.getArguments();
+		id = bundle.getInt(AlarmInstance.COLUMN_ID);
+
+		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		int hour = alarm.getHour();
+		int minute = alarm.getMinute();
+
+		String time;
+		String hourS = (hour < 10) ? "0" + Integer.toString(hour) : Integer
+				.toString(hour);
+		String minuteS = (minute < 10) ? "0" + Integer.toString(minute)
+				: Integer.toString(minute);
+		time = hourS + ":" + minuteS;
+		myTime.setText(time);
+		String am_pm = (alarm.getTimeInMinutes() < 12 * 60) ? "AM" : "PM";
+		mornEv.setText(am_pm);
+
+		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		if (musicPath == null || musicPath.equals("")) {
+			musicPath = "content://media/external/audio/media/11";
+		}
+		try {
+			Uri alert = Uri.parse(musicPath);// RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+			mpintro = new MediaPlayer();
+			mpintro.setAudioStreamType(AudioManager.STREAM_MUSIC);
+			mpintro.setDataSource(this.getActivity(), alert);
+			final AudioManager audioManager = (AudioManager) this.getActivity()
+					.getSystemService(Context.AUDIO_SERVICE);
+			if (audioManager.getStreamVolume(AudioManager.STREAM_RING) != 0) {
+				mpintro.setAudioStreamType(AudioManager.STREAM_RING);
+				mpintro.setLooping(true);
+				mpintro.prepare();
+				mpintro.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		new TakeScreenshotTask().execute();
+
 		return view;
 	}
 
@@ -68,9 +135,11 @@ public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener
 		final int resId = mGlowPadView.getResourceIdForTarget(target);
 		switch (resId) {
 		case R.drawable.snooze_progress1:
-			//TODO snooze alarm 
-			Intent intent1 = new Intent(this.getActivity(), ChoiceActivity.class);
-			startActivity(intent1);break;
+			// TODO snooze alarm
+			Intent intent1 = new Intent(this.getActivity(),
+					ChoiceActivity.class);
+			startActivity(intent1);
+			break;
 
 		case R.drawable.checkmark:
 			getActivity().finish();
@@ -93,6 +162,53 @@ public class WakeUpFragmentNoExtra extends Fragment implements OnTriggerListener
 		// TODO Auto-generated method stub
 
 	}
-	
+
+	private class TakeScreenshotTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				Log.e("WakeMeApp", "error", e);
+			}
+			takeScreenshot();
+			return null;
+		}
+	}
+
+	public void takeScreenshot() {
+		View v = view.getRootView();
+		v.setDrawingCacheEnabled(true);
+
+		Bitmap bitmap = v.getDrawingCache();
+
+		try {
+
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+					.format(new Date());
+			String imageFileName = "JPEG_" + timeStamp + "_";
+
+			File storageDir = new File(Environment
+					.getExternalStorageDirectory().getAbsolutePath()
+					+ "/WakeMeApp");
+			storageDir.mkdirs();
+
+			File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+			// Save a file: path for use with ACTION_VIEW intents
+			String mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+
+			FileOutputStream fos = new FileOutputStream(image.getPath());
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+			fos.flush();
+			fos.close();
+
+			new SingleMediaScanner(this.getActivity(), image);
+
+		} catch (IOException e) {
+			Log.e("WakeMeApp", "Exception", e);
+		}
+
+	}
 
 }

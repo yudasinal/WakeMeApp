@@ -26,7 +26,7 @@ public class UpdateReceiver extends BroadcastReceiver {
 	private static final String CATEGORY_KEY = "category";
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(final Context context, Intent intent) {
 		try {
 
 			JSONObject json = new JSONObject(intent.getExtras().getString(
@@ -47,7 +47,7 @@ public class UpdateReceiver extends BroadcastReceiver {
 					public void done(List<AlarmInstance> list, ParseException e) {
 						if (e == null) {
 							if (list.size() == 1) {
-								MyAlarmManager.updatePartnerAlarmInstance(list
+								MyAlarmManager.onPartnerAlarmInstanceUpdated(list
 										.get(0));
 							}
 						}
@@ -65,7 +65,7 @@ public class UpdateReceiver extends BroadcastReceiver {
 					public void done(List<AlarmInstance> list, ParseException e) {
 						if (e == null) {
 							if (list.size() == 1) {
-								MyAlarmManager.updateMyAlarmInstance(list
+								MyAlarmManager.onMyAlarmInstanceUpdated(context, list
 										.get(0));
 							}
 						}

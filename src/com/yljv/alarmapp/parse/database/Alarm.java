@@ -118,6 +118,10 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		cal.setTimeInMillis((int) (long) values.getAsLong(Alarm.COLUMN_TIME));
 		return cal;
 	}
+	
+	public int getTimeInMinutes(){
+		return (Integer) values.getAsInteger(Alarm.COLUMN_TIME);
+	}
 
 	/*
 	 * Prints the time of an alarm in appropriate formatEx.: 9:00 AM, 12:00 PM,
@@ -207,7 +211,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 			@Override
 			public void done(ParseException e) {
-				MyAlarmManager.activateAlarm(alarm);
+				MyAlarmManager.setAlarmActivate(alarm);
 			}
 			
 		});
@@ -225,7 +229,6 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 
 	public void setMusicString(String path) {
 		if(path!=null){
-
 			values.put(Alarm.COLUMN_MUSIC_URI, path);
 			put(Alarm.COLUMN_MUSIC_URI, path);
 		}
