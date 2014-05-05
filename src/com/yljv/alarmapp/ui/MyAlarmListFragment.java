@@ -38,12 +38,15 @@ public class MyAlarmListFragment extends SherlockFragment {
 	private int selectedPosition;
 	private int count = 0;
 	private boolean[] selectedItems;
+	ArrayList<Alarm> selected = new ArrayList<Alarm>();
+	
+	ClockAdapter myAdapter;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.my_clock_layout, container, false);	
 		listView = (ListView) view.findViewById(R.id.clock_list);
 
-		ClockAdapter myAdapter = MyAlarmManager.getClockAdapter(this.getActivity());
+		myAdapter = MyAlarmManager.getClockAdapter(this.getActivity());
 		listView.setAdapter(myAdapter);	
 		listView.setEmptyView(view.findViewById(R.id.empty_list));
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -60,7 +63,7 @@ public class MyAlarmListFragment extends SherlockFragment {
 				cancelAlarm.setVisible(true);
 				selectedPosition = position;
 				listView.setItemChecked(position, true);
-				selectedItems[position] = true;
+				selected.add(myAdapter.getItem(position));
 				
 				return true;
 			}
@@ -78,19 +81,18 @@ public class MyAlarmListFragment extends SherlockFragment {
 						count--;
 						deleteAlarm.setVisible(false);
 						cancelAlarm.setVisible(false);
-						addAlarm.setVisible(true);
-						selectedItems[position] = false;
+						selected.remove(myAdapter.getItem(position));
 					}
 					else if(listView.isItemChecked(position)) {
 						Log.e("AlarmApp", "count != 0 item not checked");
 						listView.setItemChecked(position, true);
-						selectedItems[position] = true;
+						selected.add(myAdapter.getItem(position));
 						count++;
 					}
 					else {
 						Log.e("AlarmApp", "count != 0 item checked");
 						listView.setItemChecked(position, false);
-						selectedItems[position] = false;
+						selected.remove(myAdapter.getItem(position));
 						count--;
 					}	
 				}
@@ -165,12 +167,18 @@ public class MyAlarmListFragment extends SherlockFragment {
 			*/
 			break;
 		case R.id.cancel_alarm:
-			for(int i = 0; i < selectedItems.length; i++) {
+			for(int i = 0; i < myAdapter.getCount(); i++){
+				listView.setItemChecked(i, false);
+			}
+			for(Alarm a : selected){
+				selected.remove(a);
+			}
+			/*for(int i = 0; i < selectedItems.length; i++) {
 				if(selectedItems[i] == true) {
 					selectedItems[i] = false;
 					listView.setItemChecked(i, false);
 				}
-			}
+			}*/
 			deleteAlarm.setVisible(false);
 			cancelAlarm.setVisible(false);
 			addAlarm.setVisible(true);
@@ -193,15 +201,19 @@ public class MyAlarmListFragment extends SherlockFragment {
 				    deleteAlarm.setVisible(false);*/
 					ClockAdapter myAdapter = (ClockAdapter)listView.getAdapter();
 					ArrayList<Alarm> alarms = new ArrayList<Alarm>();
-					for(int i = 0; i < getSelected().length; i++) {
+					/*for(int i = 0; i < getSelected().length; i++) {
 						if(selectedItems[i] == true) {
 							alarms.add(myAdapter.getItem(i)); 
 						}
-					}
-					for(Alarm alarm : alarms){
+					}*/
+					for(Alarm alarm : selected){
 						myAdapter.remove(alarm);
 					    MyAlarmManager.deleteAlarm(alarm);
 					    myAdapter.notifyDataSetChanged();
+					}
+					
+					while(selected.size()!=0){
+						selected.remove(0);
 					}
 					deleteAlarm.setVisible(false);
 					cancelAlarm.setVisible(false);

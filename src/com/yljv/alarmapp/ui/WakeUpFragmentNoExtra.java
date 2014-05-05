@@ -142,6 +142,8 @@ public class WakeUpFragmentNoExtra extends Fragment implements
 			break;
 
 		case R.drawable.checkmark:
+
+			mpintro.stop();
 			getActivity().finish();
 
 			break;
@@ -186,20 +188,20 @@ public class WakeUpFragmentNoExtra extends Fragment implements
 
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
 					.format(new Date());
-			String imageFileName = "JPEG_" + timeStamp + "_";
+			String imageFileName = "PNG_" + timeStamp + "_";
 
 			File storageDir = new File(Environment
 					.getExternalStorageDirectory().getAbsolutePath()
 					+ "/WakeMeApp");
 			storageDir.mkdirs();
 
-			File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+			File image = File.createTempFile(imageFileName, ".png", storageDir);
 
 			// Save a file: path for use with ACTION_VIEW intents
 			String mCurrentPhotoPath = "file:" + image.getAbsolutePath();
 
 			FileOutputStream fos = new FileOutputStream(image.getPath());
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 85, fos);
 			fos.flush();
 			fos.close();
 

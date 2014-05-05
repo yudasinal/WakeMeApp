@@ -19,7 +19,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		MyAlarmManager.getMyAlarmsFromDatabase();
+
+		//MyAlarmManager.getMyAlarmsFromDatabase();
 
 		int id = intent.getIntExtra(AlarmInstance.COLUMN_ID, 0);
 		
