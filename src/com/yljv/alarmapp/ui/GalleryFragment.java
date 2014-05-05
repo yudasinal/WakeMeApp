@@ -60,7 +60,7 @@ public class GalleryFragment extends SherlockFragment{
         {
             fileNames = path.list();
             for(String s : fileNames){
-            	imagePaths.add(s);
+            	imagePaths.add(path.getAbsolutePath() + "/" + s);
             }
         }
         
