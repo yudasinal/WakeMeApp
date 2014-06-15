@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="snooze_dismiss_drawables">
+    <array name="snooze_dismiss_drawables_extra">
         <item>@drawable/pic_msg</item>
         <item>@null</item>
         <item>@drawable/snooze_progress1</item>
         <item>@null</item>
     </array>
-    <array name="snooze_dismiss_drawables2">
+    <array name="snooze_dismiss_drawables_noextra">
         <item>@drawable/checkmark</item>
         <item>@null</item>
         <item>@drawable/snooze_progress1</item>
