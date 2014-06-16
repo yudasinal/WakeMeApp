@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yljv.alarmapp"
-    android:versionCode="1"
-    android:versionName="1.0" >
+          package="com.yljv.alarmapp"
+          android:versionCode="1"
+          android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="13"
-        android:targetSdkVersion="18" />
+            android:minSdkVersion="17"
+            android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,123 +20,104 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
-        android:name="com.yljv.alarmapp.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
+            android:name="com.yljv.alarmapp.permission.C2D_MESSAGE"
+            android:protectionLevel="signature" />
 
     <uses-permission android:name="com.yljv.alarmapp.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
+            android:name="android.hardware.camera"
+            android:required="false" />
 
     <application
-        android:name=".helper.WakeMeApp"
-        android:allowBackup="true"
-        android:icon="@drawable/launchericon_artwork"
-        android:label="@string/app_name"
-        android:theme="@style/MyTheme" >
+            android:name=".client.helper.WakeMeApp"
+            android:allowBackup="true"
+            android:icon="@drawable/launchericon_artwork"
+            android:label="@string/app_name"
+            android:theme="@style/MyTheme" >
         <receiver
-            android:name="com.yljv.alarmapp.helper.BootBroadcastReceiver"
-            android:enabled="false" >
+                android:name="com.yljv.alarmapp.client.helper.BootBroadcastReceiver"
+                android:enabled="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" >
                 </action>
             </intent-filter>
         </receiver>
-
-        <receiver
-            android:name="com.yljv.alarmapp.helper.AlarmReceiver">
+        <receiver android:name="com.yljv.alarmapp.client.helper.AlarmReceiver" >
         </receiver>
+
         <activity
-            android:name="com.yljv.alarmapp.MainActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.start.ChoiceActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.ClockActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.yljv.alarmapp.ChoiceActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.start.LoginActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.LoginActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.start.RegisterActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.RegisterActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.start.RegisterPartnerActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.RegisterPartnerActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.helper.MenuMainActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.MenuMainActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateVisible"
-            android:parentActivityName="com.yljv.alarmapp.SplashActivity"  >
+                android:name="com.yljv.alarmapp.client.helper.BaseActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.BaseActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.wakeup.WakeUpActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.WakeUpActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.alarm.AddAlarmActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.AddAlarmActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.alarm.EditAlarmActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.EditAlarmActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.addpicture.AddPicForPartnerActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.AddPicForPartnerActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+                android:name="com.yljv.alarmapp.client.ui.gallery.FullScreenViewImage"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.yljv.alarmapp.FullScreenViewImage"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
-        <activity
-            android:name="com.yljv.alarmapp.InvitationActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
-        <activity
-            android:name="com.yljv.alarmapp.SplashActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"> >
+                android:name="com.yljv.alarmapp.client.ui.start.SplashActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -152,23 +133,28 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+        <receiver android:name="com.yljv.alarmapp.client.helper.ConnectivityReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
         <receiver
-            android:name="com.yljv.alarmapp.helper.UpdateReceiver"
-            android:exported="false" >
+                android:name="com.yljv.alarmapp.client.helper.UpdateReceiver"
+                android:exported="false" >
             <intent-filter>
                 <action android:name="com.yljv.alarmapp.UPDATE_ALARM" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.yljv.alarmapp.helper.PartnerReceiver"
-            android:exported="false" >
+                android:name="com.yljv.alarmapp.client.helper.PartnerReceiver"
+                android:exported="false" >
             <intent-filter>
                 <action android:name="com.yljv.alarmapp.PARTNER_REQUEST" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+                android:name="com.parse.GcmBroadcastReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />

@@ -53,7 +53,7 @@
         glowpad:pointDrawable="@drawable/ic_lockscreen_glowdot"
         glowpad:snapMargin="@dimen/glowpadview_snap_margin"
         glowpad:targetDescriptions="@array/snooze_dismiss_descriptions"
-        glowpad:targetDrawables="@array/snooze_dismiss_drawables"
+        glowpad:targetDrawables="@array/snooze_dismiss_drawables_extra"
         glowpad:vibrationDuration="20" />
 
 </RelativeLayout>
