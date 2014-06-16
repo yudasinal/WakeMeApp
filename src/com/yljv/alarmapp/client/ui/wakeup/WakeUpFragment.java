@@ -27,6 +27,8 @@ import com.yljv.alarmapp.server.alarm.Alarm;
 import com.yljv.alarmapp.server.alarm.AlarmInstance;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 
+import java.util.GregorianCalendar;
+
 public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 	private GlowPadView mGlowPadView;
@@ -40,12 +42,19 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	MediaPlayer mpintro;
 
 	View view;
+
+    Alarm alarm;
+
+    long timeMillis;
 	
 	private int id;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+        timeMillis = GregorianCalendar.getInstance().getTimeInMillis() + 300;
+
 		view = inflater.inflate(R.layout.wake_up_layout, container, false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
 		myTime = (TextView) view.findViewById(R.id.my_time);
@@ -54,7 +63,8 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		Bundle bundle = this.getArguments();
 		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
-		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+
 		int hour = alarm.getHour();
 		int minute = alarm.getMinute();
 		
@@ -130,6 +140,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 					ChoiceActivity.class);
 			startActivity(intent1);
 			mpintro.stop();
+            MyAlarmManager.snoozeAlarm(id, timeMillis);
 			break;
 
 		case R.drawable.pic_msg:

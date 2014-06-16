@@ -37,7 +37,7 @@ public class UpdateReceiver extends BroadcastReceiver {
 			final String cat = json.getString(CATEGORY_KEY);
 
 			if (cat.equals(DELETE_CATEGORY)) {
-				MyAlarmManager.onPartnerAlarmInstanceDeleted(id);
+				MyAlarmManager.deletePartnerAlarmInstance(id);
 			} else if (cat.equals(UPDATE_CATEGORY)) {
 				ParseQuery<AlarmInstance> query = ParseQuery
 						.getQuery("AlarmInstance");

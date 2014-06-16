@@ -29,9 +29,6 @@ import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 public class PicMsgArrivedFragment extends Fragment {
 
 	public static final String MESSAGE_FOR_ALARM = "com.yljv.alarmapp.MESSAGE_FOR_ALARM";
-	public static String picturePath;
-
-	private AlarmInstance alarm;
 
 	Button previewButton;
 	ImageView picture;
@@ -51,14 +48,13 @@ public class PicMsgArrivedFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		boolean hasOnlyPic = true;
 		view = inflater.inflate(R.layout.add_for_partner, container, false);
 		picture = (ImageView) view.findViewById(R.id.add_picture);
 		message = (EditText) view.findViewById(R.id.add_message);
 
 		id = this.getArguments().getInt(AlarmInstance.COLUMN_ID);
 
-		MsgPictureTuple tuple = MyAlarmManager.findPicMsgByAlarmId(id);
+        MsgPictureTuple tuple = ((WakeUpActivity) getActivity()).getTuple();
 		byte[] data = tuple.getPicData();
 		if (data != null) {
 			Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
