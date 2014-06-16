@@ -6,74 +6,31 @@ import com.yljv.alarmapp.server.user.AccountManager.User;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+
+/**
+ * Only sets LOCAL data on the device, no syncing with the server side
+ */
 public class ApplicationSettings {
 
 	public final static String NOTIFICATION_ON_KEY = "notification_on";
-	
-	private final static String PARTNER_EMAIL_KEY = "parter_email";
-	private final static String PARTNER_NAME_KEY = "partner_name";
-	private final static String ALARM_ID_COUNTER_KEY = "counter";
-	private final static String USER_EMAIL_KEY = "email";
-	private final static String USER_NAME_KEY = "username";
-	private final static String PARTNER_STATUS = "partner_status";
+
 
     public final static String directory = "/WakeMeApp";
 	
 	public int alarmIdCounter = 0;
 	
 	private static SharedPreferences preferences;
-	
-	
-	public static void acceptRequest(){
-		preferences.edit().putInt(PARTNER_STATUS, User.PARTNERED).commit();
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.PARTNERED);
-		ParseUser.getCurrentUser().saveEventually();
-	}
-	
+
 	public static void setPartnerStatus(int status){
-		preferences.edit().putInt(PARTNER_STATUS, status).commit();
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, status);
-		ParseUser.getCurrentUser().saveEventually();
+		preferences.edit().putInt(User.PARTNER_STATUS_COLUMN, status).commit();
 	}
-	public static void cancelRequest(){
-		preferences.edit().putInt(PARTNER_STATUS, User.NO_PARTNER).commit();
-		preferences.edit().putString(PARTNER_EMAIL_KEY, "").commit();
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER);
-		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, "");
-		ParseUser.getCurrentUser().saveEventually();
-	}
-	
-	public static void incomingRequest(String email){
-		preferences.edit().putInt(PARTNER_STATUS, User.INCOMING_REQUEST).commit();
-		preferences.edit().putString(PARTNER_EMAIL_KEY, email).commit();
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.INCOMING_REQUEST);
-		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, email);
-		ParseUser.getCurrentUser().saveEventually();
-	
-	}
-	
-	public static void unlinkPartner(){
-		preferences.edit().putInt(PARTNER_STATUS, User.NO_PARTNER).commit();
-		preferences.edit().putString(PARTNER_EMAIL_KEY, "").commit();
-		ParseUser user = ParseUser.getCurrentUser();
-		user.put(User.PARTNER_COLUMN, "");
-		user.put(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER);
-		user.saveEventually();
-	}
-	public static void setPartnerRequest(String email){
-		preferences.edit().putInt(PARTNER_STATUS, User.PARTNER_REQUESTED).commit();
-		preferences.edit().putString(PARTNER_EMAIL_KEY, email).commit();
-		ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN, User.PARTNER_REQUESTED);
-		ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, email);
-		ParseUser.getCurrentUser().saveEventually();
-	}
-	
+
 	public static boolean hasPartner(){
-		return preferences.getInt(PARTNER_STATUS, User.NO_PARTNER) == User.PARTNERED;
+		return preferences.getInt(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER) == User.PARTNERED;
 	}
 	
 	public static int getPartnerStatus(){
-		return preferences.getInt(PARTNER_STATUS, User.NO_PARTNER);
+		return preferences.getInt(User.PARTNER_STATUS_COLUMN, User.NO_PARTNER);
 	}
 
 	public static void setSharedPreferences(Context context) {
@@ -82,12 +39,12 @@ public class ApplicationSettings {
 	}
 	
 	public static void setAlarmId(int id){
-		preferences.edit().putInt(ALARM_ID_COUNTER_KEY, id).commit();
+		preferences.edit().putInt(User.ALARM_ID_COUNTER_COLUMN, id).commit();
 	}
 	
 	public static int getAlarmId(){
-		int id = preferences.getInt(ALARM_ID_COUNTER_KEY, 0);
-		preferences.edit().putInt(ALARM_ID_COUNTER_KEY, id+1).commit();	
+		int id = preferences.getInt(User.ALARM_ID_COUNTER_COLUMN, 0);
+		preferences.edit().putInt(User.ALARM_ID_COUNTER_COLUMN, id+1).commit();
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put(User.ID_COLUMN, id+1);
 		user.saveEventually();
@@ -97,22 +54,19 @@ public class ApplicationSettings {
 	
 	
 	public static String getPartnerEmail(){
-		return preferences.getString(PARTNER_EMAIL_KEY, "");
+		return preferences.getString(User.PARTNER_COLUMN, "");
 	}
 
 	public static String getPartnerName(){
-		//TODO
-		return preferences.getString(PARTNER_NAME_KEY, "Partner");
+		return preferences.getString(User.PARTNER_COLUMN, "Partner");
 	}
 
 	public static String getUserEmail(){
-		//TODO
-		return preferences.getString(USER_EMAIL_KEY, "");
+		return preferences.getString(User.USER_EMAIL_COLUMN, "");
 	}
 	
 	public static String getUserName(){
-		//TODO
-		String res = preferences.getString(USER_NAME_KEY, "");
+		String res = preferences.getString(User.USER_EMAIL_COLUMN, "");
 		return res;
 	}
 
@@ -125,34 +79,27 @@ public class ApplicationSettings {
 	}
 	
 	public static void setPartnerEmail(String partnerEmail){
-		preferences.edit().putString(PARTNER_EMAIL_KEY, partnerEmail).commit();
-		ParseUser user = ParseUser.getCurrentUser();
-		user.put(User.PARTNER_COLUMN, partnerEmail);
-		user.saveEventually();
+		preferences.edit().putString(User.PARTNER_COLUMN, partnerEmail).commit();
 	}
 	
-	public static void setPartnerName(String partnerName){
+	/*public static void setPartnerName(String partnerName){
 		preferences.edit().putString(PARTNER_NAME_KEY, partnerName).commit();
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put(PARTNER_NAME_KEY, partnerName);
 		user.saveEventually();
-	}
-	
-	public static void setUserEmail(String userEmail){
-		preferences.edit().putString(USER_EMAIL_KEY, userEmail).commit();
-		ParseUser user = ParseUser.getCurrentUser();
-		user.setEmail(userEmail);
-		user.setUsername(userEmail);
-		user.saveEventually();
-		
-	}
+	}*/
+
+    public static void setUserEmail(String userEmail){
+        preferences.edit().putString(User.USER_EMAIL_COLUMN, userEmail).commit();
+    }
 	
 	public static void setUserName(String userName){
-		preferences.edit().putString(USER_NAME_KEY, userName).commit();
-		ParseUser user = ParseUser.getCurrentUser();
-		user.put(USER_NAME_KEY, userName);
-		user.saveEventually();
+		preferences.edit().putString(User.USER_NAME_COLUMN, userName).commit();
 	}
+
+    public static void setPartnerName(String name){
+        preferences.edit().putString(User.PARTNER_NAME_COLUMN, name).commit();
+    }
 	
 	public static void reset(){
 		preferences.edit().clear().commit();

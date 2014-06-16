@@ -163,8 +163,7 @@ public class SettingsFragment extends SherlockFragment implements
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							String changedName = newName.getText().toString();
-							ApplicationSettings.setUserName(changedName);
+							AccountManager.setUserName(newName.getText().toString());
 							myName.setText(ApplicationSettings.getUserName());
 						}
 					});
@@ -227,8 +226,7 @@ public class SettingsFragment extends SherlockFragment implements
 						public void onClick(DialogInterface dialog, int which) {
 							String changedPartnerName = newPartnerName
 									.getText().toString();
-							ApplicationSettings
-									.setPartnerName(changedPartnerName);
+                            AccountManager.setPartnerName(changedPartnerName);
 							partnerName.setText(ApplicationSettings
 									.getPartnerName());
 						}
@@ -261,8 +259,7 @@ public class SettingsFragment extends SherlockFragment implements
 						public void onClick(DialogInterface dialog, int which) {
 							String changedPartnerEmail = newPartnerEmail
 									.getText().toString();
-							ApplicationSettings
-									.setPartnerName(changedPartnerEmail);
+                            AccountManager.setPartnerName(changedPartnerName);
 							partnerEmail.setText(ApplicationSettings
 									.getPartnerEmail());
 
@@ -310,10 +307,8 @@ public class SettingsFragment extends SherlockFragment implements
 											.getText().toString(), fragment);
 									
 								}
-								
-								changedPartnerName = addPartnerName
-										.getText().toString();
-								ApplicationSettings.setPartnerName(changedPartnerName);
+								AccountManager.setPartnerName(addPartnerName
+                                        .getText().toString());
 							}
 						});
 
@@ -505,8 +500,7 @@ public class SettingsFragment extends SherlockFragment implements
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
 
-
-		ApplicationSettings.setPartnerName(changedPartnerName);
+        AccountManager.setPartnerName(changedPartnerName);
 		partnerActionUp.setText("Cancel Buddy Request");
 		name = ApplicationSettings.getPartnerName();
 		partnerActionDown.setText("Request sent to " + name);

@@ -300,45 +300,71 @@ public class MyAlarmManager {
 
 	}
 
-	public static void deleteAlarm(Alarm alarm) {
+    private static void deleteAlarmFromDatabase(Alarm alarm){
+
+    }
+
+    private static void deleteAlarmInstances(int alarmId) {
+        AlarmManager alarmMgr = (AlarmManager) context
+                .getSystemService(Context.ALARM_SERVICE);
+        ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        for (int i = 0; i <= 7; i++) {
+            db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+                    AlarmInstance.COLUMN_ID + "=" + alarmId + i, null);
+            PendingIntent p = pendingIntents.get(alarmId);
+            if (p != null)
+                alarmMgr.cancel(p);
+            pendingIntents.remove(alarmId + i);
+        }
+
+        ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
+        String email = ApplicationSettings.getUserEmail();
+        query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmId);
+        query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmId + 9);
+        query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
+        query.findInBackground(new FindCallback<AlarmInstance>() {
+            public void done(List<AlarmInstance> list, ParseException e) {
+                if (e == null) {
+                    for (AlarmInstance ai : list) {
+                        ai.deleteEventually();
+
+                        if (AccountManager.hasPartner()) {
+                            MyAlarmManager.sendAlarmDeletedNotification(ai.getObjectId());
+                        }
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    public static void deleteAlarm(Alarm alarm) {
 
 		myAlarms.remove(alarm);
+        adapter.notifyDataSetChanged();
 
 		db.delete(Alarm.TABLE_NAME, Alarm.COLUMN_ID + "=" + alarm.getAlarmId(),
 				null);
 
-		AlarmManager alarmMgr = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		int alarmID = alarm.getAlarmId();
-		for (int i = 0; i < 7; i++) {
-			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-					AlarmInstance.COLUMN_ID + "=" + alarmID + i, null);
-			PendingIntent p = pendingIntents.get(alarm.getAlarmId());
-			if (p != null)
-				alarmMgr.cancel(p);
-			pendingIntents.remove(alarm.getAlarmId() + i);
-		}
-
 		MyAlarmManager.deleteAlarmInstances(alarm.getAlarmId());
 
-		alarm.deleteInBackground(new DeleteCallback() {
-			@Override
-			public void done(ParseException e) {
-
-			}
-		});
-
-		adapter.notifyDataSetChanged();
-
+		alarm.deleteEventually();
 	}
 
-	public static void onPartnerAlarmInstanceDeleted(String id) {
+	public static void deletePartnerAlarmInstance(String objectId) {
 
 		db.delete(AlarmInstance.PARTNER_TABLE_NAME,
-				AlarmInstance.COLUMN_OBJECT_ID + "=" + "'" + id + "'", null);
+				AlarmInstance.COLUMN_OBJECT_ID + "=" + "'" + objectId + "'", null);
 
 		for (AlarmInstance alarm : partnerAlarms) {
-			if (alarm.getObjectId().equals(id)) {
+			if (alarm.getObjectId().equals(objectId)) {
 				partnerAlarms.remove(alarm);
 			}
 		}
@@ -368,40 +394,6 @@ public class MyAlarmManager {
 		return partnerAlarms;
 	}
 
-	public static void setAlarmInstancesAutomatically() {
-
-		AlarmManager alarmMgr = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
-		PackageManager pm = context.getPackageManager();
-		pm.setComponentEnabledSetting(receiver,
-				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-				PackageManager.DONT_KILL_APP);
-
-		String[] projection = { AlarmInstance.COLUMN_TIME,
-				AlarmInstance.COLUMN_ID };
-
-		Cursor c = db.query(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-                projection, null, null, null, null, null);
-		c.moveToFirst();
-		int size = c.getCount();
-
-		for (int i = 0; i < size; i++) {
-			long time = c.getLong(c
-					.getColumnIndexOrThrow(AlarmInstance.COLUMN_TIME));
-			int id = c.getInt(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_ID));
-
-			Intent intent = new Intent(context, AlarmReceiver.class);
-			intent.putExtra(AlarmInstance.COLUMN_ID, id);
-			PendingIntent alarmIntent = PendingIntent.getBroadcast(context, id,
-					intent, 0);
-			alarmMgr.set(AlarmManager.RTC_WAKEUP, time, alarmIntent);
-			pendingIntents.put(id, alarmIntent);
-
-			c.move(1);
-		}
-		c.close();
-	}
 
 	public static void getPartnerAlarmsFromDatabase() {
 
@@ -505,10 +497,6 @@ public class MyAlarmManager {
 		pcAdapter.notifyDataSetChanged();
 
 	}
-
-    private static void putMyAlarmInstancesToDB(List<Alarm> list){
-
-    }
 
 	private static void putMyAlarmsToDB(List<Alarm> list) {
 
@@ -764,47 +752,6 @@ public class MyAlarmManager {
 
 	}
 
-	private static void deleteAlarmInstances(int alarmId) {
-		AlarmManager alarmMgr = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
-		PackageManager pm = context.getPackageManager();
-		pm.setComponentEnabledSetting(receiver,
-				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-				PackageManager.DONT_KILL_APP);
-
-		for (int i = 0; i <= 7; i++) {
-			db.delete(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
-					AlarmInstance.COLUMN_ID + "=" + alarmId + i, null);
-			PendingIntent p = pendingIntents.get(alarmId);
-			if (p != null)
-				alarmMgr.cancel(p);
-			pendingIntents.remove(alarmId + i);
-		}
-
-		ParseQuery<AlarmInstance> query = ParseQuery.getQuery("AlarmInstance");
-		String email = ApplicationSettings.getUserEmail();
-		query.whereGreaterThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmId);
-		query.whereLessThanOrEqualTo(AlarmInstance.COLUMN_ID, alarmId + 9);
-		query.whereEqualTo(AlarmInstance.COLUMN_USER, email);
-		query.findInBackground(new FindCallback<AlarmInstance>() {
-			public void done(List<AlarmInstance> list, ParseException e) {
-				if (e == null) {
-					for (AlarmInstance ai : list) {
-						ai.deleteEventually();
-
-						if (AccountManager.hasPartner()) {
-                            MyAlarmManager.sendAlarmDeletedNotification(ai.getObjectId());
-						}
-					}
-				} else {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		adapter.notifyDataSetChanged();
-	}
 
     private static void sendAlarmDeletedNotification(String objectId){
         try {
@@ -828,9 +775,6 @@ public class MyAlarmManager {
 	public static void setNewAlarm(Context context, Alarm alarm) {
 
 		myAlarms.add(alarm);
-
-		// TODO make sure that really saved in background -> check
-
 		adapter.notifyDataSetChanged();
 
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
@@ -858,9 +802,13 @@ public class MyAlarmManager {
 			MyAlarmManager.sendNewAlarmNotification(timeMillis);
 		}
 
-		db.insertWithOnConflict(Alarm.TABLE_NAME, "null", alarm.getValues(),
-                SQLiteDatabase.CONFLICT_REPLACE);
+		insertAlarmToDatabase(alarm);
 	}
+
+    private static void insertAlarmToDatabase(Alarm alarm){
+        db.insertWithOnConflict(Alarm.TABLE_NAME, "null", alarm.getValues(),
+                SQLiteDatabase.CONFLICT_REPLACE);
+    }
 
 	public static void onPartnerAlarmInstanceUpdated(AlarmInstance alarm) {
 		List<AlarmInstance> list = new ArrayList<AlarmInstance>();
@@ -984,7 +932,43 @@ public class MyAlarmManager {
         push.sendInBackground();
     }
 
-	public static void setNextAlarmInstance(final Alarm alarm) {
+    public static void setAlarmInstancesAfterBoot() {
+
+        AlarmManager alarmMgr = (AlarmManager) context
+                .getSystemService(Context.ALARM_SERVICE);
+        ComponentName receiver = new ComponentName(context, AlarmReceiver.class);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        String[] projection = { AlarmInstance.COLUMN_TIME,
+                AlarmInstance.COLUMN_ID };
+
+        Cursor c = db.query(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
+                projection, null, null, null, null, null);
+        c.moveToFirst();
+        int size = c.getCount();
+
+        for (int i = 0; i < size; i++) {
+            long time = c.getLong(c
+                    .getColumnIndexOrThrow(AlarmInstance.COLUMN_TIME));
+            int id = c.getInt(c.getColumnIndexOrThrow(AlarmInstance.COLUMN_ID));
+
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            intent.putExtra(AlarmInstance.COLUMN_ID, id);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, id,
+                    intent, 0);
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, time, alarmIntent);
+            pendingIntents.put(id, alarmIntent);
+
+            c.move(1);
+        }
+        c.close();
+    }
+
+
+    public static void setNextAlarmInstance(final Alarm alarm) {
 		boolean[] weekdays = alarm.getWeekdaysRepeated();
 
 		boolean activated = false;

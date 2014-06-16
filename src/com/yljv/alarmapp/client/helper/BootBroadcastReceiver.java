@@ -14,7 +14,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 		Thread thread = new Thread(){
 			@Override
 			public void run(){
-				MyAlarmManager.setAlarmInstancesAutomatically();
+				MyAlarmManager.setAlarmInstancesAfterBoot();
 			}
 		};
 		thread.start();

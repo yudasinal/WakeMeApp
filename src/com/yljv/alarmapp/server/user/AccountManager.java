@@ -3,10 +3,6 @@ package com.yljv.alarmapp.server.user;
 import java.util.List;
 import java.util.Set;
 
-import android.accounts.Account;
-import android.provider.Telephony;
-import android.test.ApplicationTestCase;
-
 import com.yljv.alarmapp.client.helper.ApplicationSettings;
 import com.yljv.alarmapp.client.helper.DBHelper;
 import com.yljv.alarmapp.client.helper.PartnerReceiver;
@@ -29,11 +25,15 @@ public class AccountManager {
 
 
     public class User {
-        public final static String NAME_COLUMN = "name";
         public final static String PARTNER_COLUMN = "partner";
         public final static String ID_COLUMN = "id";
-        public final static String PARTNER_ID_COLUMN = "partner_id";
         public final static String PARTNER_STATUS_COLUMN = "status";
+
+
+        public final static String USER_NAME_COLUMN = "user_name";
+        public final static String PARTNER_NAME_COLUMN = "partner_name";
+        public final static String ALARM_ID_COUNTER_COLUMN = "counter";
+        public final static String USER_EMAIL_COLUMN = "email";
 
         public final static int PARTNER_REQUESTED = 0;
         public final static int NO_PARTNER = 1;
@@ -103,7 +103,7 @@ public class AccountManager {
                     ApplicationSettings.setUserName(user.getUsername());
                     String partner = user.getString(User.PARTNER_COLUMN);
                     if (partner != null) {
-                        ApplicationSettings.setPartnerEmail(partner);
+                        setPartnerEmail(partner);
                     }
                     if (user.get(User.ID_COLUMN) != null) {
                         ApplicationSettings.setAlarmId(user
@@ -111,7 +111,7 @@ public class AccountManager {
                     } else {
                         ApplicationSettings.setAlarmId(0);
                     }
-                    ApplicationSettings.setUserEmail(user.getUsername());
+                    ApplicationSettings.setUserEmail(user.getEmail());
                     user.saveEventually();
                     listener.onRegisterSuccess();
                 } else {
@@ -147,8 +147,8 @@ public class AccountManager {
     }
 
     public static void onUnlinked(){
-        ApplicationSettings.setPartnerEmail("");
-        ApplicationSettings.setPartnerStatus(User.NO_PARTNER);
+        setPartnerEmail("");
+        setPartnerStatus(User.NO_PARTNER);
     }
 
     public static void logout(Context context) {
@@ -167,6 +167,7 @@ public class AccountManager {
     }
 
     private static void sendPartnerNotification(int category, String message){
+
         String channel = AccountManager.getSendingChannel();
 
         try {
@@ -193,13 +194,12 @@ public class AccountManager {
     }
 
     public static void unlink(){
-
-
-        ApplicationSettings.unlinkPartner();
+        setPartnerEmail("");
+        setPartnerStatus(User.NO_PARTNER);
     }
     public static void acceptPartnerRequest() {
         sendPartnerNotification(PartnerReceiver.PARTNER_ACCEPT_REQUEST, "Your partner accepted your request!");
-        ApplicationSettings.acceptRequest();
+        setPartnerStatus(User.PARTNERED);
     }
 
     public static void sendPartnerRequest(String email,
@@ -224,12 +224,8 @@ public class AccountManager {
                         return;
                     }
 
-                    ParseUser.getCurrentUser().put(User.PARTNER_COLUMN, email);
-                    ParseUser.getCurrentUser().put(User.PARTNER_STATUS_COLUMN,
-                            User.PARTNER_REQUESTED);
-                    ParseUser.getCurrentUser().saveEventually();
-                    ApplicationSettings.setPartnerRequest(email);
-
+                    setPartnerEmail(email);
+                    setPartnerStatus(User.PARTNER_REQUESTED);
 
                     sendPartnerNotification(PartnerReceiver.PARTNER_REQUEST, "Someone wants to be your buddy");
                     listener.onPartnerRequested();
@@ -242,20 +238,50 @@ public class AccountManager {
     }
 
     public static void cancelPartnerRequest() {
-
         sendPartnerNotification(PartnerReceiver.PARTNER_CANCEL_REQUEST, "The request was cancelled");
-
-        ApplicationSettings.cancelRequest();
+        setPartnerStatus(User.NO_PARTNER);
+        setPartnerEmail("");
     }
 
     public static void declinePartnerRequest(){
-
         sendPartnerNotification(PartnerReceiver.PARTNER_DECLINE_REQUEST, "Your request has been cancelled");
-
-        ApplicationSettings.unlinkPartner();
+        setPartnerEmail("");
+        setPartnerStatus(User.NO_PARTNER);
     }
 
     public static void incomingPartnerRequest(String email){
-        ApplicationSettings.incomingRequest(email);
+        setPartnerEmail(email);
+        setPartnerStatus(User.INCOMING_REQUEST);
     }
+
+    public static void setPartnerEmail(String email){
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put(User.PARTNER_COLUMN, email);
+        user.saveEventually();
+
+        ApplicationSettings.setPartnerEmail(email);
+    }
+
+    public static void setPartnerStatus(int status){
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put(User.PARTNER_STATUS_COLUMN,
+                status);
+        user.saveEventually();
+        ApplicationSettings.setPartnerStatus(status);
+    }
+
+    public static void setPartnerName(String name){
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put(User.PARTNER_NAME_COLUMN, name);
+        user.saveEventually();
+        ApplicationSettings.setPartnerName(name);
+    }
+
+    public static void setUserName(String name){
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put(User.USER_NAME_COLUMN, name);
+        user.saveEventually();
+        ApplicationSettings.setUserName(name);
+    }
+
 }
