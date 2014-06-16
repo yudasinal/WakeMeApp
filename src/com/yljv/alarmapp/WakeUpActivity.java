@@ -35,7 +35,8 @@ public class WakeUpActivity extends FragmentActivity {
 		}
 		if (savedInstanceState == null) {
 			if (ApplicationSettings.hasPartner()) {
-				MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);				if(t.getMsg()!=null && t.getPicData()!=null) {
+				MsgPictureTuple t = MyAlarmManager.findPicMsgByAlarmId(id);				
+				if(t.getMsg()!=null || t.getPicData()!=null) {
 					// TODO check if there's something uploaded to an alarm
 					mainView = (Fragment) new WakeUpFragment();
 				} else {
