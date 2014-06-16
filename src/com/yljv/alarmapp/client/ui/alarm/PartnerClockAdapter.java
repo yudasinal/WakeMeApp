@@ -86,6 +86,13 @@ import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 				if (partnerAlarms != null) {
 					ViewHolder myHolder = (ViewHolder)rowView.getTag();
 					partnerAlarm = partnerAlarms.get(position);
+					
+					if(partnerAlarm.isPictureSent()){
+						holder.picture.setImageResource(R.drawable.ic_action_picture);
+					}else{
+						holder.picture.setImageResource(R.drawable.ic_action_new_picture);
+					}
+					
 					Calendar cal = partnerAlarm.getTimeAsCalendar();
 					int day = cal.DAY_OF_WEEK;
 					String dayString = null;

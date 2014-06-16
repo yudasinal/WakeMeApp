@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,10 +41,9 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private String message;
 
 	MediaPlayer mpintro;
+	Vibrator vibrator;
 
 	View view;
-
-    Alarm alarm;
 
     long timeMillis;
 	
@@ -63,20 +63,11 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		Bundle bundle = this.getArguments();
 		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
-		alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
 
-		int hour = alarm.getHour();
-		int minute = alarm.getMinute();
+		myTime.setText(((WakeUpActivity)getActivity()).getTimeAsString());
+		mornEv.setText(((WakeUpActivity)getActivity()).getAmPm());
 		
-		String time;
-		String hourS = (hour < 10) ? "0" + Integer.toString(hour) : Integer.toString(hour);
-		String minuteS = (minute < 10) ? "0" + Integer.toString(minute) : Integer.toString(minute);
-		time = hourS + ":" + minuteS;
-		myTime.setText(time);
-		String am_pm = (alarm.getTimeInMinutes() < 12*60) ? "AM" : "PM";
-		mornEv.setText(am_pm);
-		
-		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
+		musicPath = ((WakeUpActivity) getActivity()).alarm.getString(Alarm.COLUMN_MUSIC_URI);
 		if(musicPath == null || musicPath.equals("")){
 			musicPath = "content://media/external/audio/media/11";
 		}
@@ -109,6 +100,20 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			e.printStackTrace();
 		}
 		
+		// Get instance of Vibrator from current Context
+		vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+		 
+		// Start immediately
+		// Vibrate for 200 milliseconds
+		// Sleep for 500 milliseconds
+		long[] pattern = { 0, 200, 500 };
+		 
+		// The "0" means to repeat the pattern starting at the beginning
+		// CUIDADO: If you start at the wrong index (e.g., 1) then your pattern will be off --
+		// You will vibrate for your pause times and pause for your vibrate times !
+		vibrator.vibrate(pattern, 0);
+
+		
 
 		 return view; 
 		 
@@ -140,6 +145,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 					ChoiceActivity.class);
 			startActivity(intent1);
 			mpintro.stop();
+			vibrator.cancel();
             MyAlarmManager.snoozeAlarm(id, timeMillis);
 			break;
 
@@ -153,6 +159,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				mma.switchContent(newContent);
 			}
 			mpintro.stop();
+			vibrator.cancel();
 			break;
 		default:
 			// Code should never reach here.

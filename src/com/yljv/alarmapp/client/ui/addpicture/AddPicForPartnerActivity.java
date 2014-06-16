@@ -46,8 +46,6 @@ public class AddPicForPartnerActivity extends Activity implements
 	int height;
 	Context context;
 
-	private Matrix matrix = new Matrix();
-	private Matrix savedMatrix = new Matrix();
 
 	private static final int NONE = 0;
 	private static final int DRAG = 1;

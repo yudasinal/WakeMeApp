@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.server.alarm.Alarm;
 import com.yljv.alarmapp.server.alarm.AlarmInstance;
 import com.yljv.alarmapp.server.alarm.MsgPictureTuple;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
@@ -18,7 +19,9 @@ public class WakeUpActivity extends FragmentActivity {
 	private Fragment mainView;
 	boolean isThereSomething = true;
 
-    MsgPictureTuple tuple;
+    public MsgPictureTuple tuple;
+    
+    public Alarm alarm;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,8 @@ public class WakeUpActivity extends FragmentActivity {
 
 		int id = this.getIntent().getIntExtra(AlarmInstance.COLUMN_ID, 0);
 
+		alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
+		
         tuple = MyAlarmManager.findPicMsgByAlarmId(id);
 
 		if (savedInstanceState != null) {
@@ -41,7 +46,6 @@ public class WakeUpActivity extends FragmentActivity {
 			Bundle bundle = new Bundle();
 			bundle.putInt(AlarmInstance.COLUMN_ID, id);
 			mainView.setArguments(bundle);
-
 		}
 
 		setContentView(R.layout.content_frame);
@@ -73,5 +77,18 @@ public class WakeUpActivity extends FragmentActivity {
 
     public MsgPictureTuple getTuple(){
         return tuple;
+    }
+    
+    public String getTimeAsString(){
+    	int hour = alarm.getHour();
+    	int minute = alarm.getMinute();
+    	
+		String hourS = (hour < 10) ? "0" + Integer.toString(hour) : Integer.toString(hour);
+		String minuteS = (minute < 10) ? "0" + Integer.toString(minute) : Integer.toString(minute);
+		return  hourS + ":" + minuteS;
+    }
+    
+    public String getAmPm(){
+		return (alarm.getTimeInMinutes() < 12*60) ? "AM" : "PM";
     }
 }
