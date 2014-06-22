@@ -500,7 +500,6 @@ public class SettingsFragment extends SherlockFragment implements
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
 
-        AccountManager.setPartnerName(changedPartnerName);
 		partnerActionUp.setText("Cancel Buddy Request");
 		name = ApplicationSettings.getPartnerName();
 		partnerActionDown.setText("Request sent to " + name);

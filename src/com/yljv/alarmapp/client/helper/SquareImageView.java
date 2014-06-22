@@ -1,4 +1,5 @@
-package com.yljv.alarmapp.client.ui.addpicture;
+package com.yljv.alarmapp.client.helper;
+
 
 import android.content.Context;
 import android.graphics.Canvas;

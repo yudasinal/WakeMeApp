@@ -28,6 +28,7 @@ import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.R.id;
 import com.yljv.alarmapp.R.layout;
 import com.yljv.alarmapp.R.menu;
+import com.yljv.alarmapp.client.ui.wakeup.SquareImageView;
 import com.yljv.alarmapp.server.alarm.AlarmInstance;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 

@@ -165,6 +165,12 @@ public class AccountManager {
             dbHelper.close();
         }
     }
+    
+    private static void updatePartner(int category){
+    	ParseUser partner = getPartnerUser();
+    	partner.put(User.PARTNER_STATUS_COLUMN, category);
+    	partner.saveEventually();
+    }
 
     private static void sendPartnerNotification(int category, String message){
 
@@ -196,10 +202,28 @@ public class AccountManager {
     public static void unlink(){
         setPartnerEmail("");
         setPartnerStatus(User.NO_PARTNER);
+        updatePartner(User.NO_PARTNER);
+        sendPartnerNotification(PartnerReceiver.PARTNER_UNLINK, "Your buddy unlinked from you");
     }
+    
+    public static ParseUser getPartnerUser(){
+    	ParseQuery<ParseUser> query = ParseUser.getQuery();
+    	query.whereEqualTo(User.USER_EMAIL_COLUMN, ApplicationSettings.getPartnerEmail());
+    	try{
+    		List<ParseUser> users = query.find();
+    		if(users.size()==1){
+    			return users.get(0);
+    		}
+    	}catch(ParseException e){
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+    
     public static void acceptPartnerRequest() {
         sendPartnerNotification(PartnerReceiver.PARTNER_ACCEPT_REQUEST, "Your partner accepted your request!");
         setPartnerStatus(User.PARTNERED);
+        updatePartner(User.PARTNERED);
     }
 
     public static void sendPartnerRequest(String email,
@@ -226,8 +250,10 @@ public class AccountManager {
 
                     setPartnerEmail(email);
                     setPartnerStatus(User.PARTNER_REQUESTED);
+                    setPartnerStatus(User.INCOMING_REQUEST);
 
                     sendPartnerNotification(PartnerReceiver.PARTNER_REQUEST, "Someone wants to be your buddy");
+
                     listener.onPartnerRequested();
 
                 }
@@ -240,13 +266,15 @@ public class AccountManager {
     public static void cancelPartnerRequest() {
         sendPartnerNotification(PartnerReceiver.PARTNER_CANCEL_REQUEST, "The request was cancelled");
         setPartnerStatus(User.NO_PARTNER);
+        updatePartner(User.NO_PARTNER);
         setPartnerEmail("");
     }
 
     public static void declinePartnerRequest(){
         sendPartnerNotification(PartnerReceiver.PARTNER_DECLINE_REQUEST, "Your request has been cancelled");
-        setPartnerEmail("");
         setPartnerStatus(User.NO_PARTNER);
+        updatePartner(User.NO_PARTNER);
+        setPartnerEmail("");
     }
 
     public static void incomingPartnerRequest(String email){

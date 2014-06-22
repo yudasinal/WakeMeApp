@@ -15,9 +15,6 @@ import android.widget.TextView;
 
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
-import com.parse.ParseFile;
-//import com.fima.glowpadview.GlowPadView;
-//import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.client.ui.start.ChoiceActivity;
 /*
@@ -36,9 +33,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private TextView myTime;
 	private TextView mornEv;
 
-	private ParseFile pic;
 	private String musicPath;
-	private String message;
 
 	MediaPlayer mpintro;
 	Vibrator vibrator;
@@ -66,11 +61,11 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 		myTime.setText(((WakeUpActivity)getActivity()).getTimeAsString());
 		mornEv.setText(((WakeUpActivity)getActivity()).getAmPm());
-		
-		musicPath = ((WakeUpActivity) getActivity()).alarm.getString(Alarm.COLUMN_MUSIC_URI);
-		if(musicPath == null || musicPath.equals("")){
-			musicPath = "content://media/external/audio/media/11";
-		}
+
+        musicPath = ((WakeUpActivity) getActivity()).alarm.getString(Alarm.COLUMN_MUSIC_URI);
+        if(musicPath == null || musicPath.equals("")){
+            musicPath = "content://media/external/audio/media/11";
+        }
 
         if(((WakeUpActivity) getActivity()).getTuple()== null){
             mGlowPadView.setTargetDescriptionsResourceId(R.array.snooze_dismiss_drawables_noextra);
@@ -100,33 +95,26 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			e.printStackTrace();
 		}
 		
-		// Get instance of Vibrator from current Context
 		vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-		 
-		// Start immediately
-		// Vibrate for 200 milliseconds
-		// Sleep for 500 milliseconds
-		long[] pattern = { 0, 200, 500 };
-		 
-		// The "0" means to repeat the pattern starting at the beginning
-		// CUIDADO: If you start at the wrong index (e.g., 1) then your pattern will be off --
-		// You will vibrate for your pause times and pause for your vibrate times !
-		vibrator.vibrate(pattern, 0);
-
 		
-
+		Thread mpintroThread = new Thread(){
+			@Override
+			public void run(){
+				mpintro.start();
+			}
+		};
+		Thread vibratorThread = new Thread(){
+			@Override
+			public void run(){
+				long[] pattern = { 0, 200, 500 };
+				vibrator.vibrate(pattern, 0);
+			}
+		};
+		mpintroThread.start();
+		vibratorThread.start();
+		 
 		 return view; 
 		 
-		//mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
-		//mpintro.setLooping(true);
-		//mpintro.start();
-		
-	}
-
-	@Override
-	public void onGrabbed(View v, int handle) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -177,6 +165,12 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	public void onFinishFinalAnimation() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onGrabbed(View v, int handle) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
