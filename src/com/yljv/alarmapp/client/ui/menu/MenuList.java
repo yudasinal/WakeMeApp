@@ -23,28 +23,6 @@ public class MenuList extends SherlockListFragment {
 	
 	String[] menu = new String[4];
 	
-	//TODO make a method that takes partner's name for an item in the menu
-	/*
-	String menuItem1 = context.getResources().getString(R.string.me);
-	String menuItem2 = context.getResources().getString(R.string.buddy);
-	String menuItem3 = context.getResources().getString(R.string.gallery);
-	String menuItem4 = context.getResources().getString(R.string.settings);
-	String[] menu = {menuItem1, menuItem2, menuItem3, menuItem4};
-	*/
-	
-	 public MenuList(){
-         super();
-         Context context = getActivity();
-         menu[0] = context.getResources().getString(R.string.me);
-
-         menu[1] = context.getResources().getString(R.string.buddy);
-
-         menu[2] = context.getResources().getString(R.string.gallery);
-
-         menu[3] = context.getResources().getString(R.string.settings);
-         
-     }
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,10 +36,18 @@ public class MenuList extends SherlockListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getActivity(),
-				R.layout.menu_layout, menu);
-		
+
+		Context context = getActivity();
+		menu[0] = context.getResources().getString(R.string.me);
+		menu[1] = context.getResources().getString(R.string.buddy);
+
+		menu[2] = context.getResources().getString(R.string.gallery);
+
+		menu[3] = context.getResources().getString(R.string.settings);
+
+		ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(
+				getActivity(), R.layout.menu_layout, menu);
+
 		setListAdapter(menuAdapter);
 	}
 
