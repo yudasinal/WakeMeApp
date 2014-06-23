@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:textColor="#fa8b60"
         android:textSize="80sp"
-        android:text="8:00"
         />
     
     <TextView
@@ -27,7 +26,6 @@
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:layout_toRightOf="@+id/my_time"
-        android:text="AM"
         android:textColor="#fa8b60"
         android:textSize="40sp"
         android:layout_marginLeft="5dp"

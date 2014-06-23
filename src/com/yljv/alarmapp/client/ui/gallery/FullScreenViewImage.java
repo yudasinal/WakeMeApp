@@ -23,7 +23,7 @@ public class FullScreenViewImage extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		getActionBar().setTitle("Gallery");
+		getActionBar().setTitle(R.string.gallery);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		setContentView(R.layout.fullscreen_image);

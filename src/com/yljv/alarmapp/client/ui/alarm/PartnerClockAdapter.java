@@ -91,25 +91,25 @@ import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 					String dayString = null;
 					switch(day) {
 					case 1:
-						dayString = "Sunday";
+						dayString = context.getResources().getString(R.string.sunday_full);
 						break;
 					case 2:
-						dayString = "Monday";
+						dayString = context.getResources().getString(R.string.monday_full);
 						break;
 					case 3:
-						dayString = "Tuesday";
+						dayString = context.getResources().getString(R.string.tuesday_full);
 						break;
 					case 4:
-						dayString = "Wednesday";
+						dayString = context.getResources().getString(R.string.wednesday_full);
 						break;
 					case 5:
-						dayString = "Thursday";
+						dayString = context.getResources().getString(R.string.thursday_full);
 						break;
 					case 6:
-						dayString = "Friday";
+						dayString = context.getResources().getString(R.string.friday_full);
 						break;
 					case 7: 
-						dayString = "Saturday";
+						dayString = context.getResources().getString(R.string.saturday_full);
 						break;
 					}
 					String time = partnerAlarm.getTimeAsString();

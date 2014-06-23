@@ -17,7 +17,6 @@
             android:id="@+id/my_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="8:00"
             android:textColor="#fa8b60"
             android:textSize="80sp" />
 
@@ -28,7 +27,6 @@
             android:layout_alignBaseline="@+id/my_time"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/my_time"
-            android:text="AM"
             android:textColor="#fa8b60"
             android:textSize="40sp" />
     </RelativeLayout>

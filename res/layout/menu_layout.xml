@@ -12,7 +12,7 @@
 	  android:paddingBottom="10dp"
 	  android:minHeight="30dp"
 	  android:textColor="#fa8b60"
-	  android:text="Item"
+	  android:text="@string/item"
 	  android:textSize="22sp"
 	  android:background="@drawable/background_list_item" 
 

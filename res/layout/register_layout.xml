@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint = "Name" />
+        android:hint = "@string/name"/>
     
     <EditText
         android:id="@+id/editEmail"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint = "Email" />
+        android:hint = "@string/email"/>
     
     <EditText
         android:id="@+id/confirmEmail"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint = "Confirm email" />
+        android:hint = "@string/confirm_email" />
     
     <EditText
         android:id="@+id/editPassword"
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint = "Password" />
+        android:hint = "@string/password" />
     
     
     
@@ -78,7 +78,7 @@
 	        android:layout_height="wrap_content"
 	        android:textColor="#3f2860"
 	        android:background="@drawable/sign_in"
-	        android:text="Next" />
+	        android:text="@string/next" />
 
 	    <ProgressBar
 	        android:id="@+id/progress"

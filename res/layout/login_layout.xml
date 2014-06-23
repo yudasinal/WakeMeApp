@@ -35,7 +35,7 @@
 	        android:layout_height="wrap_content"
 	        android:ems="10"
 	        android:inputType="textEmailAddress"
-	        android:hint = "Email" />
+	        android:hint = "@string/email" />
 
 	    <EditText
 	        android:id="@+id/password"
@@ -45,7 +45,7 @@
 	        android:layout_height="wrap_content"
 	        android:ems="10"
 	        android:inputType="textPassword"
-	        android:hint = "Password" />
+	        android:hint = "@string/password" />
 
 	</LinearLayout>
     
@@ -64,7 +64,7 @@
 	        android:layout_weight="0.2"
 	        android:textColor="#3f2860"
 	        android:background="@drawable/sign_up"
-	        android:text="Register"/>
+	        android:text="@string/register"/>
 
 	    <RelativeLayout
 	        android:layout_width="match_parent"
@@ -79,7 +79,7 @@
 	            android:layout_alignParentLeft="true"
 	            android:layout_alignParentTop="true"
 	            android:background="@drawable/sign_in"
-	            android:text="Login"
+	            android:text="@string/login"
 	            android:textColor="#3f2860" />
 
 	        <ProgressBar
