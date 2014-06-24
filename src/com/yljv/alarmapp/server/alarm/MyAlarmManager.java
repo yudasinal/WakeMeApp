@@ -604,6 +604,7 @@ public class MyAlarmManager {
 					c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_PICTURE)));
 			cv.put(Alarm.COLUMN_NAME,
 					c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_NAME)));
+			cv.put(Alarm.COLUMN_OBJECT_ID, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_OBJECT_ID)));
 
 			a.setValues(cv);
 
@@ -918,11 +919,23 @@ public class MyAlarmManager {
 	}
 
 	private static void sendNewAlarmNotification(long expirationTime) {
+		String message = "Hey, I just set a new Alarm!";
 		ParsePush push = new ParsePush();
 		push.setChannel(AccountManager.getSendingChannel());
-		push.setMessage("Hey, I just set a new Alarm!");
-		push.setExpirationTime(expirationTime);
-		push.sendInBackground();
+
+		JSONObject json;
+		try {
+			json = new JSONObject(
+
+			"{action: \"com.yljv.alarmapp.NOTIFICATION\"," + "\"message\": " + "\""
+					+ message + "\"}");
+
+			push.setData(json);
+			push.setExpirationTime(expirationTime);
+			push.sendInBackground();
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public static void setAlarmInstancesAfterBoot() {

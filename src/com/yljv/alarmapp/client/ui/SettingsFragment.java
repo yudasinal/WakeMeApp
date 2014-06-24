@@ -18,6 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -56,6 +59,9 @@ public class SettingsFragment extends SherlockFragment implements
 	TextView partnerActionDown;
 	String name;
 	String changedPartnerName;
+	CheckBox notification;
+	CheckBox vibration;
+	CheckBox alertSounds;
 
 	Activity activity;
 	PartnerRequestListener fragment;
@@ -134,7 +140,38 @@ public class SettingsFragment extends SherlockFragment implements
 		changeMyEmail.setOnClickListener(this);
 		signOut.setOnClickListener(this);
 		deleteAccount.setOnClickListener(this);
+		
+		vibration = (CheckBox) view.findViewById(R.id.vibration);
+		vibration.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				ApplicationSettings.setNotificationVibration(isChecked);
+			}
+			
+		});
+		notification = (CheckBox) view.findViewById(R.id.notifications);
+		notification.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				ApplicationSettings.setNotificationActivated(isChecked);
+			}
+			
+		});
+
+		alertSounds = (CheckBox) view.findViewById(R.id.sound);
+		alertSounds.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				ApplicationSettings.setNotificationSound(isChecked);
+			}
+			
+		});
 		return view;
 
 	}

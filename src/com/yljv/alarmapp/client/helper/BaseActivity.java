@@ -1,6 +1,8 @@
 package com.yljv.alarmapp.client.helper;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.WindowManager;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -9,9 +11,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.R.drawable;
-import com.yljv.alarmapp.R.id;
-import com.yljv.alarmapp.R.layout;
 import com.yljv.alarmapp.client.ui.menu.MenuList;
 
 public class BaseActivity extends SlidingFragmentActivity{
@@ -40,12 +39,24 @@ public class BaseActivity extends SlidingFragmentActivity{
 		SlidingMenu sm = getSlidingMenu();
 		sm.setShadowWidth(30);
 		sm.setShadowDrawable(R.drawable.shadow);
-		sm.setBehindOffset(70);
+		
+		//Making the offset the same for different screen sizes
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		float offsetFloat = (float) 70/480 * width;
+		int offset = (int) offsetFloat;
+		sm.setBehindOffset(offset);	
+		
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.launchericon_artwork);
+		
+		
+		
 	}
 	
 	@Override	

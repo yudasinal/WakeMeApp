@@ -51,7 +51,12 @@ public class GridViewImageAdapter extends BaseAdapter {
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        ImageView imageView;
+	        ViewHolder holder;
 	        if (convertView == null) {
+	        	/*
+	        	holder = new ViewHolder();
+	        	holder.image = (ImageView) findViewById(R.id.i)
+	        	*/
 	            imageView = new ImageView(_activity);
 	        } else {
 	            imageView = (ImageView) convertView;

@@ -66,6 +66,9 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 				if(myAlarm.isActivated()) {
 					myHolder.activated.setImageResource(R.drawable.alarm_activated);
 				}
+				else {
+					myHolder.activated.setImageResource(R.drawable.alarm_deactivated);
+				}
 
 				myHolder.activated.setOnClickListener(new OnClickListener() {
 
