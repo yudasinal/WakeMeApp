@@ -23,6 +23,7 @@ import com.yljv.alarmapp.client.ui.start.ChoiceActivity;
  */
 import com.yljv.alarmapp.server.alarm.Alarm;
 import com.yljv.alarmapp.server.alarm.AlarmInstance;
+import com.yljv.alarmapp.server.alarm.MsgPictureTuple;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 
 import java.util.GregorianCalendar;
@@ -48,7 +49,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-        timeMillis = GregorianCalendar.getInstance().getTimeInMillis() + 300;
+        timeMillis = GregorianCalendar.getInstance().getTimeInMillis() + 300000;
 
 		view = inflater.inflate(R.layout.wake_up_layout, container, false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
@@ -66,9 +67,10 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
         if(musicPath == null || musicPath.equals("")){
             musicPath = "content://media/external/audio/media/11";
         }
-
-        if(((WakeUpActivity) getActivity()).getTuple()== null){
-            mGlowPadView.setTargetDescriptionsResourceId(R.array.snooze_dismiss_drawables_noextra);
+        
+        MsgPictureTuple tuple = ((WakeUpActivity) getActivity()).getTuple();
+        if(tuple== null || (tuple.getMsg()==null)&&(tuple.getPicData()==null)){
+            mGlowPadView.setTargetResources(R.array.snooze_dismiss_drawables_noextra);
         }
 
 		mGlowPadView.setOnTriggerListener(this);
@@ -129,15 +131,17 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		switch (resId) {
 		case R.drawable.snooze_progress1:
 			// TODO snooze alarm
-			Intent intent1 = new Intent(this.getActivity(),
-					ChoiceActivity.class);
-			startActivity(intent1);
-			mpintro.stop();
-			vibrator.cancel();
+			stopAlarm();
             MyAlarmManager.snoozeAlarm(id, timeMillis);
+            android.os.Process.killProcess(android.os.Process.myPid());
 			break;
-
+		case R.drawable.checkmark:
+			stopAlarm();
+			MyAlarmManager.setNextAlarmInstance(((WakeUpActivity) getActivity()).alarm);
+            android.os.Process.killProcess(android.os.Process.myPid());
+			break;
 		case R.drawable.pic_msg:
+			MyAlarmManager.setNextAlarmInstance(((WakeUpActivity) getActivity()).alarm);
 			Fragment newContent = new PicMsgArrivedFragment();
 			Bundle bundle = new Bundle();
 			bundle.putInt(AlarmInstance.COLUMN_ID, id);
@@ -146,8 +150,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
 			}
-			mpintro.stop();
-			vibrator.cancel();
+			stopAlarm();
 			break;
 		default:
 			// Code should never reach here.
@@ -171,6 +174,18 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	public void onGrabbed(View v, int handle) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		stopAlarm();
+	}
+	
+	public void stopAlarm(){
+
+		mpintro.stop();
+		vibrator.cancel();
 	}
 
 }
