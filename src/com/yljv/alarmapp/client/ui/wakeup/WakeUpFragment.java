@@ -36,8 +36,8 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 	private String musicPath;
 
-	MediaPlayer mpintro;
-	Vibrator vibrator;
+	static MediaPlayer mpintro;
+	static Vibrator vibrator;
 
 	View view;
 
@@ -136,6 +136,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
             onCloseTheApp();
 			break;
 		case R.drawable.pic_msg:
+			onStopVibrationAndMusic();
 			Fragment newContent = new PicMsgArrivedFragment();
 			Bundle bundle = new Bundle();
 			bundle.putInt(AlarmInstance.COLUMN_ID, id);
@@ -144,7 +145,6 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
 			}
-			onStopVibrationAndMusic();
 			break;
 		case R.drawable.checkmark:
 			onStopVibrationAndMusic();
@@ -153,11 +153,10 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		default:
 			// Code should never reach here.
 		}
-
 	}
 	
 	//Method to stop the vibration and the ringtone
-	private void onStopVibrationAndMusic() {
+	public static void onStopVibrationAndMusic() {
 		vibrator.cancel();
 		mpintro.stop();
 	}

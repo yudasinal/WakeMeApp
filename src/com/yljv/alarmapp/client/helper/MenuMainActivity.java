@@ -16,7 +16,6 @@ public class MenuMainActivity extends BaseActivity {
 
 	public MenuMainActivity() {
 		super(R.string.app_name);
-
 	}
 
 	@Override
@@ -41,7 +40,6 @@ public class MenuMainActivity extends BaseActivity {
 				.replace(R.id.menu_frame, new MenuList()).commit();
 
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		
 		mma = this;
 
 	}

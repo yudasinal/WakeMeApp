@@ -13,6 +13,7 @@ import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 import com.yljv.alarmapp.R.id;
 import com.yljv.alarmapp.R.layout;
 import com.yljv.alarmapp.client.helper.ApplicationSettings;
+import com.yljv.alarmapp.client.helper.MenuMainActivity;
 
 public class WakeUpActivity extends FragmentActivity {
 
@@ -78,9 +79,9 @@ public class WakeUpActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (getIntent().getBooleanExtra("EXIT", false)) {
-			finish();
-		}
+		WakeUpFragment.onStopVibrationAndMusic();
+		finish();
+		MenuMainActivity.getInstance().finish();
 	}
 
     public MsgPictureTuple getTuple(){
