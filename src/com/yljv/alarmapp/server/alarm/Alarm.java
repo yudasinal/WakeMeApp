@@ -31,7 +31,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public static final String COLUMN_VOLUME = "volume";
 	public static final String COLUMN_MSG = "msg";
 	public static final String COLUMN_PICTURE = "picture";
-	public static final String COLUMN_OBJECT_ID = "objectID";
+	public static final String COLUMN_OBJECT_ID = "objectId";
 
 	public static final String TABLE_NAME = "my_alarm_entry";
 
@@ -211,7 +211,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		MyAlarmManager.setAlarmActivate(alarm);
 		
 		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
-		query.whereEqualTo(Alarm.COLUMN_OBJECT_ID, alarm.getValues().get(COLUMN_OBJECT_ID));
+		String objectId = alarm.getValues().getAsString(COLUMN_OBJECT_ID);
+		query.whereEqualTo(Alarm.COLUMN_OBJECT_ID, alarm.getValues().getAsString(COLUMN_OBJECT_ID));
 		query.findInBackground(new FindCallback<Alarm>() {
 			public void done(List<Alarm> list, ParseException e) {
 				if (e == null) {
