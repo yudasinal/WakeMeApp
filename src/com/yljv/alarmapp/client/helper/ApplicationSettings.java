@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 public class ApplicationSettings {
 
 	public final static String NOTIFICATION_ON_KEY = "notification_on";
+	public final static String NOTIFICATION_SOUND_KEY = "notification_sound";
+	public final static String NOTIFICATION_VIBRATION_KEY = "notification_vibration";
 
 
     public final static String directory = "/WakeMeApp";
@@ -21,6 +23,23 @@ public class ApplicationSettings {
 	
 	private static SharedPreferences preferences;
 
+	
+	public static void setNotificationSound(boolean on){
+		preferences.edit().putBoolean(NOTIFICATION_SOUND_KEY, on).commit();
+	}
+	
+	public static boolean getNofiticationSoundActivated(){
+		return preferences.getBoolean(NOTIFICATION_SOUND_KEY, true);
+	}
+	
+	public static void setNotificationVibration(boolean on){
+		preferences.edit().putBoolean(NOTIFICATION_VIBRATION_KEY, on).commit();
+	}
+	
+	public static boolean getNofiticationVibrationActivated(){
+		return preferences.getBoolean(NOTIFICATION_VIBRATION_KEY, true);
+	}
+	
 	public static void setPartnerStatus(int status){
 		preferences.edit().putInt(User.PARTNER_STATUS_COLUMN, status).commit();
 	}
@@ -76,6 +95,10 @@ public class ApplicationSettings {
 	
 	public static void setNotificationActivated(boolean activated){
 		preferences.edit().putBoolean(NOTIFICATION_ON_KEY, activated).commit();
+	}
+	
+	public static boolean getNoticationActivated(){
+		return preferences.getBoolean(NOTIFICATION_ON_KEY, true);
 	}
 	
 	public static void setPartnerEmail(String partnerEmail){

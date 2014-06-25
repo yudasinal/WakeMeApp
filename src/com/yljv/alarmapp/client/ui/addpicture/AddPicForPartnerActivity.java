@@ -30,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.client.helper.SquareImageView;
 import com.yljv.alarmapp.server.alarm.AlarmInstance;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 public class AddPicForPartnerActivity extends Activity implements

@@ -3,16 +3,20 @@ package com.yljv.alarmapp.server.alarm;
 import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import android.content.ContentValues;
 
+import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.yljv.alarmapp.client.helper.ApplicationSettings;
+import com.yljv.alarmapp.server.user.AccountManager;
 
 @ParseClassName("Alarm")
 public class Alarm extends ParseObject implements Comparable<Alarm> {
@@ -27,7 +31,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public static final String COLUMN_VOLUME = "volume";
 	public static final String COLUMN_MSG = "msg";
 	public static final String COLUMN_PICTURE = "picture";
-	public static final String COLUMN_OBJECT_ID = "objectID";
+	public static final String COLUMN_OBJECT_ID = "objectId";
 
 	public static final String TABLE_NAME = "my_alarm_entry";
 
@@ -200,20 +204,32 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		return (res == 1) ? true : false;
 	}
 
-	public void setActivated(boolean activated) {
+	public void setActivated(final boolean activated) {
 		
 		final Alarm alarm = this;
+		alarm.getValues().put(Alarm.COLUMN_ACTIVATED, activated);
+		MyAlarmManager.setAlarmActivate(alarm);
 		
-		values.put(Alarm.COLUMN_ACTIVATED, activated);
-		put(Alarm.COLUMN_ACTIVATED, activated);
-		this.saveEventually(new SaveCallback(){
-
-			@Override
-			public void done(ParseException e) {
-				MyAlarmManager.setAlarmActivate(alarm);
+		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
+		String objectId = alarm.getValues().getAsString(COLUMN_OBJECT_ID);
+		query.whereEqualTo(Alarm.COLUMN_OBJECT_ID, alarm.getValues().getAsString(COLUMN_OBJECT_ID));
+		query.findInBackground(new FindCallback<Alarm>() {
+			public void done(List<Alarm> list, ParseException e) {
+				if (e == null) {
+					if(list.size()==1){
+						list.get(0).put(Alarm.COLUMN_ACTIVATED, activated);
+						try{
+							list.get(0).save();
+						}catch(ParseException pe){
+							pe.printStackTrace();
+						}
+					}
+				} else {
+					e.printStackTrace();
+				}
 			}
-			
 		});
+		
 	}
 
 	private void setID(int id) {

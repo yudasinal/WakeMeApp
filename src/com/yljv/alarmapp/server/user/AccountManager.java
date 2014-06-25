@@ -1,5 +1,6 @@
 package com.yljv.alarmapp.server.user;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -8,12 +9,15 @@ import com.yljv.alarmapp.client.helper.DBHelper;
 import com.yljv.alarmapp.client.helper.PartnerReceiver;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.parse.FunctionCallback;
 import com.parse.LogInCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
@@ -165,8 +169,17 @@ public class AccountManager {
             dbHelper.close();
         }
     }
+    
 
     private static void sendPartnerNotification(int category, String message){
+    	
+    	ParseCloud.callFunctionInBackground("hello", new HashMap<String, Object>(), new FunctionCallback<String>() {
+    		  public void done(String result, ParseException e) {
+    		    if (e == null) {
+    		      // result is "Hello world!"
+    		    }
+    		  }
+    		});
 
         String channel = AccountManager.getSendingChannel();
 
@@ -183,20 +196,52 @@ public class AccountManager {
             push.setData(json);
             push.sendInBackground();
 
-            ParsePush pushy = new ParsePush();
-            pushy.setChannel(channel);
-            pushy.setMessage(message);
-            pushy.sendInBackground();
+            sendPushMessage(message);
+            
         } catch (Exception pe) {
             pe.printStackTrace();
         }
 
     }
+    
+    public static void sendPushMessage(String message){
+		ParsePush push = new ParsePush();
+		push.setChannel(AccountManager.getSendingChannel());
+
+		JSONObject json;
+		try {
+			json = new JSONObject(
+
+			"{action: \"com.yljv.alarmapp.NOTIFICATION\"," + "\"message\": " + "\""
+					+ message + "\"}");
+
+			push.setData(json);
+			push.sendInBackground();
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+    }
 
     public static void unlink(){
         setPartnerEmail("");
         setPartnerStatus(User.NO_PARTNER);
+        sendPartnerNotification(PartnerReceiver.PARTNER_UNLINK, "Your buddy unlinked from you");
     }
+    
+    public static ParseUser getPartnerUser(){
+    	ParseQuery<ParseUser> query = ParseUser.getQuery();
+    	query.whereEqualTo(User.USER_EMAIL_COLUMN, ApplicationSettings.getPartnerEmail());
+    	try{
+    		List<ParseUser> users = query.find();
+    		if(users.size()==1){
+    			return users.get(0);
+    		}
+    	}catch(ParseException e){
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+    
     public static void acceptPartnerRequest() {
         sendPartnerNotification(PartnerReceiver.PARTNER_ACCEPT_REQUEST, "Your partner accepted your request!");
         setPartnerStatus(User.PARTNERED);
@@ -228,6 +273,7 @@ public class AccountManager {
                     setPartnerStatus(User.PARTNER_REQUESTED);
 
                     sendPartnerNotification(PartnerReceiver.PARTNER_REQUEST, "Someone wants to be your buddy");
+
                     listener.onPartnerRequested();
 
                 }
@@ -245,8 +291,8 @@ public class AccountManager {
 
     public static void declinePartnerRequest(){
         sendPartnerNotification(PartnerReceiver.PARTNER_DECLINE_REQUEST, "Your request has been cancelled");
-        setPartnerEmail("");
         setPartnerStatus(User.NO_PARTNER);
+        setPartnerEmail("");
     }
 
     public static void incomingPartnerRequest(String email){

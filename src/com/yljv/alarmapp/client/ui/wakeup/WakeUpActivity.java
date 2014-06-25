@@ -23,6 +23,7 @@ public class WakeUpActivity extends FragmentActivity {
     
     public Alarm alarm;
 
+    String musicPath;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 

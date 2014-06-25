@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,6 @@ import android.widget.TextView;
 
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
-import com.parse.ParseFile;
-//import com.fima.glowpadview.GlowPadView;
-//import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.client.ui.start.ChoiceActivity;
 /*
@@ -35,15 +33,12 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	private TextView myTime;
 	private TextView mornEv;
 
-	private ParseFile pic;
 	private String musicPath;
-	private String message;
 
 	MediaPlayer mpintro;
+	Vibrator vibrator;
 
 	View view;
-
-    Alarm alarm;
 
     long timeMillis;
 	
@@ -63,23 +58,14 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		Bundle bundle = this.getArguments();
 		id = bundle.getInt(AlarmInstance.COLUMN_ID);
 
-		alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
 
-		int hour = alarm.getHour();
-		int minute = alarm.getMinute();
-		
-		String time;
-		String hourS = (hour < 10) ? "0" + Integer.toString(hour) : Integer.toString(hour);
-		String minuteS = (minute < 10) ? "0" + Integer.toString(minute) : Integer.toString(minute);
-		time = hourS + ":" + minuteS;
-		myTime.setText(time);
-		String am_pm = (alarm.getTimeInMinutes() < 12*60) ? "AM" : "PM";
-		mornEv.setText(am_pm);
-		
-		musicPath = alarm.getString(Alarm.COLUMN_MUSIC_URI);
-		if(musicPath == null || musicPath.equals("")){
-			musicPath = "content://media/external/audio/media/11";
-		}
+		myTime.setText(((WakeUpActivity)getActivity()).getTimeAsString());
+		mornEv.setText(((WakeUpActivity)getActivity()).getAmPm());
+
+        musicPath = ((WakeUpActivity) getActivity()).alarm.getString(Alarm.COLUMN_MUSIC_URI);
+        if(musicPath == null || musicPath.equals("")){
+            musicPath = "content://media/external/audio/media/11";
+        }
 
         if(((WakeUpActivity) getActivity()).getTuple()== null){
             mGlowPadView.setTargetDescriptionsResourceId(R.array.snooze_dismiss_drawables_noextra);
@@ -109,19 +95,26 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 			e.printStackTrace();
 		}
 		
-
+		vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+		
+		Thread mpintroThread = new Thread(){
+			@Override
+			public void run(){
+				mpintro.start();
+			}
+		};
+		Thread vibratorThread = new Thread(){
+			@Override
+			public void run(){
+				long[] pattern = { 0, 200, 500 };
+				vibrator.vibrate(pattern, 0);
+			}
+		};
+		mpintroThread.start();
+		vibratorThread.start();
+		 
 		 return view; 
 		 
-		//mpintro = MediaPlayer.create(this.getActivity(), Uri.parse(musicPath));
-		//mpintro.setLooping(true);
-		//mpintro.start();
-		
-	}
-
-	@Override
-	public void onGrabbed(View v, int handle) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -140,6 +133,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 					ChoiceActivity.class);
 			startActivity(intent1);
 			mpintro.stop();
+			vibrator.cancel();
             MyAlarmManager.snoozeAlarm(id, timeMillis);
 			break;
 
@@ -153,6 +147,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				mma.switchContent(newContent);
 			}
 			mpintro.stop();
+			vibrator.cancel();
 			break;
 		default:
 			// Code should never reach here.
@@ -170,6 +165,12 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	public void onFinishFinalAnimation() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onGrabbed(View v, int handle) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

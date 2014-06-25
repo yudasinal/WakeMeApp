@@ -5,7 +5,7 @@
           android:versionName="1.0" >
 
     <uses-sdk
-            android:minSdkVersion="13"
+            android:minSdkVersion="11"
             android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -143,6 +143,13 @@
                 android:exported="false" >
             <intent-filter>
                 <action android:name="com.yljv.alarmapp.UPDATE_ALARM" />
+            </intent-filter>
+        </receiver>
+        <receiver
+                android:name="com.yljv.alarmapp.client.helper.NotificationReceiver"
+                android:exported="false" >
+            <intent-filter>
+                <action android:name="com.yljv.alarmapp.NOTIFICATION" />
             </intent-filter>
         </receiver>
         <receiver
