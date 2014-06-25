@@ -41,18 +41,21 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	final static int PM = Calendar.PM;
 
 	private ContentValues values;
-	
 
 	public Alarm() {
 		super("Alarm");
-		
+
 	}
 
-	public Alarm(ContentValues cv) {
+	public void setContentValues(ContentValues cv){
 		this.values = cv;
 	}
 	
-	public void initialize(){
+	public Alarm(ContentValues cv) {
+		this.values = cv;
+	}
+
+	public void initialize() {
 		setACL(new ParseACL(ParseUser.getCurrentUser()));
 		values = new ContentValues();
 		values.put(Alarm.COLUMN_WEEKDAYS, "0000000");
@@ -65,8 +68,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		for (int i = 0; i < 7; i++) {
 			this.setRepeat(i, false);
 		}
-		values.put(Alarm.COLUMN_ACTIVATED, true);
-		put(Alarm.COLUMN_ACTIVATED, true);
+		values.put(Alarm.COLUMN_ACTIVATED, 1);
+		put(Alarm.COLUMN_ACTIVATED, 1);
 		this.setVisible(true);
 	}
 
@@ -77,7 +80,11 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public int getAlarmId() {
-		return (int) values.getAsInteger(Alarm.COLUMN_ID);
+		if(values == null){
+			return this.getInt(Alarm.COLUMN_ID);
+		}else{
+			return (int) values.getAsInteger(Alarm.COLUMN_ID);
+		}
 	}
 
 	/*
@@ -121,8 +128,8 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		cal.setTimeInMillis((int) (long) values.getAsLong(Alarm.COLUMN_TIME));
 		return cal;
 	}
-	
-	public int getTimeInMinutes(){
+
+	public int getTimeInMinutes() {
 		return (Integer) values.getAsInteger(Alarm.COLUMN_TIME);
 	}
 
@@ -149,26 +156,26 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 		hourS = Integer.toString(myHour);
 		minuteS = (myMinute < 10) ? "0" + Integer.toString(myMinute) : Integer
 				.toString(myMinute);
-		
-		if(hourS.length() == 1) {
+
+		if (hourS.length() == 1) {
 
 			return "0" + hourS + ":" + minuteS;
 		}
-		
-		else{ 
+
+		else {
 
 			return hourS + ":" + minuteS;
 		}
 
 	}
-	
+
 	public String getMorningEveningAsString() {
 
 		boolean am = this.isAM();
 		String amS;
-		
+
 		amS = am ? "AM" : "PM";
-		
+
 		return amS;
 	}
 
@@ -191,7 +198,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public boolean isActivated() {
-		return values.getAsBoolean(Alarm.COLUMN_ACTIVATED);
+		return values.getAsInteger(Alarm.COLUMN_ACTIVATED) == 1;
 	}
 
 	public boolean isAM() {
@@ -205,31 +212,44 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public void setActivated(final boolean activated) {
-		
+
 		final Alarm alarm = this;
-		alarm.getValues().put(Alarm.COLUMN_ACTIVATED, activated);
-		MyAlarmManager.setAlarmActivate(alarm);
-		
-		ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
-		String objectId = alarm.getValues().getAsString(COLUMN_OBJECT_ID);
-		query.whereEqualTo(Alarm.COLUMN_OBJECT_ID, alarm.getValues().getAsString(COLUMN_OBJECT_ID));
-		query.findInBackground(new FindCallback<Alarm>() {
-			public void done(List<Alarm> list, ParseException e) {
-				if (e == null) {
-					if(list.size()==1){
-						list.get(0).put(Alarm.COLUMN_ACTIVATED, activated);
-						try{
-							list.get(0).save();
-						}catch(ParseException pe){
-							pe.printStackTrace();
+		if(activated){
+			alarm.getValues().put(Alarm.COLUMN_ACTIVATED, 1);
+		}else{
+			alarm.getValues().put(Alarm.COLUMN_ACTIVATED, 0);
+			
+		}
+
+		new Thread() {
+			@Override
+			public void run() {
+				MyAlarmManager.activateAlarm(alarm);
+				ParseQuery<Alarm> query = ParseQuery.getQuery("Alarm");
+				String objectId = alarm.getValues().getAsString(
+						COLUMN_OBJECT_ID);
+				query.whereEqualTo(Alarm.COLUMN_OBJECT_ID, alarm.getValues()
+						.getAsString(COLUMN_OBJECT_ID));
+				query.findInBackground(new FindCallback<Alarm>() {
+					public void done(List<Alarm> list, ParseException e) {
+						if (e == null) {
+							if (list.size() == 1) {
+								list.get(0).put(Alarm.COLUMN_ACTIVATED,
+										activated);
+								try {
+									list.get(0).save();
+								} catch (ParseException pe) {
+									pe.printStackTrace();
+								}
+							}
+						} else {
+							e.printStackTrace();
 						}
 					}
-				} else {
-					e.printStackTrace();
-				}
+				});
 			}
-		});
-		
+		}.start();
+
 	}
 
 	private void setID(int id) {
@@ -243,7 +263,7 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public void setMusicString(String path) {
-		if(path!=null){
+		if (path != null) {
 			values.put(Alarm.COLUMN_MUSIC_URI, path);
 			put(Alarm.COLUMN_MUSIC_URI, path);
 		}
@@ -277,6 +297,9 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	}
 
 	public void setTime(int hour, int minute) {
+		if(values == null){
+			values = new ContentValues();
+		}
 		long time = hour * 60 + minute;
 		values.put(Alarm.COLUMN_TIME, time);
 		this.put(Alarm.COLUMN_TIME, time);
@@ -296,15 +319,15 @@ public class Alarm extends ParseObject implements Comparable<Alarm> {
 	public void setVisible(boolean visible) {
 		if (!visible) {
 			values.put(Alarm.COLUMN_VISIBILITY, 0);
+			put(Alarm.COLUMN_VISIBILITY,0);
 		} else {
 			values.put(Alarm.COLUMN_VISIBILITY, 1);
+			put(Alarm.COLUMN_VISIBILITY,1);
 		}
-		this.put(Alarm.COLUMN_VISIBILITY, visible);
-
 
 	}
-	
-	private void setUser(){
+
+	private void setUser() {
 		values.put(Alarm.COLUMN_USER, ApplicationSettings.getUserEmail());
 		this.put(Alarm.COLUMN_USER, ApplicationSettings.getUserEmail());
 	}

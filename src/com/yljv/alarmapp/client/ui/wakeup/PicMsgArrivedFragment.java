@@ -73,12 +73,6 @@ public class PicMsgArrivedFragment extends Fragment {
 			new TakeScreenshotTask().execute();
 		}
 		
-
-		Alarm alarm = MyAlarmManager.findAlarmById(id / 10 * 10);
-		if(alarm!=null){
-			MyAlarmManager.setNextAlarmInstance(alarm);
-		}
-
 		return view;
 	}
 

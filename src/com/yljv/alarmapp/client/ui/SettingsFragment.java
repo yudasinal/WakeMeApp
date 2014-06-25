@@ -141,6 +141,9 @@ public class SettingsFragment extends SherlockFragment implements
 		deleteAccount.setOnClickListener(this);
 		
 		vibration = (CheckBox) view.findViewById(R.id.vibration);
+		if(ApplicationSettings.getNofiticationVibrationActivated()){
+			vibration.setChecked(true);
+		}
 		vibration.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override
@@ -151,6 +154,9 @@ public class SettingsFragment extends SherlockFragment implements
 			
 		});
 		notification = (CheckBox) view.findViewById(R.id.notifications);
+		if(ApplicationSettings.getNoticationActivated()){
+			notification.setChecked(true);
+		}
 		notification.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override
@@ -162,6 +168,9 @@ public class SettingsFragment extends SherlockFragment implements
 		});
 
 		alertSounds = (CheckBox) view.findViewById(R.id.sound);
+		if(ApplicationSettings.getNofiticationSoundActivated()){
+			alertSounds.setChecked(true);
+		}
 		alertSounds.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override

@@ -1,8 +1,10 @@
 package com.yljv.alarmapp.client.ui.alarm;
 
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Ringtone;
@@ -204,15 +206,21 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 		data.putString(ALARM_NAME,nameAlarm);
 		newContent.setArguments(data);
 		
-		alarm.setTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-		alarm.setName(nameAlarm);
-		alarm.setVisible(true);
+			ContentValues contentValues = alarm.getValues();
+			contentValues.put(Alarm.COLUMN_TIME, timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute());
+			contentValues.put(Alarm.COLUMN_NAME, nameAlarm);
+			contentValues.put(Alarm.COLUMN_VISIBILITY, 1);
+		
+		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < 7; i++){
 			if(scheduled[i]){
-				alarm.setRepeat(i, true);
+				sb.append(1);
+			}else{
+				sb.append(0);
 			}
 		}
-		MyAlarmManager.editAlarm(this, alarm);
+		contentValues.put(Alarm.COLUMN_WEEKDAYS, sb.toString());
+		MyAlarmManager.editAlarm(this, alarm.getObjectId(), contentValues);
 		
 		Intent intent = new Intent(this, MenuMainActivity.class);
 		startActivity(intent);

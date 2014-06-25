@@ -8,6 +8,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.client.ui.alarm.MyAlarmListFragment;
 import com.yljv.alarmapp.client.ui.menu.MenuList;
+import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 
 public class MenuMainActivity extends BaseActivity {
 
@@ -22,6 +23,8 @@ public class MenuMainActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		MyAlarmManager.setActivity(this);
 
 		if (savedInstanceState != null) {
 			mainView = getSupportFragmentManager().getFragment(

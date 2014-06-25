@@ -25,6 +25,7 @@ public class ClockAdapter extends ArrayAdapter<Alarm> {
 		this.addAll(MyAlarmManager.getMyAlarms());
 	}
 
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View rowView = convertView;

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ import com.parse.SaveCallback;
 import com.yljv.alarmapp.client.helper.AlarmReceiver;
 import com.yljv.alarmapp.client.helper.ApplicationSettings;
 import com.yljv.alarmapp.client.helper.DBHelper;
+import com.yljv.alarmapp.client.helper.MenuMainActivity;
 import com.yljv.alarmapp.client.ui.alarm.ClockAdapter;
 import com.yljv.alarmapp.client.ui.alarm.PartnerClockAdapter;
 import com.yljv.alarmapp.server.user.AccountManager;
@@ -59,7 +61,13 @@ public class MyAlarmManager {
 	private static SQLiteDatabase db;
 
 	private static PartnerClockAdapter pcAdapter;
-	private static ClockAdapter adapter;
+	public static ClockAdapter adapter;
+
+	public static MenuMainActivity activity;
+
+	public static ClockAdapter getAdapter() {
+		return adapter;
+	}
 
 	public static MsgPictureTuple findPicMsgByAlarmId(int id) {
 
@@ -154,6 +162,29 @@ public class MyAlarmManager {
 		return cn.getTimeInMillis();
 	}
 
+	public static void updateAdapter() {
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					adapter.notifyDataSetChanged();
+				}
+			});
+		}
+	}
+
+	public static void updatePartnerAdapter() {
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					pcAdapter.notifyDataSetChanged();
+				}
+			});
+		}
+	}
+
 	private static void insertMyAlarmInstanceToDatabase(
 			ContentValues contentValues) {
 		db.insertWithOnConflict(AlarmInstance.MY_ALARMINSTANCE_TABLE_NAME,
@@ -220,7 +251,7 @@ public class MyAlarmManager {
 			final AlarmInstance alarm, final String picturePath, String message) {
 
 		alarm.setPictureSent(true);
-		pcAdapter.notifyDataSetChanged();
+		updatePartnerAdapter();
 
 		if (message != null) {
 			alarm.put(AlarmInstance.COLUMN_MSG, message);
@@ -364,7 +395,7 @@ public class MyAlarmManager {
 	public static void deleteAlarm(Alarm alarm) {
 
 		myAlarms.remove(alarm);
-		adapter.notifyDataSetChanged();
+		updateAdapter();
 
 		db.delete(Alarm.TABLE_NAME, Alarm.COLUMN_ID + "=" + alarm.getAlarmId(),
 				null);
@@ -380,7 +411,7 @@ public class MyAlarmManager {
 				partnerAlarms.remove(alarm);
 			}
 		}
-		pcAdapter.notifyDataSetChanged();
+		updatePartnerAdapter();
 		db.delete(AlarmInstance.PARTNER_TABLE_NAME,
 				AlarmInstance.COLUMN_OBJECT_ID + "=" + "'" + objectId + "'",
 				null);
@@ -455,7 +486,7 @@ public class MyAlarmManager {
 		}
 		c.close();
 
-		pcAdapter.notifyDataSetChanged();
+		updatePartnerAdapter();
 	}
 
 	public static void getPartnerAlarmsFromServer() {
@@ -508,7 +539,7 @@ public class MyAlarmManager {
 				}
 			}
 		}
-		pcAdapter.notifyDataSetChanged();
+		updatePartnerAdapter();
 
 	}
 
@@ -541,15 +572,19 @@ public class MyAlarmManager {
 			}
 
 			alarm.setValues(cv);
-			
+
 			insertAlarmToDatabase(alarm);
 			myAlarms.add(alarm);
 		}
-		adapter.notifyDataSetChanged();
+		updateAdapter();
 	}
 
 	public static ArrayList<Alarm> getMyAlarms() {
 		return myAlarms;
+	}
+
+	public static void setActivity(MenuMainActivity act) {
+		activity = act;
 	}
 
 	public static void getMyAlarmsFromDatabase() {
@@ -592,7 +627,8 @@ public class MyAlarmManager {
 					c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_PICTURE)));
 			cv.put(Alarm.COLUMN_NAME,
 					c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_NAME)));
-			cv.put(Alarm.COLUMN_OBJECT_ID, c.getString(c.getColumnIndexOrThrow(Alarm.COLUMN_OBJECT_ID)));
+			cv.put(Alarm.COLUMN_OBJECT_ID, c.getString(c
+					.getColumnIndexOrThrow(Alarm.COLUMN_OBJECT_ID)));
 
 			a.setValues(cv);
 
@@ -600,7 +636,7 @@ public class MyAlarmManager {
 			c.move(1);
 		}
 		c.close();
-		adapter.notifyDataSetChanged();
+		updateAdapter();
 
 	}
 
@@ -640,7 +676,7 @@ public class MyAlarmManager {
 	public static void setMyAlarmsOnDevice(List<AlarmInstance> list) {
 
 		for (AlarmInstance alarm : list) {
-			
+
 			GregorianCalendar now = (GregorianCalendar) GregorianCalendar
 					.getInstance();
 			GregorianCalendar cn = (GregorianCalendar) GregorianCalendar
@@ -696,30 +732,62 @@ public class MyAlarmManager {
 		dbHelper = new DBHelper(context);
 		db = dbHelper.getReadableDatabase();
 	}
+	
+	public static Alarm findAlarmByObjectId(String objectId){
+		
+		ParseQuery<Alarm> query = ParseQuery
+				.getQuery("Alarm");
+		query.whereEqualTo(
+				Alarm.COLUMN_OBJECT_ID, objectId);
+		try{
+			List<Alarm> list = query.find();
+			if(list.size() == 1){
+				return list.get(0);
+			}
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/*
 	 * TODO dont sent notifications?
 	 */
-	public static void editAlarm(Context context, Alarm alarm) {
+	public static void editAlarm(Context context, String objectId, ContentValues cv) {
 
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
 				.getInstance();
 
-		MyAlarmManager.deleteAlarmInstances(alarm.getAlarmId());
+		
+		Alarm alarm = MyAlarmManager.findAlarmByObjectId(objectId);
+		alarm.setContentValues(cv);
+		
+		for(Entry<String, Object> entry : cv.valueSet()){
+			if(entry.getValue()!=null){
+				alarm.put(entry.getKey(), entry.getValue());
+			}
+		}
+		
 		alarm.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
-				Log.i("WakeMeApp", "edited alarm saved");
+				if(e==null){
+					Log.i("WakeMeApp", "edited alarm saved");
+				}else{
+					e.printStackTrace();
+				}
 			}
 		});
 
+
+		MyAlarmManager.deleteAlarmInstances(alarm.getAlarmId());
 		long timeMillis = now.getTimeInMillis();
 
-		boolean[] weekdaysR = alarm.getWeekdaysRepeated();
+		String weekdaysR = cv.getAsString(Alarm.COLUMN_WEEKDAYS);
 
 		int counter = 0;
-		for (int i = 0; i < weekdaysR.length; i++) {
-			if (weekdaysR[i]) {
+		for (int i = 0; i < weekdaysR.length(); i++) {
+			if (weekdaysR.charAt(i) == 1) {
 				timeMillis = addAlarmInstance(context, alarm, Calendar.SUNDAY
 						+ (i + 1) % 7);
 				counter++;
@@ -757,7 +825,7 @@ public class MyAlarmManager {
 	public static void setNewAlarm(Context context, Alarm alarm) {
 
 		myAlarms.add(alarm);
-		adapter.notifyDataSetChanged();
+		updateAdapter();
 
 		GregorianCalendar now = (GregorianCalendar) GregorianCalendar
 				.getInstance();
@@ -788,8 +856,8 @@ public class MyAlarmManager {
 	}
 
 	private static void insertAlarmToDatabase(Alarm alarm) {
-		db.insertWithOnConflict(Alarm.TABLE_NAME, "null", alarm.getValues(),
-				SQLiteDatabase.CONFLICT_REPLACE);
+		long returnCode = db.insertWithOnConflict(Alarm.TABLE_NAME, "null",
+				alarm.getValues(), SQLiteDatabase.CONFLICT_REPLACE);
 	}
 
 	public static void onPartnerAlarmInstanceUpdated(AlarmInstance alarm) {
@@ -864,11 +932,13 @@ public class MyAlarmManager {
 		}
 	}
 
-	public static void setAlarmActivate(final Alarm alarm) {
+	public static void activateAlarm(final Alarm alarm) {
 		ContentValues cv = alarm.getValues();
 
 		db.update(Alarm.TABLE_NAME, cv,
 				Alarm.COLUMN_ID + "=" + alarm.getAlarmId(), null);
+
+		updateAdapter();
 
 		if (alarm.isActivated()) {
 
@@ -898,8 +968,6 @@ public class MyAlarmManager {
 				MyAlarmManager.sendNewAlarmNotification(timeMillis);
 			}
 
-			adapter.notifyDataSetChanged();
-
 		} else {
 			int alarmID = alarm.getAlarmId();
 			MyAlarmManager.deleteAlarmInstances(alarmID);
@@ -915,8 +983,8 @@ public class MyAlarmManager {
 		try {
 			json = new JSONObject(
 
-			"{action: \"com.yljv.alarmapp.NOTIFICATION\"," + "\"message\": " + "\""
-					+ message + "\"}");
+			"{action: \"com.yljv.alarmapp.NOTIFICATION\"," + "\"message\": "
+					+ "\"" + message + "\"}");
 
 			push.setData(json);
 			push.setExpirationTime(expirationTime);
@@ -1015,13 +1083,12 @@ public class MyAlarmManager {
 		}
 	}
 
-	
 	public static void snoozeAlarm(int alarmInstanceId, long oldTimeMillis) {
 		setAlarmToDevice(oldTimeMillis + 300, alarmInstanceId);
 	}
-	
-	public static void onAlarmInstanceWentOff(int alarmInstanceId){
-		
+
+	public static void onAlarmInstanceWentOff(int alarmInstanceId) {
+
 	}
 
 }

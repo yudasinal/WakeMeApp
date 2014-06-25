@@ -41,15 +41,15 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 	View view;
 
-    long timeMillis;
-	
+	long timeMillis;
+
 	private int id;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-        timeMillis = GregorianCalendar.getInstance().getTimeInMillis() + 300;
+        timeMillis = GregorianCalendar.getInstance().getTimeInMillis() + 300000;
 
 		view = inflater.inflate(R.layout.wake_up_layout, container, false);
 		mGlowPadView = (GlowPadView) view.findViewById(R.id.glow_pad_view);
@@ -67,7 +67,6 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
         if(musicPath == null || musicPath.equals("")){
             musicPath = "content://media/external/audio/media/11";
         }
-
         MsgPictureTuple tuple = ((WakeUpActivity) getActivity()).getTuple();
         if(tuple == null || (tuple.getMsg()==null && tuple.getPicData()==null)) {
             mGlowPadView.setTargetResources(R.array.snooze_dismiss_drawables_noextra);
@@ -132,8 +131,14 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		case R.drawable.snooze_progress1:
 			// TODO snooze alarm
 			onStopVibrationAndMusic();
-            MyAlarmManager.snoozeAlarm(id, timeMillis);
-            onCloseTheApp();
+			MyAlarmManager.snoozeAlarm(id, timeMillis);
+			onCloseTheApp();
+			break;
+		case R.drawable.checkmark:
+			onStopVibrationAndMusic();
+			MyAlarmManager
+					.setNextAlarmInstance(((WakeUpActivity) getActivity()).alarm);
+			onCloseTheApp();
 			break;
 		case R.drawable.pic_msg:
 			onStopVibrationAndMusic();
@@ -146,29 +151,25 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				mma.switchContent(newContent);
 			}
 			break;
-		case R.drawable.checkmark:
-			onStopVibrationAndMusic();
-			onCloseTheApp();
-			break;
 		default:
 			// Code should never reach here.
 		}
 	}
-	
-	//Method to stop the vibration and the ringtone
+
+	// Method to stop the vibration and the ringtone
 	public static void onStopVibrationAndMusic() {
 		vibrator.cancel();
 		mpintro.stop();
 	}
-	
-	//Method to make the phone go to the home screen 
+
+	// Method to make the phone go to the home screen
 	private void onCloseTheApp() {
 		WakeUpActivity.getInstance().finish();
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onGrabbedStateChange(View v, int handle) {
 		// TODO Auto-generated method stub
@@ -184,7 +185,13 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	@Override
 	public void onGrabbed(View v, int handle) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		onStopVibrationAndMusic();
 	}
 
 }
