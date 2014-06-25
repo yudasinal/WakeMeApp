@@ -20,8 +20,6 @@ import android.widget.TextView;
 import com.parse.ParseException;
 import com.parse.PushService;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.R.id;
-import com.yljv.alarmapp.R.layout;
 import com.yljv.alarmapp.client.helper.MenuMainActivity;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 import com.yljv.alarmapp.server.user.AccountManager;
@@ -149,9 +147,11 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		MyAlarmManager.getMyAlarmsFromServer();
 		
 		PushService.subscribe(this, AccountManager.getSubscribedChannel(), MenuMainActivity.class);
-		
 		cont();
 		finish();
+		
+		//Kill the previous activity 
+		ChoiceActivity.getInstance().finish();
 		
 	}
 	

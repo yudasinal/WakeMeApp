@@ -1,5 +1,7 @@
 package com.yljv.alarmapp.client.ui.wakeup;
 
+import java.util.GregorianCalendar;
+
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -16,7 +18,7 @@ import android.widget.TextView;
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.client.ui.start.ChoiceActivity;
+import com.yljv.alarmapp.client.helper.MenuMainActivity;
 /*
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
@@ -26,8 +28,6 @@ import com.yljv.alarmapp.server.alarm.AlarmInstance;
 import com.yljv.alarmapp.server.alarm.MsgPictureTuple;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
 
-import java.util.GregorianCalendar;
-
 public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 	private GlowPadView mGlowPadView;
@@ -36,13 +36,13 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
 	private String musicPath;
 
-	MediaPlayer mpintro;
-	Vibrator vibrator;
+	static MediaPlayer mpintro;
+	static Vibrator vibrator;
 
 	View view;
 
-    long timeMillis;
-	
+	long timeMillis;
+
 	private int id;
 
 	@Override
@@ -67,9 +67,8 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
         if(musicPath == null || musicPath.equals("")){
             musicPath = "content://media/external/audio/media/11";
         }
-        
         MsgPictureTuple tuple = ((WakeUpActivity) getActivity()).getTuple();
-        if(tuple== null || (tuple.getMsg()==null)&&(tuple.getPicData()==null)){
+        if(tuple == null || (tuple.getMsg()==null && tuple.getPicData()==null)) {
             mGlowPadView.setTargetResources(R.array.snooze_dismiss_drawables_noextra);
         }
 
@@ -131,17 +130,18 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		switch (resId) {
 		case R.drawable.snooze_progress1:
 			// TODO snooze alarm
-			stopAlarm();
-            MyAlarmManager.snoozeAlarm(id, timeMillis);
-            android.os.Process.killProcess(android.os.Process.myPid());
+			onStopVibrationAndMusic();
+			MyAlarmManager.snoozeAlarm(id, timeMillis);
+			onCloseTheApp();
 			break;
 		case R.drawable.checkmark:
-			stopAlarm();
-			MyAlarmManager.setNextAlarmInstance(((WakeUpActivity) getActivity()).alarm);
-            android.os.Process.killProcess(android.os.Process.myPid());
+			onStopVibrationAndMusic();
+			MyAlarmManager
+					.setNextAlarmInstance(((WakeUpActivity) getActivity()).alarm);
+			onCloseTheApp();
 			break;
 		case R.drawable.pic_msg:
-			MyAlarmManager.setNextAlarmInstance(((WakeUpActivity) getActivity()).alarm);
+			onStopVibrationAndMusic();
 			Fragment newContent = new PicMsgArrivedFragment();
 			Bundle bundle = new Bundle();
 			bundle.putInt(AlarmInstance.COLUMN_ID, id);
@@ -150,12 +150,24 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
 			}
-			stopAlarm();
 			break;
 		default:
 			// Code should never reach here.
 		}
+	}
 
+	// Method to stop the vibration and the ringtone
+	public static void onStopVibrationAndMusic() {
+		vibrator.cancel();
+		mpintro.stop();
+	}
+
+	// Method to make the phone go to the home screen
+	private void onCloseTheApp() {
+		WakeUpActivity.getInstance().finish();
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		startActivity(intent);
 	}
 
 	@Override
@@ -173,19 +185,13 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 	@Override
 	public void onGrabbed(View v, int handle) {
 		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void onPause(){
-		super.onPause();
-		stopAlarm();
-	}
-	
-	public void stopAlarm(){
 
-		mpintro.stop();
-		vibrator.cancel();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		onStopVibrationAndMusic();
 	}
 
 }

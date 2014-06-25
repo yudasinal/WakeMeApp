@@ -61,6 +61,7 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 	MenuItem addAlarm;
 	MenuItem saveAlarm;
 	int i = 0;
+	Uri chosenRingtoneUri;
 	
 	Alarm alarm;
 	
@@ -188,7 +189,7 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
-				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, chosenRingtoneUri);
 				this.startActivityForResult(intent, 5);
 		}
 	}
@@ -229,8 +230,12 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 
 	          if (uri != null) {
 	              this.chosenRingtone = uri.toString();
-	              Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
-	              ringtoneButton.setText(ringtone.getTitle(this));
+	              chosenRingtoneUri = uri;
+	              
+	              //Uncomment this code if you want the button text to change to the 
+	              //ringtone name
+	              //Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
+	              //ringtoneButton.setText(ringtone.getTitle(this));
 	          }
 	          else {
 	              this.chosenRingtone = null;
