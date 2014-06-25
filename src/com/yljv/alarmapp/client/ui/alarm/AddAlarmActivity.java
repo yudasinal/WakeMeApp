@@ -29,6 +29,7 @@ import android.widget.TimePicker.OnTimeChangedListener;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 import com.yljv.alarmapp.R;
+import com.yljv.alarmapp.client.helper.ApplicationSettings;
 import com.yljv.alarmapp.client.helper.MenuMainActivity;
 import com.yljv.alarmapp.server.alarm.Alarm;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
@@ -155,6 +156,9 @@ public class AddAlarmActivity extends Activity implements OnTimeChangedListener,
 				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+				if(chosenRingtoneUri == null) {
+					chosenRingtoneUri = ApplicationSettings.DEFAULT_RINGTONE;
+				}
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, chosenRingtoneUri);
 				this.startActivityForResult(intent, 5);
 		}

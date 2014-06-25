@@ -1,10 +1,12 @@
 package com.yljv.alarmapp.client.helper;
 
-import com.parse.ParseUser;
-import com.yljv.alarmapp.server.user.AccountManager.User;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.provider.Settings;
+
+import com.parse.ParseUser;
+import com.yljv.alarmapp.server.user.AccountManager.User;
 
 
 /**
@@ -15,6 +17,7 @@ public class ApplicationSettings {
 	public final static String NOTIFICATION_ON_KEY = "notification_on";
 	public final static String NOTIFICATION_SOUND_KEY = "notification_sound";
 	public final static String NOTIFICATION_VIBRATION_KEY = "notification_vibration";
+	public final static Uri DEFAULT_RINGTONE = Settings.System.DEFAULT_RINGTONE_URI;
 
 
     public final static String directory = "/WakeMeApp";
