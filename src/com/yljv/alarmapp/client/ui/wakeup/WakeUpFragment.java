@@ -3,6 +3,7 @@ package com.yljv.alarmapp.client.ui.wakeup;
 import java.util.GregorianCalendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -69,7 +70,7 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
         MsgPictureTuple tuple = ((WakeUpActivity) getActivity()).getTuple();
         if(tuple == null || (tuple.getMsg()==null && tuple.getPicData()==null)) {
-            mGlowPadView.setTargetDescriptionsResourceId(R.array.snooze_dismiss_drawables_noextra);
+            mGlowPadView.setTargetResources(R.array.snooze_dismiss_drawables_noextra);
         }
 
 		mGlowPadView.setOnTriggerListener(this);
@@ -130,11 +131,9 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		switch (resId) {
 		case R.drawable.snooze_progress1:
 			// TODO snooze alarm
-			mpintro.stop();
-			vibrator.cancel();
+			onStopVibrationAndMusic();
             MyAlarmManager.snoozeAlarm(id, timeMillis);
-            android.os.Process.killProcess(android.os.Process.myPid());
-            MenuMainActivity.getInstance().finish();
+            onCloseTheApp();
 			break;
 		case R.drawable.pic_msg:
 			Fragment newContent = new PicMsgArrivedFragment();
@@ -145,15 +144,32 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 				WakeUpActivity mma = (WakeUpActivity) getActivity();
 				mma.switchContent(newContent);
 			}
-			mpintro.stop();
-			vibrator.cancel();
+			onStopVibrationAndMusic();
+			break;
+		case R.drawable.checkmark:
+			onStopVibrationAndMusic();
+			onCloseTheApp();
 			break;
 		default:
 			// Code should never reach here.
 		}
 
 	}
-
+	
+	//Method to stop the vibration and the ringtone
+	private void onStopVibrationAndMusic() {
+		vibrator.cancel();
+		mpintro.stop();
+	}
+	
+	//Method to make the phone go to the home screen 
+	private void onCloseTheApp() {
+		WakeUpActivity.getInstance().finish();
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		startActivity(intent);
+	}
+	
 	@Override
 	public void onGrabbedStateChange(View v, int handle) {
 		// TODO Auto-generated method stub
