@@ -17,6 +17,7 @@ public class ChoiceActivity extends Activity implements OnClickListener  {
 	
 	Button btnRegister;
 	Button btnLogin;
+	static ChoiceActivity choiceActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,8 @@ public class ChoiceActivity extends Activity implements OnClickListener  {
 		btnRegister.setOnClickListener(this);
 		btnLogin.setOnClickListener(this);
 		
+		choiceActivity = this;
+		
 	}
 	
 	@Override
@@ -38,13 +41,20 @@ public class ChoiceActivity extends Activity implements OnClickListener  {
 				break;
 			case R.id.btnLogin:
 				toLogin();
+				break;
 		}
 		
 	}
 	
+	//Method to create an instance of this Activity so that it's easy to access it
+	//from another activity
+	public static ChoiceActivity getInstance() {
+		return choiceActivity;
+	}
+	
 	private void toLogin() {
 		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);	
+		startActivity(intent);
 	}
 	
 	private void toRegister() {

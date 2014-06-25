@@ -18,6 +18,7 @@ public class WakeUpActivity extends FragmentActivity {
 
 	private Fragment mainView;
 	boolean isThereSomething = true;
+	static WakeUpActivity wua;
 
     public MsgPictureTuple tuple;
     
@@ -52,7 +53,13 @@ public class WakeUpActivity extends FragmentActivity {
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.content_frame, mainView).commit();
+		
+		wua = this;
 
+	}
+	
+	public static WakeUpActivity getInstance() {
+		return wua;
 	}
 
 	@Override

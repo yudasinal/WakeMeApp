@@ -12,6 +12,7 @@ import com.yljv.alarmapp.client.ui.menu.MenuList;
 public class MenuMainActivity extends BaseActivity {
 
 	private Fragment mainView;
+	static MenuMainActivity mma;
 
 	public MenuMainActivity() {
 		super(R.string.app_name);
@@ -40,9 +41,15 @@ public class MenuMainActivity extends BaseActivity {
 				.replace(R.id.menu_frame, new MenuList()).commit();
 
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		
+		mma = this;
 
 	}
 
+	public static MenuMainActivity getInstance() {
+		return mma;
+	}
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);

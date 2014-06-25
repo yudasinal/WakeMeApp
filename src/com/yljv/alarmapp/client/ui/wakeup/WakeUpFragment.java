@@ -1,7 +1,8 @@
 package com.yljv.alarmapp.client.ui.wakeup;
 
+import java.util.GregorianCalendar;
+
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -16,16 +17,15 @@ import android.widget.TextView;
 import com.fima.glowpadview.GlowPadView;
 import com.fima.glowpadview.GlowPadView.OnTriggerListener;
 import com.yljv.alarmapp.R;
-import com.yljv.alarmapp.client.ui.start.ChoiceActivity;
+import com.yljv.alarmapp.client.helper.MenuMainActivity;
 /*
  * Window you see when you wake up
  * Should show you Picture/Message from your boyfriend/girlfriend
  */
 import com.yljv.alarmapp.server.alarm.Alarm;
 import com.yljv.alarmapp.server.alarm.AlarmInstance;
+import com.yljv.alarmapp.server.alarm.MsgPictureTuple;
 import com.yljv.alarmapp.server.alarm.MyAlarmManager;
-
-import java.util.GregorianCalendar;
 
 public class WakeUpFragment extends Fragment implements OnTriggerListener {
 
@@ -67,7 +67,8 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
             musicPath = "content://media/external/audio/media/11";
         }
 
-        if(((WakeUpActivity) getActivity()).getTuple()== null){
+        MsgPictureTuple tuple = ((WakeUpActivity) getActivity()).getTuple();
+        if(tuple == null || (tuple.getMsg()==null && tuple.getPicData()==null)) {
             mGlowPadView.setTargetDescriptionsResourceId(R.array.snooze_dismiss_drawables_noextra);
         }
 
@@ -129,14 +130,12 @@ public class WakeUpFragment extends Fragment implements OnTriggerListener {
 		switch (resId) {
 		case R.drawable.snooze_progress1:
 			// TODO snooze alarm
-			Intent intent1 = new Intent(this.getActivity(),
-					ChoiceActivity.class);
-			startActivity(intent1);
 			mpintro.stop();
 			vibrator.cancel();
             MyAlarmManager.snoozeAlarm(id, timeMillis);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            MenuMainActivity.getInstance().finish();
 			break;
-
 		case R.drawable.pic_msg:
 			Fragment newContent = new PicMsgArrivedFragment();
 			Bundle bundle = new Bundle();
