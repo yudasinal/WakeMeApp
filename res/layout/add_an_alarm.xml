@@ -27,7 +27,7 @@
 			        android:singleLine="true"
 			        android:maxLength="15"
 			        android:background="@drawable/add_box"
-			        android:text="Alarm"
+			        android:text="@string/alarm"
 			        android:textColorHint="#90c5a9"
 			        android:drawablePadding="10dp"
 			        android:drawableLeft="@drawable/clock"
@@ -60,7 +60,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginRight="10dp"
-			        android:text="M "
+			        android:text="@string/monday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 
@@ -70,7 +70,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginRight="10dp"
-			        android:text="T "
+			        android:text="@string/tuesday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 
@@ -80,7 +80,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginRight="10dp"
-			        android:text="W "
+			        android:text="@string/wednesday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 
@@ -90,7 +90,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginRight="10dp"
-			        android:text="T "
+			        android:text="@string/thursday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 
@@ -100,7 +100,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginRight="10dp"
-			        android:text="F "
+			        android:text="@string/friday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 
@@ -110,7 +110,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginLeft="10dp"
 			        android:layout_marginRight="10dp"
-			        android:text="S "
+			        android:text="@string/saturday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 
@@ -119,13 +119,13 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:paddingLeft="10dp"
-			        android:text="S "
+			        android:text="@string/sunday"
 			        android:textColor="#90c5a9"
 			        android:textSize="20sp" />
 			</LinearLayout>
 			
 			<TableRow
-		        android:id="@+id/tableRow3"
+		        android:id="@+id/tableRow4"
 		        android:gravity="center_horizontal"
 		        android:layout_marginBottom="10dp" >
 			    <ImageView
@@ -154,7 +154,7 @@
 				    android:layout_width = "150dp"
 				    android:layout_height = "28dp"
 				    android:layout_marginBottom="10dp"
-				    android:text="Alarm tone"
+				    android:text="@string/alarm_tone"
 				    android:textColor="#3f2860"
 				    android:drawableRight="@drawable/select_alarmtone">
 				</Button>

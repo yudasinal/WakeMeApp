@@ -47,7 +47,6 @@ public class SettingsFragment extends SherlockFragment implements
 	private static final int TEXT_ID1 = 0;
 	private static final int TEXT_ID2 = 0;
 	private static final int TEXT_ID3 = 0;
-	private static final int TEXT_ID4 = 0;
 	TextView myName;
 	TextView myEmail;
 	TextView partnerName;
@@ -97,22 +96,22 @@ public class SettingsFragment extends SherlockFragment implements
 		case User.INCOMING_REQUEST:
 			rowPartnerName.setVisibility(View.GONE);
 			rowPartnerEmail.setVisibility(View.GONE);
-			partnerActionUp.setText("Accept/Decline buddy request");
+			partnerActionUp.setText(R.string.accept_decline_request);
 			name = ApplicationSettings.getPartnerName();
-			partnerActionDown.setText(name + " wants to be your alarm buddy");
+			partnerActionDown.setText(name + " " + R.string.wants_be_buddy);
 			break;
 		case User.NO_PARTNER:
 			rowPartnerName.setVisibility(View.GONE);
 			rowPartnerEmail.setVisibility(View.GONE);
-			partnerActionUp.setText("Add an Alarm Buddy");
-			partnerActionDown.setText("Cause it's awesome!");
+			partnerActionUp.setText(R.string.add_buddy);
+			partnerActionDown.setText(R.string.cause_awesome);
 			break;
 		case User.PARTNER_REQUESTED:
 			rowPartnerName.setVisibility(View.GONE);
 			rowPartnerEmail.setVisibility(View.GONE);
-			partnerActionUp.setText("Cancel Buddy Request");
+			partnerActionUp.setText(R.string.cancel_request);
 			name = ApplicationSettings.getPartnerName();
-			partnerActionDown.setText("Request sent to " + name);
+			partnerActionDown.setText(R.string.request_sent_to + name);
 			break;
 		case User.PARTNERED:
 			partnerName = (TextView) view.findViewById(R.id.partner_name);
@@ -121,8 +120,8 @@ public class SettingsFragment extends SherlockFragment implements
 			partnerEmail.setText(ApplicationSettings.getPartnerEmail());
 			rowPartnerName.setOnClickListener(this);
 			rowPartnerEmail.setOnClickListener(this);
-			partnerActionUp.setText("Unlink");
-			partnerActionDown.setText("Become Independent :)");
+			partnerActionUp.setText(R.string.unlink);
+			partnerActionDown.setText(R.string.independent);
 			break;
 		}
 
@@ -180,7 +179,7 @@ public class SettingsFragment extends SherlockFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActionBar myBar = getActivity().getActionBar();
-		myBar.setTitle("Settings");
+		myBar.setTitle(R.string.settings);
 		setHasOptionsMenu(true);
 	}
 
@@ -190,12 +189,12 @@ public class SettingsFragment extends SherlockFragment implements
 		case R.id.row1:
 			AlertDialog.Builder changeName = new AlertDialog.Builder(
 					this.getActivity());
-			changeName.setTitle("Change name");
+			changeName.setTitle(R.string.change_name);
 			final EditText newName = new EditText(this.getActivity());
 			newName.setId(TEXT_ID);
 			changeName.setView(newName);
 			newName.setText(ApplicationSettings.getUserName());
-			changeName.setPositiveButton("Save",
+			changeName.setPositiveButton(R.string.save,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -205,7 +204,7 @@ public class SettingsFragment extends SherlockFragment implements
 						}
 					});
 
-			changeName.setNegativeButton("Cancel",
+			changeName.setNegativeButton(R.string.cancel,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -219,12 +218,12 @@ public class SettingsFragment extends SherlockFragment implements
 		case R.id.row2:
 			AlertDialog.Builder changeEmail = new AlertDialog.Builder(
 					this.getActivity());
-			changeEmail.setTitle("Change email");
+			changeEmail.setTitle(R.string.change_email);
 			final EditText newEmail = new EditText(this.getActivity());
 			newEmail.setId(TEXT_ID1);
 			changeEmail.setView(newEmail);
 			newEmail.setText(ApplicationSettings.getUserEmail());
-			changeEmail.setPositiveButton("Save",
+			changeEmail.setPositiveButton(R.string.save,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -236,7 +235,7 @@ public class SettingsFragment extends SherlockFragment implements
 						}
 					});
 
-			changeEmail.setNegativeButton("Cancel",
+			changeEmail.setNegativeButton(R.string.cancel,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -251,12 +250,12 @@ public class SettingsFragment extends SherlockFragment implements
 
 			AlertDialog.Builder changePartnerName = new AlertDialog.Builder(
 					this.getActivity());
-			changePartnerName.setTitle("Change buddy's name");
+			changePartnerName.setTitle(R.string.change_buddy_name);
 			final EditText newPartnerName = new EditText(this.getActivity());
 			newPartnerName.setId(TEXT_ID2);
 			changePartnerName.setView(newPartnerName);
 			newPartnerName.setText(ApplicationSettings.getPartnerName());
-			changePartnerName.setPositiveButton("Save",
+			changePartnerName.setPositiveButton(R.string.save,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -269,7 +268,7 @@ public class SettingsFragment extends SherlockFragment implements
 						}
 					});
 
-			changePartnerName.setNegativeButton("Cancel",
+			changePartnerName.setNegativeButton(R.string.cancel,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -284,12 +283,12 @@ public class SettingsFragment extends SherlockFragment implements
 
 			AlertDialog.Builder changePartnerEmail = new AlertDialog.Builder(
 					this.getActivity());
-			changePartnerEmail.setTitle("Change buddy's email");
+			changePartnerEmail.setTitle(R.string.change_buddy_email);
 			final EditText newPartnerEmail = new EditText(this.getActivity());
 			newPartnerEmail.setId(TEXT_ID3);
 			newPartnerEmail.setText(ApplicationSettings.getPartnerEmail());
 			changePartnerEmail.setView(newPartnerEmail);
-			changePartnerEmail.setPositiveButton("Save",
+			changePartnerEmail.setPositiveButton(R.string.save, 
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -303,7 +302,7 @@ public class SettingsFragment extends SherlockFragment implements
 						}
 					});
 
-			changePartnerEmail.setNegativeButton("Cancel",
+			changePartnerEmail.setNegativeButton(R.string.cancel, 
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -322,17 +321,17 @@ public class SettingsFragment extends SherlockFragment implements
 			
 			if(status == User.NO_PARTNER){
 
-				action.setTitle("Add an Alarm Buddy");
+				action.setTitle(R.string.add_alarm_buddy);
 				LinearLayout layout = new LinearLayout(getActivity());
 				layout.setOrientation(LinearLayout.VERTICAL);
 				final EditText addPartnerName = new EditText(this.getActivity());
-				addPartnerName.setHint("name");
+				addPartnerName.setHint(R.string.name);
 				layout.addView(addPartnerName);
 				final EditText addPartnerEmail = new EditText(this.getActivity());
-				addPartnerEmail.setHint("email");
+				addPartnerEmail.setHint(R.string.email);
 				layout.addView(addPartnerEmail);
 				action.setView(layout);
-				action.setPositiveButton("Send request",
+				action.setPositiveButton(R.string.send_request,
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -349,7 +348,7 @@ public class SettingsFragment extends SherlockFragment implements
 							}
 						});
 
-				action.setNegativeButton("Cancel",
+				action.setNegativeButton(R.string.cancel, 
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -359,14 +358,14 @@ public class SettingsFragment extends SherlockFragment implements
 						});
 				action.show();
 			}else if(status == User.INCOMING_REQUEST){
-				action.setTitle("Do you want to accept the buddy request?");
-				action.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+				action.setTitle(R.string.do_you_want_request);
+				action.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						AccountManager.acceptPartnerRequest();
-						partnerActionUp.setText("Unlink");
-						partnerActionDown.setText("Become Independent :)");
+						partnerActionUp.setText(R.string.unlink);
+						partnerActionDown.setText(R.string.independent);
 
 						rowPartnerName.setVisibility(View.VISIBLE);
 						rowPartnerEmail.setVisibility(View.VISIBLE);
@@ -376,45 +375,45 @@ public class SettingsFragment extends SherlockFragment implements
 						partnerEmail.setText(ApplicationSettings.getPartnerEmail());
 						
 						Toast.makeText(getActivity(),
-								"Buddy request accepted",
+								R.string.buddy_request_accepted,
 								Toast.LENGTH_LONG).show();
 					}
 					
 					
 					
 				});
-				action.setNegativeButton("Decline request", new DialogInterface.OnClickListener() {
+				action.setNegativeButton(R.string.decline_request, new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						AccountManager.declinePartnerRequest();
 						Toast.makeText(getActivity(),
-								"Buddy request declined",
+								R.string.buddy_request_declined,
 								Toast.LENGTH_LONG).show();
 
-						partnerActionUp.setText("Add an Alarm Buddy");
-						partnerActionDown.setText("Cause it's awesome!");
+						partnerActionUp.setText(R.string.add_alarm_buddy);
+						partnerActionDown.setText(R.string.cause_awesome);
 						
 					}
 				});
 				action.show();
 			}else if(status == User.PARTNER_REQUESTED){
-				action.setTitle("Do you want to cancel your request?");
-				action.setPositiveButton("Delete request", new DialogInterface.OnClickListener() {
+				action.setTitle(R.string.do_you_want_cancel);
+				action.setPositiveButton(R.string.delete_request, new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						partnerActionUp.setText("Add an Alarm Buddy");
-						partnerActionDown.setText("Cause it's awesome!");
+						partnerActionUp.setText(R.string.add_alarm_buddy);
+						partnerActionDown.setText(R.string.cause_awesome);
 						
 						Toast.makeText(getActivity(),
-								"Buddy request cancelled",
+								R.string.buddy_request_cancel,
 								Toast.LENGTH_LONG).show();
 						AccountManager.cancelPartnerRequest();
 					}
 				});
-				action.setNegativeButton("Cancel",
+				action.setNegativeButton(R.string.cancel,
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -424,8 +423,8 @@ public class SettingsFragment extends SherlockFragment implements
 						});
 				action.show();
 			}else if(status == User.PARTNERED){
-				action.setTitle("Are you sure you want to unlink from" + ApplicationSettings.getPartnerName() + " ");
-				action.setPositiveButton("Unlink", new DialogInterface.OnClickListener() {
+				action.setTitle(R.string.are_you_sure_unlink + " " + ApplicationSettings.getPartnerName() + "?");
+				action.setPositiveButton(R.string.unlink, new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -434,17 +433,17 @@ public class SettingsFragment extends SherlockFragment implements
 						rowPartnerName.setVisibility(View.GONE);
 						rowPartnerEmail.setVisibility(View.GONE);
 						Toast.makeText(getActivity(),
-								"You and " + name + " are not alarm buddies anymore",
+								R.string.you_and + " " + name + " " + R.string.are_not_buddies,
 								Toast.LENGTH_LONG).show();
 
-						partnerActionUp.setText("Add an Alarm Buddy");
-						partnerActionDown.setText("Cause it's awesome!");
+						partnerActionUp.setText(R.string.add_alarm_buddy);
+						partnerActionDown.setText(R.string.cause_awesome);
 					}
 					
 					
 				});
 
-				action.setNegativeButton("Cancel",
+				action.setNegativeButton(R.string.cancel,
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -459,8 +458,8 @@ public class SettingsFragment extends SherlockFragment implements
 		case R.id.row6:
 			AlertDialog.Builder signOut = new AlertDialog.Builder(
 					this.getActivity());
-			signOut.setTitle("Are you sure you want to sign out?");
-			signOut.setPositiveButton("Sign Out",
+			signOut.setTitle(R.string.are_you_sure_sign_out);
+			signOut.setPositiveButton(R.string.sign_out,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -474,7 +473,7 @@ public class SettingsFragment extends SherlockFragment implements
 						}
 					});
 
-			signOut.setNegativeButton("Cancel",
+			signOut.setNegativeButton(R.string.cancel,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -489,9 +488,9 @@ public class SettingsFragment extends SherlockFragment implements
 			AlertDialog.Builder deleteAccount = new AlertDialog.Builder(
 					this.getActivity());
 			deleteAccount
-					.setTitle("Are you sure you want to delete your account?");
-			deleteAccount.setMessage("All your information will be deleted.");
-			deleteAccount.setPositiveButton("Delete Account",
+					.setTitle(R.string.are_you_sure_delete_account);
+			deleteAccount.setMessage(R.string.all_info_delelted);
+			deleteAccount.setPositiveButton(R.string.delete_account,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -503,7 +502,7 @@ public class SettingsFragment extends SherlockFragment implements
 						}
 					});
 
-			deleteAccount.setNegativeButton("Cancel",
+			deleteAccount.setNegativeButton(R.string.cancel,
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -521,14 +520,14 @@ public class SettingsFragment extends SherlockFragment implements
 	@Override
 	public void onNoPartnerFound() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "No Buddy Found",
+		Toast.makeText(this.getActivity(), R.string.no_buddy_found,
 				Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onAlreadyPartnered() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "You already have a buddy",
+		Toast.makeText(this.getActivity(), R.string.you_have_buddy,
 				Toast.LENGTH_LONG).show();
 
 	}
@@ -537,10 +536,11 @@ public class SettingsFragment extends SherlockFragment implements
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
 
-		partnerActionUp.setText("Cancel Buddy Request");
+        AccountManager.setPartnerName(changedPartnerName);
+		partnerActionUp.setText(R.string.cancel_buddy_request);
 		name = ApplicationSettings.getPartnerName();
-		partnerActionDown.setText("Request sent to " + name);
-		String toast = "Invitation to " + ApplicationSettings.getPartnerName() + " is sent";
+		partnerActionDown.setText(R.string.request_sent_to + " " + name);
+		String toast = R.string.invitation_to + " " + ApplicationSettings.getPartnerName() + " " + R.string.is_sent;
 		Toast.makeText(getActivity(),
 				toast,
 				Toast.LENGTH_LONG).show();
@@ -550,7 +550,7 @@ public class SettingsFragment extends SherlockFragment implements
 	@Override
 	public void onOlderRequestAlreadySent() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this.getActivity(), "You have sent a request before",
+		Toast.makeText(this.getActivity(), R.string.you_sent_request_before,
 				Toast.LENGTH_LONG).show();
 
 	}
@@ -559,29 +559,9 @@ public class SettingsFragment extends SherlockFragment implements
 	public void onPartnerNotAvailable() {
 		// TODO Auto-generated method stub
 		Toast.makeText(this.getActivity(),
-				"The requested Buddy is not available", Toast.LENGTH_LONG)
+				R.string.requested_buddy_not_available, Toast.LENGTH_LONG)
 				.show();
 
 	}
 
-	public void takeScreenshot(){
-		View v = view.getRootView();
-		v.setDrawingCacheEnabled(true);
-		Bitmap b = v.getDrawingCache();
-		String extr = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-		long currentTime = System.currentTimeMillis();
-		File myPath = new File(extr, Long.toString(currentTime)+".jpg");
-		FileOutputStream fos = null;
-		try {
-		    fos = new FileOutputStream(myPath);
-		    b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-		    fos.flush();
-		    fos.close();
-		    MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), b, "Screen", "screen");
-		} catch (FileNotFoundException e) {
-			Log.e("WakeMeApp", "Error", e);
-		} catch (Exception e) {
-			Log.e("WakeMeApp", "Error", e);
-		}
-	}
 }

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/relativeLayout2"
             android:layout_toRightOf="@+id/my_time"
-            android:text="AM"
+            android:text="@string/am"
             android:paddingBottom="5dp"
             android:textColor="#fa8b60"
             android:textSize="14sp" />
@@ -45,7 +45,6 @@
             android:layout_alignBaseline="@+id/morning_evening"
             android:layout_alignBottom="@+id/morning_evening"
             android:layout_alignParentLeft="true"
-            android:text="12:00"
             android:paddingBottom="5dp"
             android:textColor="#fa8b60"
             android:textSize="32sp"
@@ -70,7 +69,7 @@
                     android:id="@+id/mon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="M "
+                    android:text="@string/monday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
 
@@ -78,7 +77,7 @@
                     android:id="@+id/tue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="T "
+                    android:text="string/tuesday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
 
@@ -86,7 +85,7 @@
                     android:id="@+id/wed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="W "
+                    android:text="@string/wednesday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
 
@@ -94,7 +93,7 @@
                     android:id="@+id/thu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="T "
+                    android:text="@string/thursday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
 
@@ -102,7 +101,7 @@
                     android:id="@+id/fri"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="F "
+                    android:text="@string/friday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
 
@@ -110,7 +109,7 @@
                     android:id="@+id/sat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="S "
+                    android:text="@string/saturday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
 
@@ -118,7 +117,7 @@
                     android:id="@+id/sun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="S "
+                    android:text="@string/sunday"
                     android:textColor="#90C5A9"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -128,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/days"
-                android:text="Alarm"
+                android:text="@string/alarm"
                 android:textColor="#fa8b60" />
         </RelativeLayout>
     </RelativeLayout>

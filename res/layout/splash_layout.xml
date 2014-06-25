@@ -36,7 +36,7 @@
 	        android:layout_weight="0.05"
 	        android:textColor="#3f2860"
 	        android:background="@drawable/sign_up"
-	        android:text="Sign up"/>
+	        android:text="@string/sign_up"/>
 	
 	    <Button
 	        android:id="@+id/btnLogin"
@@ -47,7 +47,7 @@
 	        android:layout_marginTop="-40dp"
 	        android:layout_gravity="center"
 	        android:background="@drawable/sign_in"
-	        android:text="Sign in"/>
+	        android:text="@string/sign_in"/>
     
     </LinearLayout>
 

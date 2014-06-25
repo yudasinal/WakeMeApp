@@ -20,10 +20,8 @@ import com.yljv.alarmapp.client.ui.alarm.PartnerAlarmFragment;
 import com.yljv.alarmapp.client.ui.gallery.GalleryFragment;
 
 public class MenuList extends SherlockListFragment {
-
 	// TODO make a method that takes partner's name for an item in the menu
 	String[] menu = new String[4];
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,5 +84,4 @@ public class MenuList extends SherlockListFragment {
 			mma.switchContent(fragment);
 		}
 	}
-
 }

@@ -31,7 +31,7 @@
 	        android:layout_height="wrap_content"
 	        android:ems="10"
 	        android:inputType="textPersonName"
-	        android:hint = "Name" />
+	        android:hint = "@string/name"/>
 	    
 	    <EditText
 	        android:id="@+id/partner_email"
@@ -41,7 +41,7 @@
 	        android:layout_height="wrap_content"
 	        android:ems="10"
 	        android:inputType="textEmailAddress"
-	        android:hint = "Email" />
+	        android:hint = "@string/email" />
 	    
 	</LinearLayout>
     
@@ -60,7 +60,7 @@
 	        android:layout_marginTop="-10dp"
 	        android:textColor="#3f2860"
 	        android:background="@drawable/sign_up"
-	        android:text="Skip"/>
+	        android:text="@string/skip"/>
 	
 	    <Button
 	        android:id="@+id/btnInvite"
@@ -71,7 +71,7 @@
 	        android:textColor="#3f2860"
 	        android:layout_gravity="center"
 	        android:background="@drawable/sign_in"
-	        android:text="Invite"/>
+	        android:text="@string/invite"/>
     
     </LinearLayout>
     

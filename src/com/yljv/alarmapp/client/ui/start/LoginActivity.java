@@ -54,7 +54,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		
 		visible = true;
 
-		getActionBar().setTitle("Login");
+		getActionBar().setTitle(R.string.login);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
@@ -100,20 +100,20 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 		// TODO Error fields (user does not exist, etc)
 		// Check for a valid password.
 		if (TextUtils.isEmpty(password)) {
-			editPassword.setError("Field is required");
+			editPassword.setError(getString(R.string.field_is_required));
 			focusView = editPassword;
 			cancel = true;
 			loginBtn.setTextColor(Color.parseColor("#3f2860"));
 			progress.setVisibility(View.GONE);
 		} else if (password.length() < 4) {
-			editPassword.setError("Short password");
+			editPassword.setError(getString(R.string.short_password));
 			focusView = editPassword;
 			cancel = true;
 			loginBtn.setTextColor(Color.parseColor("#3f2860"));
 			progress.setVisibility(View.GONE);
 		}
 		if (TextUtils.isEmpty(email)) {
-			editEmail.setError("Field is required");
+			editEmail.setError(getString(R.string.field_is_required));
 			focusView = editEmail;
 			cancel = true;
 			loginBtn.setTextColor(Color.parseColor("#3f2860"));
@@ -121,7 +121,7 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 
 			// TODO email is not registered in the system
 		} else if (!email.contains("@")) {
-			editEmail.setError("Email is not registered");
+			editEmail.setError(getString(R.string.email_not_registered));
 			focusView = editEmail;
 			cancel = true;
 			loginBtn.setTextColor(Color.parseColor("#3f2860"));
@@ -158,12 +158,12 @@ public class LoginActivity extends Activity implements OnClickListener, ParseLog
 	@Override
 	public void onLoginFail(ParseException e) {
 		if(!isNetworkAvailable()) {
-			wrongCred.setText("No or slow internet connection :(");
+			wrongCred.setText(R.string.no_or_slow_internet);
 			loginBtn.setTextColor(Color.parseColor("#3f2860"));
 			progress.setVisibility(View.GONE);
 		} else {
 			e.printStackTrace();
-			wrongCred.setText("Wrong email or password!");
+			wrongCred.setText(R.string.wrong_email_password);
 			loginBtn.setTextColor(Color.parseColor("#3f2860"));
 			progress.setVisibility(View.GONE);
 		}

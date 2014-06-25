@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.yljv.alarmapp.R;
 import com.yljv.alarmapp.client.helper.ApplicationSettings;
 
 public class GalleryUtils {
@@ -50,10 +52,10 @@ public class GalleryUtils {
 		}
 		else {
 			AlertDialog.Builder alert = new AlertDialog.Builder(_context);
-			alert.setTitle("Error!");
+			alert.setTitle(R.string.error);
             alert.setMessage(ApplicationSettings.directory
                     + " directory path is not valid! Please set the image directory name GalleryConstants.java class");
-            alert.setPositiveButton("OK", null);
+            alert.setPositiveButton(R.string.ok, null);
             alert.show();
 		}
 		return filePaths;

@@ -32,7 +32,7 @@ public class GalleryFragment extends SherlockFragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActionBar myBar = getActivity().getActionBar();
-		myBar.setTitle("Gallery");
+		myBar.setTitle(R.string.gallery);
 		setHasOptionsMenu(true);
 	}
  

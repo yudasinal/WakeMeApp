@@ -22,7 +22,7 @@ public class MainFragment extends Fragment {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		txtMe = (TextView) view.findViewById(R.id.main_screen_me);
-		txtMe.setText("My Alarm");
+		txtMe.setText(R.string.my_alarm);
 		txtHim = (TextView) view.findViewById(R.id.main_screen_partner);
 		
 		return view;

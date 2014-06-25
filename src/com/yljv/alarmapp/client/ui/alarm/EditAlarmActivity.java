@@ -95,7 +95,7 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 		sunday.setOnTouchListener(this);
 		timePicker.setOnTimeChangedListener(this);
 		ringtoneButton = (Button) findViewById(R.id.ringtone_button);
-		ringtoneButton.setText("Ringtone");
+		ringtoneButton.setText(R.string.ringtone);
 		ringtoneButton.setOnClickListener(this);
 		
 		boolean[] scheduledDays = new boolean[7];
@@ -128,7 +128,7 @@ public class EditAlarmActivity extends Activity implements OnTimeChangedListener
 			}
 		}
 		
-        getActionBar().setTitle("Set an alarm");
+        getActionBar().setTitle(R.string.set_alarm);
         getActionBar().setDisplayHomeAsUpEnabled(true);
        
 	}

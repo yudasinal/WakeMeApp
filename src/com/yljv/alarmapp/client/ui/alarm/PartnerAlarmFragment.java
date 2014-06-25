@@ -30,7 +30,7 @@ public class PartnerAlarmFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.partner_clock_layout, container, false);
 		listView = (ListView) view.findViewById(R.id.partner_clock_list);
-		getActivity().getActionBar().setTitle("Partner Alarms");
+		getActivity().getActionBar().setTitle(R.string.partner_alarms);
 		listView.setAdapter(MyAlarmManager.getPartnerClockAdapter(this.getActivity()));
 		if(ApplicationSettings.hasPartner() == true) {
 			listView.setEmptyView(view.findViewById(R.id.empty_list));

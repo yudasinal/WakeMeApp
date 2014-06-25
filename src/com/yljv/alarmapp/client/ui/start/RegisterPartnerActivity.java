@@ -39,12 +39,12 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 		// TODO Error fields (user does not exist, etc)
 		//Check for a valid password.
 		if (TextUtils.isEmpty(email)) {
-			partnerEmail.setError("This field is required");
+			partnerEmail.setError(getString(R.string.field_is_required));
 			focusView = partnerEmail;
 			cancel = true;
 		}
 		if (TextUtils.isEmpty(name)) {
-			partnerEmail.setError("Field is required");
+			partnerEmail.setError(getString(R.string.field_is_required));
 			focusView = partnerEmail;
 			cancel = true;
 		}
@@ -71,7 +71,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 		partnerEmail = (EditText) findViewById(R.id.partner_email);
 		partnerName = (EditText) findViewById(R.id.partner_name);
 		
-		getActionBar().setTitle("Alarm Buddy");
+		getActionBar().setTitle(R.string.alarm_buddy);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
@@ -110,7 +110,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 		// TODO Error fields (user does not exist, etc)
 		// Check for a valid password.
 		if (TextUtils.isEmpty(email)) {
-			partnerEmail.setError("This field is required");
+			partnerEmail.setError(getString(R.string.field_is_required));
 			focusView = partnerEmail;
 			cancel = true;
 		}
@@ -129,14 +129,14 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 	@Override
 	public void onNoPartnerFound() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "No Buddy Found",
+		Toast.makeText(this, R.string.no_buddy_found,
 				Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onAlreadyPartnered() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "You already have a buddy",
+		Toast.makeText(this, R.string.you_have_buddy,
 				Toast.LENGTH_LONG).show();
 
 	}
@@ -145,7 +145,8 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
 
-		String toast = "Invitation to " + ApplicationSettings.getPartnerName() + " is sent";
+		String toast = R.string.invitation_to + " "
+		  + ApplicationSettings.getPartnerName() + " " + R.string.is_sent;
 		Toast.makeText(this,
 				toast,
 				Toast.LENGTH_LONG).show();
@@ -158,7 +159,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 	@Override
 	public void onOlderRequestAlreadySent() {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "You have sent a request before",
+		Toast.makeText(this, R.string.you_sent_request_before,
 				Toast.LENGTH_LONG).show();
 
 	}
@@ -167,7 +168,7 @@ public class RegisterPartnerActivity extends Activity implements OnClickListener
 	public void onPartnerNotAvailable() {
 		// TODO Auto-generated method stub
 		Toast.makeText(this,
-				"The requested Buddy is not available", Toast.LENGTH_LONG)
+				R.string.requested_buddy_not_available, Toast.LENGTH_LONG)
 				.show();
 
 	}

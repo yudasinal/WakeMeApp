@@ -55,7 +55,7 @@ public class AddPicForPartnerActivity extends Activity implements
 
 	SquareImageView addPicture;
 	EditText addMessage;
-	String[] picOption = { "Take Photo", "Choose from gallery" };
+	String[] picOption = {getString(R.string.take_photo), getString(R.string.choose_gallery)};
 	static final int REQUEST_TAKE_PHOTO = 1;
 	private static final int RESULT_LOAD_IMAGE = 1;
 
@@ -77,7 +77,7 @@ public class AddPicForPartnerActivity extends Activity implements
 		height = size.y;
 		setContentView(R.layout.add_for_partner);
 		super.onCreate(savedInstanceState);
-		getActionBar().setTitle("Customize");
+		getActionBar().setTitle(R.string.customize);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		addPicture = (SquareImageView) findViewById(R.id.add_picture);
@@ -135,7 +135,7 @@ public class AddPicForPartnerActivity extends Activity implements
 	private File createImageFile() throws IOException {
 		
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		String imageFileName = "JPEG_" + timeStamp + "_";
+		String imageFileName = R.string.jpeg + " " + timeStamp + "_";
 		File storageDir = Environment.getExternalStoragePublicDirectory
 				(Environment.DIRECTORY_PICTURES);
 		File image = File.createTempFile(
@@ -153,7 +153,7 @@ public class AddPicForPartnerActivity extends Activity implements
 		switch (v.getId()) {
 		case R.id.add_picture:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("Add photo");
+			builder.setTitle(R.string.add_photo);
 			builder.setItems(picOption, new DialogInterface.OnClickListener() {
 
 				@Override

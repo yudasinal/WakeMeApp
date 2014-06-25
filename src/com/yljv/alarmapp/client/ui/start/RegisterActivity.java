@@ -50,7 +50,7 @@ public class RegisterActivity extends Activity implements OnClickListener,
         progress = (ProgressBar) findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
         btnRegister.setOnClickListener(this);
-        getActionBar().setTitle("Register");
+        getActionBar().setTitle(R.string.register);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -93,30 +93,30 @@ public class RegisterActivity extends Activity implements OnClickListener,
         // TODO Error fields (user does not exist, etc)
         // Check for a valid password.
         if (TextUtils.isEmpty(password)) {
-            editPassword.setError("This field is required");
+            editPassword.setError(getString(R.string.field_is_required));
             focusView = editPassword;
             cancel = true;
         } else if (password.length() < 6) {
-            editPassword.setError("Short password");
+            editPassword.setError(getString(R.string.short_password));
             focusView = editPassword;
             cancel = true;
         }
         if(TextUtils.isEmpty(firstName)){
-            editFirstName.setError("Field is required");
+            editFirstName.setError(getString(R.string.field_is_required));
         }
         if (TextUtils.isEmpty(email)) {
-            editEmail.setError("Field is required");
+            editEmail.setError(getString(R.string.field_is_required));
             focusView = editEmail;
             cancel = true;
             //TODO check if the email is valid(in the form of ""@"" and has a dot)
         } else if (!email.contains("@") || !email.contains(".")) {
-            editEmail.setError("Invalid email address");
+            editEmail.setError(getString(R.string.invalid_email));
             focusView = editEmail;
             cancel = true;
         }
         if (!email.equals(emailConfirm)){
             progress.setVisibility(View.GONE);
-            btnRegister.setText("Emails do not match!");
+            btnRegister.setText(R.string.emails_dont_match);
             btnRegister.setTextColor(Color.parseColor("#3f2860"));
             cancel = true;
         }
@@ -155,7 +155,7 @@ public class RegisterActivity extends Activity implements OnClickListener,
         boolean isThereInternet = isNetworkAvailable();
         if(isThereInternet == false) {
             progress.setVisibility(View.GONE);
-            btnRegister.setText("No or slow internet connection");
+            btnRegister.setText(R.string.no_or_slow_internet);
             btnRegister.setTextColor(Color.parseColor("#3f2860"));
         }
         // TODO error messages (passwords do not match, etc
