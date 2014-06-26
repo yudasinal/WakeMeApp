@@ -12,31 +12,32 @@ import android.widget.ImageView;
 
 import com.yljv.alarmapp.R;
 
-public class PictureAdapter extends ArrayAdapter {
-	
-	private Context context;
-	private int layoutResourceId;
+public class GridViewAdapter extends ArrayAdapter {
+
+	private Context context; 
+	private int layoutResourceId; 
 	private ArrayList data = new ArrayList();
 	
-	public PictureAdapter(Context context, int layoutResourceId, ArrayList data) {
+	public GridViewAdapter(Context context, int layoutResourceId, ArrayList data) {
+		
 		super(context, layoutResourceId, data);
-		this.layoutResourceId = layoutResourceId;
+		this.layoutResourceId = layoutResourceId; 
+		this.context = context; 
 		this.data = data;
-		this.context = context;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
+		
 		View row = convertView;
 		ViewHolder holder = null;
 		
-		if (row == null) {
+		if(row == null) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new ViewHolder();
-			holder.image = (ImageView) row.findViewById(R.id.partner_pic);
-			row.setTag(holder);	
+			holder.image = (ImageView) row.findViewById(R.id.image);
+			row.setTag(holder);
 		}
 		else {
 			holder = (ViewHolder) row.getTag();
@@ -47,9 +48,9 @@ public class PictureAdapter extends ArrayAdapter {
 		return row;
 	}
 	
-	public static class ViewHolder{
-		ImageView image;
+	static class ViewHolder {
+		ImageView image;	
 	}
 	
-	
+
 }

@@ -57,7 +57,6 @@ public class SettingsFragment extends SherlockFragment implements
 	TextView partnerActionUp;
 	TextView partnerActionDown;
 	String name;
-	String changedPartnerName;
 	CheckBox notification;
 	CheckBox vibration;
 	CheckBox alertSounds;
@@ -269,9 +268,8 @@ public class SettingsFragment extends SherlockFragment implements
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							String changedPartnerName = newPartnerName
-									.getText().toString();
-                            AccountManager.setPartnerName(changedPartnerName);
+                            AccountManager.setPartnerName(newPartnerName
+									.getText().toString());
 							partnerName.setText(ApplicationSettings
 									.getPartnerName());
 						}
@@ -302,9 +300,8 @@ public class SettingsFragment extends SherlockFragment implements
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							String changedPartnerEmail = newPartnerEmail
-									.getText().toString();
-                            AccountManager.setPartnerName(changedPartnerName);
+                            AccountManager.setPartnerEmail(newPartnerEmail
+									.getText().toString());
 							partnerEmail.setText(ApplicationSettings
 									.getPartnerEmail());
 
@@ -544,8 +541,6 @@ public class SettingsFragment extends SherlockFragment implements
 	@Override
 	public void onPartnerRequested() {
 		// TODO Auto-generated method stub
-
-        AccountManager.setPartnerName(changedPartnerName);
 		partnerActionUp.setText(R.string.cancel_buddy_request);
 		name = ApplicationSettings.getPartnerName();
 		partnerActionDown.setText(R.string.request_sent_to + " " + name);
