@@ -1,0 +1,12 @@
+# Android Studio
+**/*.iml
+**/gen/
+.DS_Store
+.gradle
+/local.properties
+/build
+.idea
+
+# Eclipse
+.classpath
+.project
